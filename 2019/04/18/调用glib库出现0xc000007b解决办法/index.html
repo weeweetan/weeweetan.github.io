@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="调用glib库出现0xc000007b解决办法">
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="weeweetan's blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/">
+
+
+<meta name="description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="调用glib库出现0xc000007b解决办法">
+<meta property="og:url" content="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/index.html">
+<meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_1.png">
+<meta property="og:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_2.png">
+<meta property="og:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_3.png">
+<meta property="og:updated_time" content="2019-04-18T15:25:36.694Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="调用glib库出现0xc000007b解决办法">
+<meta name="twitter:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta name="twitter:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_1.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> 调用glib库出现0xc000007b解决办法 - weeweetan's blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">weeweetan's blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          调用glib库出现0xc000007b解决办法
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 18 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="../images/2019-04-18_glib_1.png" alt></p>
+<p>网上的解决办法都试过，没能解决问题。</p>
+<h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p>
+<h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="../images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="../images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p>
+
+            </div>
+          
+
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">weeweetan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
