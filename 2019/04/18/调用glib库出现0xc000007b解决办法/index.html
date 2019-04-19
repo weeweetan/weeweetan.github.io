@@ -40,14 +40,14 @@
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_1.png">
-<meta property="og:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_2.png">
-<meta property="og:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_3.png">
-<meta property="og:updated_time" content="2019-04-18T15:25:36.694Z">
+<meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
+<meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_2.png">
+<meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_3.png">
+<meta property="og:updated_time" content="2019-04-19T01:13:20.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调用glib库出现0xc000007b解决办法">
 <meta name="twitter:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
-<meta name="twitter:image" content="https://weeweetan.github.io/2019/04/18/images/2019-04-18_glib_1.png">
+<meta name="twitter:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -127,11 +127,11 @@
 
     
             <div class="post-content">
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="../images/2019-04-18_glib_1.png" alt></p>
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="/images/2019-04-18_glib_1.png" alt></p>
 <p>网上的解决办法都试过，没能解决问题。</p>
 <h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p>
-<h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="../images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p>
-<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="../images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p>
+<h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="/images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="/images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p>
 <h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p>
 
             </div>
