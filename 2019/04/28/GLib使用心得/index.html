@@ -33,17 +33,17 @@
 <link rel="canonical" href="https://weeweetan.github.io/2019/04/28/GLib使用心得/">
 
 
-<meta name="description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符转换相关APIgchar *g_filename_display_basename(const gchar *filename); gchar *g_locale_from_utf8(const gchar *utf8string,">
+<meta name="description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string,                          cons">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GLib使用心得">
 <meta property="og:url" content="https://weeweetan.github.io/2019/04/28/GLib使用心得/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符转换相关APIgchar *g_filename_display_basename(const gchar *filename); gchar *g_locale_from_utf8(const gchar *utf8string,">
+<meta property="og:description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string,                          cons">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-28T06:40:59.961Z">
+<meta property="og:updated_time" content="2019-04-30T06:30:24.115Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GLib使用心得">
-<meta name="twitter:description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符转换相关APIgchar *g_filename_display_basename(const gchar *filename); gchar *g_locale_from_utf8(const gchar *utf8string,">
+<meta name="twitter:description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string,                          cons">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -124,7 +124,17 @@
     
             <div class="post-content">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于GLib的介绍这里就不赘述了，具体API介绍可以去<a href="https://developer.gnome.org/glib/" target="_blank" rel="noopener">GLib API Reference</a>查阅，这里只是记录一下使用相关API所遇到的一些坑。</p>
-<h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><h3 id="字符转换相关API"><a href="#字符转换相关API" class="headerlink" title="字符转换相关API"></a>字符转换相关API</h3><pre><code>gchar *g_filename_display_basename(const gchar *filename);
+<h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><h3 id="字符串相关API"><a href="#字符串相关API" class="headerlink" title="字符串相关API"></a>字符串相关API</h3><pre><code>GString *g_string_new(const gchar *init);
+GString *g_string_append(GString *string,
+                         const gchar *val);
+GString *g_string_prepend(GString *string,
+                          const gchar *val);
+gchar *g_string_free(GString *string,
+                     gboolean free_segment);
+</code></pre><blockquote>
+<p>如果需要对字符串进行拼接操作，使用GString相关API是非常方便的。<strong>注意</strong> g_string_new跟g_string_free一定要配套使用，否则会内存泄漏。<br><em>g_string_append</em>跟<em>g_string_prepend</em>都是直接在原字符串上操作，这点要切记。</p>
+</blockquote>
+<h3 id="字符转换相关API"><a href="#字符转换相关API" class="headerlink" title="字符转换相关API"></a>字符转换相关API</h3><pre><code>gchar *g_filename_display_basename(const gchar *filename);
 gchar *g_locale_from_utf8(const gchar *utf8string,
                           gssize len,
                           gsize *bytes_read,
@@ -151,7 +161,7 @@ gchar *basename = g_filename_display_basename(str);
 <pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);
 string-&gt;str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL); 
 </code></pre><blockquote>
-<p>如果像上面那样做，因为转换后的字符串长度跟转换前不一样，后续使用会出问题，_g_locale_from_utf8_ 同理</p>
+<p>如果像上面那样做，因为转换后的字符串长度跟转换前不一样，后续使用会出问题，<em>g_locale_from_utf8</em> 同理<br><strong>注意</strong> <em>g_locale_to_utf8</em>返回的char *需要手动释放内存</p>
 </blockquote>
 
             </div>
