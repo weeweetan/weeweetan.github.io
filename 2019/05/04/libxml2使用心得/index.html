@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="libxml2使用心得">
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="weeweetan's blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://weeweetan.github.io/2019/05/04/libxml2使用心得/">
+
+
+<meta name="description" content="背景 由于当前项目以xml文件作为通信媒介，故需要对xml文档进行解析与生成。但是libxml2文档写得不是很好，也没有例程，我在实际工作中主要参考C++的XML编程经验――LIBXML2库使用指南，这篇博文讲得很详细，我在这里只是做出一点补充。  问题 xml文档使用UTF-8编码，所以如果xml文档中包含中文，使用libxml2读取内容相关API时，在调试界面中看到读取出来的中文内容为乱码，这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="libxml2使用心得">
+<meta property="og:url" content="https://weeweetan.github.io/2019/05/04/libxml2使用心得/index.html">
+<meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="背景 由于当前项目以xml文件作为通信媒介，故需要对xml文档进行解析与生成。但是libxml2文档写得不是很好，也没有例程，我在实际工作中主要参考C++的XML编程经验――LIBXML2库使用指南，这篇博文讲得很详细，我在这里只是做出一点补充。  问题 xml文档使用UTF-8编码，所以如果xml文档中包含中文，使用libxml2读取内容相关API时，在调试界面中看到读取出来的中文内容为乱码，这">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-04T14:57:25.452Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="libxml2使用心得">
+<meta name="twitter:description" content="背景 由于当前项目以xml文件作为通信媒介，故需要对xml文档进行解析与生成。但是libxml2文档写得不是很好，也没有例程，我在实际工作中主要参考C++的XML编程经验――LIBXML2库使用指南，这篇博文讲得很详细，我在这里只是做出一点补充。  问题 xml文档使用UTF-8编码，所以如果xml文档中包含中文，使用libxml2读取内容相关API时，在调试界面中看到读取出来的中文内容为乱码，这">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> libxml2使用心得 - weeweetan's blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">weeweetan's blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          libxml2使用心得
+        
+      </h1>
+
+      <time class="post-time">
+          May 4 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote>
+<p>由于当前项目以xml文件作为通信媒介，故需要对xml文档进行解析与生成。但是libxml2文档写得不是很好，也没有例程，我在实际工作中主要参考<a href="http://www.blogjava.net/wxb_nudt/archive/2007/11/18/161340.html" target="_blank" rel="noopener">C++的XML编程经验――LIBXML2库使用指南</a>，这篇博文讲得很详细，我在这里只是做出一点补充。</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
+<p>xml文档使用UTF-8编码，所以如果xml文档中包含中文，使用libxml2读取内容相关API时，在调试界面中看到读取出来的中文内容为乱码，这个时候就需要将内容转换为程序当前运行的编码格式。我使用visual studio2017，里面默认GBK编码，所以我在使用xml内容时就需要将UTF-8编码的内容转换为GBK，其他同理。</p>
+</blockquote>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><blockquote>
+<p>我使用GLib2的<em>g_locale_from_utf8</em>将内容转换为本地程序默认的编码格式，在写入xml内容时使用<em>g_locale_to_utf8</em>将内容转换为UTF-8.</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>总而言之，在读取xml相关内容时，首先将内容转换为程序默认的编码格式，写入xml内容时，将程序默认的编码格式转换为UTF-8。</p>
+</blockquote>
+
+            </div>
+          
+
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">weeweetan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
