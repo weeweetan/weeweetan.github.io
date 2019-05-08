@@ -40,7 +40,7 @@
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-08T03:12:45.221Z">
+<meta property="og:updated_time" content="2019-05-08T08:19:59.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
@@ -136,7 +136,18 @@ extern char          *ngx_module_names[];
 <p>此函数的目的是将ngx_modules中的数据复制到cycle中，函数调用顺序如下：</p>
 </blockquote>
 <pre><code>main-&gt;ngx_init_cycle-&gt;ngx_cycle_modules
-</code></pre>
+</code></pre><h2 id="handler模块的编写步骤"><a href="#handler模块的编写步骤" class="headerlink" title="handler模块的编写步骤"></a>handler模块的编写步骤</h2><ol>
+<li><p>编写模块基本结构。包括模块的定义，模块上下文结构，模块的配置结构等，即分别初始化如下变量：</p>
+<p> static ngx_command_t ngx_http_module_name_commands[] = {};<br> static ngx_http_module_t ngx_http_module_name_module_ctx = {};<br> ngx_module_t ngx_http_module_name_module = {};</p>
+</li>
+<li><p>实现handler的挂载函数。根据模块的需求选择正确的挂载方式，即实现如下函数：</p>
+<p> static ngx_int_t ngx_http_module_name_init(ngx_conf_t *cf)；</p>
+</li>
+<li><p>编写handler处理函数。模块的功能主要通过这个函数来完成，即实现如下函数：</p>
+<p> static ngx_int_t ngx_http_module_name_handler(ngx_http_request_t *r);</p>
+</li>
+</ol>
+
             </div>
           
 
