@@ -33,17 +33,17 @@
 <link rel="canonical" href="https://weeweetan.github.io/2019/05/08/Nginx学习笔记/">
 
 
-<meta name="description" content="##源码解析  在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生">
+<meta name="description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx学习笔记">
 <meta property="og:url" content="https://weeweetan.github.io/2019/05/08/Nginx学习笔记/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="##源码解析  在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生">
+<meta property="og:description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-08T03:03:04.304Z">
+<meta property="og:updated_time" content="2019-05-08T03:12:45.221Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
-<meta name="twitter:description" content="##源码解析  在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生">
+<meta name="twitter:description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -123,16 +123,20 @@
 
     
             <div class="post-content">
-            <p>##源码解析</p>
-<blockquote>
+            <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><blockquote>
 <p>在<em>ngx_module.h</em>中引用了两个至关重要的外部变量</p>
 </blockquote>
 <pre><code>extern ngx_module_t  *ngx_modules[];
 extern char          *ngx_module_names[];
 </code></pre><blockquote>
-<p><em>ngx_modules</em>跟<em>ngx_module_names</em>定义在<em>ngx_modules.c</em>中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。</p>
+<p><em>ngx_modules</em>跟<em>ngx_module_names</em>定义在<em>ngx_modules.c</em>中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。ngx_modules数组包含所有的Nginx模块，Nginx启动时会调用<em>ngx_cycle_modules</em>函数，原型如下：</p>
 </blockquote>
-
+<pre><code>ngx_int_t ngx_cycle_modules(ngx_cycle_t *cycle)
+</code></pre><blockquote>
+<p>此函数的目的是将ngx_modules中的数据复制到cycle中，函数调用顺序如下：</p>
+</blockquote>
+<pre><code>main-&gt;ngx_init_cycle-&gt;ngx_cycle_modules
+</code></pre>
             </div>
           
 
