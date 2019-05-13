@@ -33,17 +33,19 @@
 <link rel="canonical" href="https://weeweetan.github.io/2019/05/08/Nginx学习笔记/">
 
 
-<meta name="description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
+<meta name="description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx学习笔记">
 <meta property="og:url" content="https://weeweetan.github.io/2019/05/08/Nginx学习笔记/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
+<meta property="og:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-08T08:19:59.952Z">
+<meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
+<meta property="og:updated_time" content="2019-05-13T15:27:36.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
-<meta name="twitter:description" content="源码解析 在ngx_module.h中引用了两个至关重要的外部变量  extern ngx_module_t  *ngx_modules[]; extern char          *ngx_module_names[];  ngx_modules跟ngx_module_names定义在ngx_modules.c中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。n">
+<meta name="twitter:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
+<meta name="twitter:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -123,7 +125,13 @@
 
     
             <div class="post-content">
-            <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><blockquote>
+            <h2 id="编译步骤"><a href="#编译步骤" class="headerlink" title="编译步骤"></a>编译步骤</h2><h3 id="configure原理"><a href="#configure原理" class="headerlink" title="configure原理"></a>configure原理</h3><blockquote>
+<p>configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。</p>
+</blockquote>
+<h3 id="auto脚本"><a href="#auto脚本" class="headerlink" title="auto脚本"></a>auto脚本</h3><blockquote>
+<p>auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如option）。脚本之间的主要执行顺序及调用关系如下图所示（由上到下，表示主流程的执行）：<br><img src="/images/2019-05-13_nginx.png" alt><br>上图中的脚本都位于auto目录下，所以省略，而configure与auto同级目录，故完整执行脚本如.auto/options所示。</p>
+</blockquote>
+<h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><blockquote>
 <p>在<em>ngx_module.h</em>中引用了两个至关重要的外部变量</p>
 </blockquote>
 <pre><code>extern ngx_module_t  *ngx_modules[];
