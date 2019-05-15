@@ -19,6 +19,7 @@
   
   <title>调用glib库出现0xc000007b解决办法 | weeweetan</title>
   <meta name="description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta name="keywords" content="GLib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调用glib库出现0xc000007b解决办法">
 <meta property="og:url" content="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/index.html">
@@ -28,7 +29,7 @@
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_2.png">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_3.png">
-<meta property="og:updated_time" content="2019-04-19T01:13:20.420Z">
+<meta property="og:updated_time" content="2019-05-15T07:05:59.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调用glib库出现0xc000007b解决办法">
 <meta name="twitter:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
@@ -217,12 +218,33 @@
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/">GLib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/">libxml</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/GLib/" style="font-size: 14px;">GLib</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/libxml/" style="font-size: 13px;">libxml</a>
+    </div>
+  </div>
+
     
       
   <div class="widget">
@@ -244,7 +266,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/Nginx/">Nginx</a>
               </p>
               <p class="item-title">
                 <a href="/2019/05/08/Nginx学习笔记/" class="title">Nginx学习笔记</a>
@@ -259,7 +281,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/libxml/">libxml</a>
               </p>
               <p class="item-title">
                 <a href="/2019/05/04/libxml2使用心得/" class="title">libxml2使用心得</a>
@@ -274,7 +296,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/GLib/">GLib</a>
               </p>
               <p class="item-title">
                 <a href="/2019/04/28/GLib使用心得/" class="title">GLib使用心得</a>
@@ -289,7 +311,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/GLib/">GLib</a>
               </p>
               <p class="item-title">
                 <a href="/2019/04/18/调用glib库出现0xc000007b解决办法/" class="title">调用glib库出现0xc000007b解决办法</a>
@@ -326,6 +348,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#出现转机"><span class="toc-number">2.</span> <span class="toc-text">出现转机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始分析"><span class="toc-number">3.</span> <span class="toc-text">开始分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题解决"><span class="toc-number">4.</span> <span class="toc-text">问题解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">4.1.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-调用glib库出现0xc000007b解决办法" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -348,7 +379,17 @@
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/GLib/">GLib</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/GLib/">GLib</a>
+  </span>
+
 
         
 	<span class="article-read hidden-xs">
@@ -442,6 +483,15 @@
       <a href="/2019/04/16/hello-world/" title="Hello World"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

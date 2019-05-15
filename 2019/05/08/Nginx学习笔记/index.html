@@ -19,6 +19,7 @@
   
   <title>Nginx学习笔记 | weeweetan</title>
   <meta name="description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
+<meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx学习笔记">
 <meta property="og:url" content="https://weeweetan.github.io/2019/05/08/Nginx学习笔记/index.html">
@@ -26,7 +27,7 @@
 <meta property="og:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-05-13T15:27:36.850Z">
+<meta property="og:updated_time" content="2019-05-15T07:06:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
@@ -215,12 +216,33 @@
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/">GLib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/">libxml</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/GLib/" style="font-size: 14px;">GLib</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/libxml/" style="font-size: 13px;">libxml</a>
+    </div>
+  </div>
+
     
       
   <div class="widget">
@@ -242,7 +264,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/Nginx/">Nginx</a>
               </p>
               <p class="item-title">
                 <a href="/2019/05/08/Nginx学习笔记/" class="title">Nginx学习笔记</a>
@@ -257,7 +279,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/libxml/">libxml</a>
               </p>
               <p class="item-title">
                 <a href="/2019/05/04/libxml2使用心得/" class="title">libxml2使用心得</a>
@@ -272,7 +294,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/GLib/">GLib</a>
               </p>
               <p class="item-title">
                 <a href="/2019/04/28/GLib使用心得/" class="title">GLib使用心得</a>
@@ -287,7 +309,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/GLib/">GLib</a>
               </p>
               <p class="item-title">
                 <a href="/2019/04/18/调用glib库出现0xc000007b解决办法/" class="title">调用glib库出现0xc000007b解决办法</a>
@@ -324,6 +346,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编译步骤"><span class="toc-number">1.</span> <span class="toc-text">编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">auto脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码解析"><span class="toc-number">2.</span> <span class="toc-text">源码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">handler模块的编写步骤</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-Nginx学习笔记" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -346,7 +377,17 @@
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Nginx/">Nginx</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Nginx/">Nginx</a>
+  </span>
+
 
         
 	<span class="article-read hidden-xs">
@@ -460,6 +501,15 @@ extern char          *ngx_module_names[];
       <a href="/2019/05/04/libxml2使用心得/" title="libxml2使用心得"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

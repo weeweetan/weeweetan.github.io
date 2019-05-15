@@ -19,13 +19,14 @@
   
   <title>GLib使用心得 | weeweetan</title>
   <meta name="description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string, const gchar *val); GString *g">
+<meta name="keywords" content="GLib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GLib使用心得">
 <meta property="og:url" content="https://weeweetan.github.io/2019/04/28/GLib使用心得/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string, const gchar *val); GString *g">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-04T14:18:26.133Z">
+<meta property="og:updated_time" content="2019-05-15T07:05:34.079Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GLib使用心得">
 <meta name="twitter:description" content="前言关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。 相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string, const gchar *val); GString *g">
@@ -213,12 +214,33 @@
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/">GLib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/">libxml</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
 
     
       
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/GLib/" style="font-size: 14px;">GLib</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/libxml/" style="font-size: 13px;">libxml</a>
+    </div>
+  </div>
+
     
       
   <div class="widget">
@@ -240,7 +262,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/Nginx/">Nginx</a>
               </p>
               <p class="item-title">
                 <a href="/2019/05/08/Nginx学习笔记/" class="title">Nginx学习笔记</a>
@@ -255,7 +277,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/libxml/">libxml</a>
               </p>
               <p class="item-title">
                 <a href="/2019/05/04/libxml2使用心得/" class="title">libxml2使用心得</a>
@@ -270,7 +292,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/GLib/">GLib</a>
               </p>
               <p class="item-title">
                 <a href="/2019/04/28/GLib使用心得/" class="title">GLib使用心得</a>
@@ -285,7 +307,7 @@
             
             <div class="item-inner">
               <p class="item-category">
-                
+                <a class="category-link" href="/categories/GLib/">GLib</a>
               </p>
               <p class="item-title">
                 <a href="/2019/04/18/调用glib库出现0xc000007b解决办法/" class="title">调用glib库出现0xc000007b解决办法</a>
@@ -322,6 +344,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关API"><span class="toc-number">2.</span> <span class="toc-text">相关API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串相关API"><span class="toc-number">2.1.</span> <span class="toc-text">字符串相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符转换相关API"><span class="toc-number">2.2.</span> <span class="toc-text">字符转换相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解析key-value文件API"><span class="toc-number">2.3.</span> <span class="toc-text">解析key-value文件API</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-GLib使用心得" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -344,7 +375,17 @@
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/GLib/">GLib</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/GLib/">GLib</a>
+  </span>
+
 
         
 	<span class="article-read hidden-xs">
@@ -469,6 +510,15 @@ void g_key_file_free(GKeyFile *key_file);
       <a href="/2019/04/18/调用glib库出现0xc000007b解决办法/" title="调用glib库出现0xc000007b解决办法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   
