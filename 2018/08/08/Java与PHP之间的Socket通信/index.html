@@ -17,25 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>调用glib库出现0xc000007b解决办法 | weeweetan</title>
-  <meta name="description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
-<meta name="keywords" content="GLib">
+  <title>Java与PHP之间的Socket通信 | weeweetan</title>
+  <meta name="description" content="Java作为服务端 Java端作为服务端，PHP端作为客户端，在之前一篇文章中说了下PHP作为客户端如何与Java端进行通信。由于业务需要，socket必须等待服务端处理完成，并返回处理结果给PHP端。在这里主要说明一下Java端如何处理的，不足之处，望指正。  ServerSocket serverSocket = new ServerSocket(port); //创建绑定到特定端口的服务器套">
+<meta name="keywords" content="Socket,PHP,Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调用glib库出现0xc000007b解决办法">
-<meta property="og:url" content="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/index.html">
+<meta property="og:title" content="Java与PHP之间的Socket通信">
+<meta property="og:url" content="https://weeweetan.github.io/2018/08/08/Java与PHP之间的Socket通信/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta property="og:description" content="Java作为服务端 Java端作为服务端，PHP端作为客户端，在之前一篇文章中说了下PHP作为客户端如何与Java端进行通信。由于业务需要，socket必须等待服务端处理完成，并返回处理结果给PHP端。在这里主要说明一下Java端如何处理的，不足之处，望指正。  ServerSocket serverSocket = new ServerSocket(port); //创建绑定到特定端口的服务器套">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
-<meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_2.png">
-<meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_3.png">
-<meta property="og:updated_time" content="2019-05-15T07:05:59.833Z">
+<meta property="og:updated_time" content="2019-05-15T14:02:48.463Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调用glib库出现0xc000007b解决办法">
-<meta name="twitter:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
-<meta name="twitter:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
+<meta name="twitter:title" content="Java与PHP之间的Socket通信">
+<meta name="twitter:description" content="Java作为服务端 Java端作为服务端，PHP端作为客户端，在之前一篇文章中说了下PHP作为客户端如何与Java端进行通信。由于业务需要，socket必须等待服务端处理完成，并返回处理结果给PHP端。在这里主要说明一下Java端如何处理的，不足之处，望指正。  ServerSocket serverSocket = new ServerSocket(port); //创建绑定到特定端口的服务器套">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/index.html">
+  <link rel="canonical" href="https://weeweetan.github.io/2018/08/08/Java与PHP之间的Socket通信/index.html">
   
     <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
   
@@ -352,21 +348,21 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#出现转机"><span class="toc-number">2.</span> <span class="toc-text">出现转机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始分析"><span class="toc-number">3.</span> <span class="toc-text">开始分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题解决"><span class="toc-number">4.</span> <span class="toc-text">问题解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">4.1.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java作为服务端"><span class="toc-number">1.</span> <span class="toc-text">Java作为服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP作为服务端"><span class="toc-number">2.</span> <span class="toc-text">PHP作为服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
     </nav>
   </div>
 </aside>
 
 <main class="main" role="main">
   <div class="content">
-  <article id="post-调用glib库出现0xc000007b解决办法" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-Java与PHP之间的Socket通信" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      调用glib库出现0xc000007b解决办法
+      Java与PHP之间的Socket通信
     </h1>
   
 
@@ -374,20 +370,20 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2019/04/18/调用glib库出现0xc000007b解决办法/" class="article-date">
-	  <time datetime="2019-04-18T14:47:29.000Z" itemprop="datePublished">2019-04-18</time>
+	<a href="/2018/08/08/Java与PHP之间的Socket通信/" class="article-date">
+	  <time datetime="2018-08-08T15:55:23.000Z" itemprop="datePublished">2018-08-08</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/GLib/">GLib</a>
+    <a class="article-category-link" href="/categories/Socket/">Socket</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/GLib/">GLib</a>
+	<a class="article-tag-link" href="/tags/Java/">Java</a>, <a class="article-tag-link" href="/tags/PHP/">PHP</a>, <a class="article-tag-link" href="/tags/Socket/">Socket</a>
   </span>
 
 
@@ -400,25 +396,101 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/18/调用glib库出现0xc000007b解决办法/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/08/08/Java与PHP之间的Socket通信/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 253(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 802(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="/images/2019-04-18_glib_1.png" alt></p>
-<p>网上的解决办法都试过，没能解决问题。</p>
-<h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p>
-<h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="/images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p>
-<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="/images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p>
+        <h2 id="Java作为服务端"><a href="#Java作为服务端" class="headerlink" title="Java作为服务端"></a>Java作为服务端</h2><blockquote>
+<p>Java端作为服务端，PHP端作为客户端，在之前一篇文章中说了下PHP作为客户端如何与Java端进行通信。由于业务需要，socket必须等待服务端处理完成，并返回处理结果给PHP端。在这里主要说明一下Java端如何处理的，不足之处，望指正。</p>
+</blockquote>
+<pre><code>ServerSocket serverSocket = new ServerSocket(port); //创建绑定到特定端口的服务器套接字
+Socket socket = serverSocket.accept(); //侦听并接受到此套接字的连接
+
+InputStream inputStream = socket.getInputStream();
+StringBuilder sb = new StringBuilder();
+
+byte[] packetLength = new byte[4];
+inputStream.read(packetLength, 0, 4);            //首先从套接字中读取4字节的数据长度
+int target = byteToint(packetLength);            //这里将字节数组转换成整数
+System.out.println(&quot;message size:&quot; + target);
+
+byte[] bytes = new byte[target];
+inputStream.read(bytes);                            //读取指定长度的数据
+sb.append(new String(bytes, 0, target, &quot;UTF-8&quot;));
+System.out.println(&quot;get message &quot; + sb);
+
+String result = &quot;has receive message&quot;;
+OutputStream outputStream = socket.getOutputStream();
+int responseLength =  result.getBytes().length;        //这个地方的长度，一定要是字节数组的长度，否则如果字符串中包含中文，接收端接收数据会不完整           
+byte[] targets = intTobyte(responseLength);
+outputStream.write(targets);                          //首先发送4个字节的数据大小
+outputStream.write(result.getBytes());                //再发送真正的数据
+
+outputStream.flush();
+outputStream.close();
+inputStream.close();
+socket.close();
+</code></pre><blockquote>
+<p>上述代码需要处异常，而且代码中的byteToint和intTobyte这两个函数非原创，是其他博主的劳动成果，感谢这位作者，原文地址<em><a href="https://www.cnblogs.com/langren1992/p/4717241.html" target="_blank" rel="noopener">https://www.cnblogs.com/langren1992/p/4717241.html</a></em>。</p>
+</blockquote>
+<h2 id="PHP作为服务端"><a href="#PHP作为服务端" class="headerlink" title="PHP作为服务端"></a>PHP作为服务端</h2><blockquote>
+<p>相关函数: socket_create、socket_set_block、socket_bind、socket_listen、socket_accept、socket_read、socket_write，这些函数具体参数说明在<a href="https://www.php.net/" target="_blank" rel="noopener">PHP文档</a>上写很详细，这里就不再赘述，这里只是介绍服务端如何处理请求。</p>
+</blockquote>
+<pre><code>//确保在连接客户端时不会超时
+set_time_limit(0);
+//设置IP和端口号
+$address = &quot;127.0.0.1&quot;;
+$port = 54321;
+$socketServer = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die(&quot;socket_create() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);
+//设置为阻塞模式
+socket_set_block($socketServer) or die(&quot;socket_set_block() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);
+//绑定端口
+$result = socket_bind($socketServer, $address, $port) or die(&quot;socket_bind() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);
+//开始监听
+$result = socket_listen($socketServer, 4) or die(&quot;socket_listen() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);
+
+do {
+    //接收连接请求并返回一个子Socket来处理客户端和服务器间的信息
+    $sock = socket_accept($socketServer) or  die(&quot;socket_accept() failed: reason: &quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);
+    while($sock){
+        //读取客户端数据
+        echo &quot;Read client data \n&quot;;
+
+        $length = socket_read($sock, 4);
+        $length = unpack(&apos;i&apos;, $length);
+        echo &quot;length:$length[1]   \n&quot;;
+
+        $request = socket_read($sock, $length[1]);
+        echo &quot;$request:$request   \n&quot;;
+
+
+        //数据传送 向客户端写入返回结果
+        $msg = &quot;this is response message \n&quot;;
+        $msgLength = strlen($msg);
+        $msgLength = pack(&apos;i&apos;, $msgLength);
+        socket_write($sock, $msgLength);
+        socket_write($sock, $msg, strlen($msg)) or die(&quot;socket_write() failed: reason: &quot; . socket_strerror(socket_last_error()) .&quot;/n&quot;);
+        break;
+    }
+
+} while (true);
+//根据需要关闭socket
+socket_close($socketServer);
+</code></pre><blockquote>
+<p>在接收到客户端的请求后，可以结合PHP的多线程进行处理，这里只是简单的返回字符串。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>各大语言实现socket通信的方式都是大同小异，在服务端的流程都是差不多的。在有现成高性能socket通信框架的情况下，建议不要自己去实现，但是得理解框架底层是怎样实现的。</p>
+</blockquote>
 
       
     </div>
@@ -428,7 +500,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/" title="调用glib库出现0xc000007b解决办法" target="_blank" rel="external">https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/</a>
+      <a href="https://weeweetan.github.io/2018/08/08/Java与PHP之间的Socket通信/" title="Java与PHP之间的Socket通信" target="_blank" rel="external">https://weeweetan.github.io/2018/08/08/Java与PHP之间的Socket通信/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -475,12 +547,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2019/04/28/GLib使用心得/" title="GLib使用心得"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/" title="安装vCenter Server出现1603错误的一种解决方法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/" title="安装vCenter Server出现1603错误的一种解决方法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2018/07/25/VMware-vSphere-WebService-SDK使用心得/" title="VMware vSphere WebService SDK使用心得"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     

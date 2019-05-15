@@ -118,23 +118,111 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://weeweetan.github.io/2019/04/16/hello-world/"/>
-    <id>https://weeweetan.github.io/2019/04/16/hello-world/</id>
-    <published>2019-04-16T13:44:16.987Z</published>
-    <updated>2019-04-16T13:44:16.987Z</updated>
+    <title>安装vCenter Server出现1603错误的一种解决方法</title>
+    <link href="https://weeweetan.github.io/2018/11/29/%E5%AE%89%E8%A3%85vCenter-Server%E5%87%BA%E7%8E%B01603%E9%94%99%E8%AF%AF%E7%9A%84%E4%B8%80%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
+    <id>https://weeweetan.github.io/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/</id>
+    <published>2018-11-29T02:04:37.000Z</published>
+    <updated>2019-05-15T14:12:39.771Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>vCeter Server部署在一个Windows Server 2008 R2的虚拟机上，由于更改了虚拟机网卡配置，导致vCenter Server相关服务无法启动，查找解决方法无果后，就打算重装vCenter Server。</p></blockquote><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote><p>部署过程主要参考<a href="https://blog.csdn.net/shengxia1999/article/details/52353177" target="_blank" rel="noopener">VMware Vsphere 6.0安装部署 （三） vCenter Server安装</a>。在这里我主要说明一下我所遇到的问题以及解决方法。在安装过程中遇到Encountered an internal error，Install-parameter rhttpproxy.ext.port1 not set具体错误信息如下图所示：<br><img src="/images/2018-11-29_error.png" alt></p></blockquote><blockquote><p>出现这个错误后，会退出安装，在最后会报‘安装组件VCSServiceManager失败并显示错误代码1603’，如下图所示：<br><img src="/images/2018-11-29_error_code.png" alt><br>出现这个错误，首先应当排查在安装vCenter Server 过程中配置的http端口是否被占用(使用命令netstat -nao)，如果端口没有被占用，则使用如下方法：</p></blockquote><ol><li><p>删除C:\Program Files\VMware\vCenter Server目录；</p></li><li><p>重启虚拟机，重新安装</p></li></ol><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote><p>这个方法不一定能解决所有这类问题，这只是其中一种解决方法。</p></blockquote>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;vCeter Server部署在一个Windows Server 2008 R2的虚拟机上，由于更改了虚拟机网卡配
       
     
     </summary>
     
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/categories/VMware-vSphere/"/>
+    
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/tags/VMware-vSphere/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java与PHP之间的Socket通信</title>
+    <link href="https://weeweetan.github.io/2018/08/08/Java%E4%B8%8EPHP%E4%B9%8B%E9%97%B4%E7%9A%84Socket%E9%80%9A%E4%BF%A1/"/>
+    <id>https://weeweetan.github.io/2018/08/08/Java与PHP之间的Socket通信/</id>
+    <published>2018-08-08T15:55:23.000Z</published>
+    <updated>2019-05-15T14:02:48.463Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Java作为服务端"><a href="#Java作为服务端" class="headerlink" title="Java作为服务端"></a>Java作为服务端</h2><blockquote><p>Java端作为服务端，PHP端作为客户端，在之前一篇文章中说了下PHP作为客户端如何与Java端进行通信。由于业务需要，socket必须等待服务端处理完成，并返回处理结果给PHP端。在这里主要说明一下Java端如何处理的，不足之处，望指正。</p></blockquote><pre><code>ServerSocket serverSocket = new ServerSocket(port); //创建绑定到特定端口的服务器套接字Socket socket = serverSocket.accept(); //侦听并接受到此套接字的连接InputStream inputStream = socket.getInputStream();StringBuilder sb = new StringBuilder();byte[] packetLength = new byte[4];inputStream.read(packetLength, 0, 4);            //首先从套接字中读取4字节的数据长度int target = byteToint(packetLength);            //这里将字节数组转换成整数System.out.println(&quot;message size:&quot; + target);byte[] bytes = new byte[target];inputStream.read(bytes);                            //读取指定长度的数据sb.append(new String(bytes, 0, target, &quot;UTF-8&quot;));System.out.println(&quot;get message &quot; + sb);String result = &quot;has receive message&quot;;OutputStream outputStream = socket.getOutputStream();int responseLength =  result.getBytes().length;        //这个地方的长度，一定要是字节数组的长度，否则如果字符串中包含中文，接收端接收数据会不完整           byte[] targets = intTobyte(responseLength);outputStream.write(targets);                          //首先发送4个字节的数据大小outputStream.write(result.getBytes());                //再发送真正的数据outputStream.flush();outputStream.close();inputStream.close();socket.close();</code></pre><blockquote><p>上述代码需要处异常，而且代码中的byteToint和intTobyte这两个函数非原创，是其他博主的劳动成果，感谢这位作者，原文地址<em><a href="https://www.cnblogs.com/langren1992/p/4717241.html" target="_blank" rel="noopener">https://www.cnblogs.com/langren1992/p/4717241.html</a></em>。</p></blockquote><h2 id="PHP作为服务端"><a href="#PHP作为服务端" class="headerlink" title="PHP作为服务端"></a>PHP作为服务端</h2><blockquote><p>相关函数: socket_create、socket_set_block、socket_bind、socket_listen、socket_accept、socket_read、socket_write，这些函数具体参数说明在<a href="https://www.php.net/" target="_blank" rel="noopener">PHP文档</a>上写很详细，这里就不再赘述，这里只是介绍服务端如何处理请求。</p></blockquote><pre><code>//确保在连接客户端时不会超时set_time_limit(0);//设置IP和端口号$address = &quot;127.0.0.1&quot;;$port = 54321;$socketServer = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die(&quot;socket_create() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);//设置为阻塞模式socket_set_block($socketServer) or die(&quot;socket_set_block() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);//绑定端口$result = socket_bind($socketServer, $address, $port) or die(&quot;socket_bind() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);//开始监听$result = socket_listen($socketServer, 4) or die(&quot;socket_listen() fail:&quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);do {    //接收连接请求并返回一个子Socket来处理客户端和服务器间的信息    $sock = socket_accept($socketServer) or  die(&quot;socket_accept() failed: reason: &quot; . socket_strerror(socket_last_error()) . &quot;/n&quot;);    while($sock){        //读取客户端数据        echo &quot;Read client data \n&quot;;        $length = socket_read($sock, 4);        $length = unpack(&apos;i&apos;, $length);        echo &quot;length:$length[1]   \n&quot;;        $request = socket_read($sock, $length[1]);        echo &quot;$request:$request   \n&quot;;        //数据传送 向客户端写入返回结果        $msg = &quot;this is response message \n&quot;;        $msgLength = strlen($msg);        $msgLength = pack(&apos;i&apos;, $msgLength);        socket_write($sock, $msgLength);        socket_write($sock, $msg, strlen($msg)) or die(&quot;socket_write() failed: reason: &quot; . socket_strerror(socket_last_error()) .&quot;/n&quot;);        break;    }} while (true);//根据需要关闭socketsocket_close($socketServer);</code></pre><blockquote><p>在接收到客户端的请求后，可以结合PHP的多线程进行处理，这里只是简单的返回字符串。</p></blockquote><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote><p>各大语言实现socket通信的方式都是大同小异，在服务端的流程都是差不多的。在有现成高性能socket通信框架的情况下，建议不要自己去实现，但是得理解框架底层是怎样实现的。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Java作为服务端&quot;&gt;&lt;a href=&quot;#Java作为服务端&quot; class=&quot;headerlink&quot; title=&quot;Java作为服务端&quot;&gt;&lt;/a&gt;Java作为服务端&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Java端作为服务端，PHP端作为客户端，在之前一篇文章中
+      
+    
+    </summary>
+    
+      <category term="Socket" scheme="https://weeweetan.github.io/categories/Socket/"/>
+    
+    
+      <category term="Socket" scheme="https://weeweetan.github.io/tags/Socket/"/>
+    
+      <category term="PHP" scheme="https://weeweetan.github.io/tags/PHP/"/>
+    
+      <category term="Java" scheme="https://weeweetan.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VMware vSphere WebService SDK使用心得</title>
+    <link href="https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/"/>
+    <id>https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK使用心得/</id>
+    <published>2018-07-25T12:13:58.000Z</published>
+    <updated>2019-05-15T13:27:59.170Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="善用mob（Managed-Object-Browser）"><a href="#善用mob（Managed-Object-Browser）" class="headerlink" title="善用mob（Managed Object Browser）"></a>善用mob（Managed Object Browser）</h2><blockquote><p>mob地址一般是<em><a href="https://vcenter的FQDN/mob" target="_blank" rel="noopener">https://vcenter的FQDN/mob</a></em>，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。<br><img src="/images/2018-07-25_mob.png" alt></p></blockquote><h2 id="善用GetMOREF类"><a href="#善用GetMOREF类" class="headerlink" title="善用GetMOREF类"></a>善用GetMOREF类</h2><blockquote><p>GetMOREF类具体位置在<em>VMware-vSphere-SDK-6.0.0-2561048\SDK\vsphere-ws\java\JAXWS\samples\com\vmware\connection\helpers</em>，这是VMware官方提供的一个工具类，里面的每个函数对于开发都很有用。例如</p></blockquote><pre><code>​List&lt;VirtualDevice&gt; listvd = ((ArrayOfVirtualDevice) getMOREFs                                .entityProps(vmMor, new String[] { &quot;config.hardware.device&quot; })                                .get(&quot;config.hardware.device&quot;)).getVirtualDevice();</code></pre><blockquote><p>这是VMReconfig.java中的一个片段，这段代码的作用就是去获取指定虚拟机对象的所有设备，vmMor可以通过GetMOREF类中的vmByVMname函数去获得。至于config.hardware.device，就需要用mob一层一层点进去看了，相信结合mob就能理解为什么要这么写。</p></blockquote><pre><code>​​ ManagedObjectReference propCol = connection.getServiceContent().getPropertyCollector(); ManagedObjectReference vmRef = getMOREFs.vmByVMname(virtualMachineName,propCol);</code></pre><blockquote><p>上面这段代码的作用就是如何根据虚拟机名去获取其对应的ManagedObjectReference</p></blockquote><h2 id="善用SDK里面的文档"><a href="#善用SDK里面的文档" class="headerlink" title="善用SDK里面的文档"></a>善用SDK里面的文档</h2><blockquote><p>文档首页为<em>VMware-vSphere-SDK-6.0.0-2561048/SDK/vsphere-ws/docs/ReferenceGuide/index.html</em><br><img src="/images/2018-07-25_doc.png" alt><br>根据需求，在左侧导航栏对应的去找。</p></blockquote><blockquote><p>对SDK我整理了一下，使其能够在idea中编译运行，项目地址在<a href="https://github.com/wulikanhua/VMwareProject" target="_blank" rel="noopener">VMwareProject</a>   ​</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;善用mob（Managed-Object-Browser）&quot;&gt;&lt;a href=&quot;#善用mob（Managed-Object-Browser）&quot; class=&quot;headerlink&quot; title=&quot;善用mob（Managed Object Browser）&quot;&gt;&lt;/a
+      
+    
+    </summary>
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/categories/VMware-vSphere/"/>
+    
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/tags/VMware-vSphere/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Socket粘包处理</title>
+    <link href="https://weeweetan.github.io/2018/07/25/Socket%E7%B2%98%E5%8C%85%E5%A4%84%E7%90%86/"/>
+    <id>https://weeweetan.github.io/2018/07/25/Socket粘包处理/</id>
+    <published>2018-07-25T11:05:52.000Z</published>
+    <updated>2019-05-15T13:53:21.823Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>这段时间刚忙完了一个项目，涉及到PHP与Java进行socket通信的问题，应用场景是PHP端向Java端发送数据，并等待Java的响应结果，数据格式为JSON。</p></blockquote><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote><p>PHP端发送数据后，Java端从socket里读取数据，但是一直读不到结束符。</p></blockquote><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><blockquote><p>PHP需要调用socket_close函数才会向socket里面写入结束符。</p></blockquote><h2 id="改进方法"><a href="#改进方法" class="headerlink" title="改进方法"></a>改进方法</h2><blockquote><p><strong>PHP端与Java端之间确定每次发送数据包的长度，用4个字节表示数据长度，PHP端先发送数据包长度，再发送数据包，Java端先接收4个字节长度的数据包长度，再根据数据包长度接收数据包</strong>。PHP端代码如下:</p></blockquote><p>​</p><pre><code>$socket = socket_create ( AF_INET, SOCK_STREAM, SOL_TCP  ) or die ( &apos;could not create socket&apos;  );  $connect = socket_connect ( $socket, &apos;xxx.xxx.xxx.xxx&apos;, xxxx);  //服务端发送数据 $arr = array(&quot;data&quot; =&gt; &quot;dadadada&quot;);$strlen = pack(&apos;i&apos;, strlen(json_encode($arr)));var_dump($strlen);socket_write ($socket, $strlen);socket_write ($socket, json_encode($arr), strlen(json_encode($arr)));$response = socket_read($socket, 4); $res = unpack(&apos;i&apos;, $response);var_dump($res);$response = socket_read($socket, $res[1]);var_dump($response);socket_close($socket);</code></pre><blockquote><p><a href="https://www.php.net/pack" target="_blank" rel="noopener">pack</a>与<a href="https://www.php.net/unpack" target="_blank" rel="noopener">unpack</a>函数使用说明见PHP官方文档    </p></blockquote><p>​</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这段时间刚忙完了一个项目，涉及到PHP与Java进行socket通信的问题，应用场景是PHP端向Java端发送数据
+      
+    
+    </summary>
+    
+      <category term="Socket" scheme="https://weeweetan.github.io/categories/Socket/"/>
+    
+    
+      <category term="Socket" scheme="https://weeweetan.github.io/tags/Socket/"/>
+    
+      <category term="PHP" scheme="https://weeweetan.github.io/tags/PHP/"/>
     
   </entry>
   
