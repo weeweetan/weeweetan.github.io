@@ -190,9 +190,9 @@
       <category term="Socket" scheme="https://weeweetan.github.io/categories/Socket/"/>
     
     
-      <category term="Socket" scheme="https://weeweetan.github.io/tags/Socket/"/>
-    
       <category term="PHP" scheme="https://weeweetan.github.io/tags/PHP/"/>
+    
+      <category term="Socket" scheme="https://weeweetan.github.io/tags/Socket/"/>
     
       <category term="Java" scheme="https://weeweetan.github.io/tags/Java/"/>
     
@@ -245,9 +245,9 @@
       <category term="Socket" scheme="https://weeweetan.github.io/categories/Socket/"/>
     
     
-      <category term="Socket" scheme="https://weeweetan.github.io/tags/Socket/"/>
-    
       <category term="PHP" scheme="https://weeweetan.github.io/tags/PHP/"/>
+    
+      <category term="Socket" scheme="https://weeweetan.github.io/tags/Socket/"/>
     
   </entry>
   
@@ -276,6 +276,32 @@
       <category term="驱动模块" scheme="https://weeweetan.github.io/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/"/>
     
       <category term="Linux" scheme="https://weeweetan.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP脚本中使用exec总结</title>
+    <link href="https://weeweetan.github.io/2017/02/20/PHP%E8%84%9A%E6%9C%AC%E4%B8%AD%E4%BD%BF%E7%94%A8exec%E6%80%BB%E7%BB%93/"/>
+    <id>https://weeweetan.github.io/2017/02/20/PHP脚本中使用exec总结/</id>
+    <published>2017-02-20T01:03:11.000Z</published>
+    <updated>2019-05-17T15:54:50.468Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>总结一下这两天加班遇到的坑，由于本次任务涉及到在PHP中使用exec函数运行shell命令，并解析返回值。屁颠屁颠的写好代码，上传到服务器，服务器环境配置centos6.5+Nginx，ssh到服务器，在控制台运行php xxx.php结果完美显示。蛋疼的是前端调用脚本的时候，没有数据，返回false，一脸懵逼，开始想问题所在，试着在浏览器地址栏直接访问xxx.php没有结果。然后把代码改成</p></blockquote><pre><code>exec(&quot;ls 2&gt;&amp;1&quot;, $result);var_dump($result);</code></pre><blockquote><p>显示ls命令没找到，试着加上路径</p></blockquote><pre><code>exec(&quot;/bin/ls 2&gt;&amp;1&quot;, $result);var_dump($result);</code></pre><blockquote><p>显示权限不够。</p></blockquote><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol><li>lsof -i:80 查看你Nginx的用户是谁，我这里是nginx</li><li>在脚本中添加file_put_contents(“/tmp/test.log”, “xxx”)查看test.log的用户是谁。我这里是nobody</li><li><p>在vim /etc/sudoers添加权限</p><p> nobody  ALL=(ALL)   NOPASSWD:ALL<br> nginx     ALL=(ALL)   NOPASSWD:ALL</p></li><li><p>重启nginx服务。</p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;总结一下这两天加班遇到的坑，由于本次任务涉及到在PHP中使用exec函数运行shell命令，并解析返回值。屁颠屁颠
+      
+    
+    </summary>
+    
+      <category term="总结" scheme="https://weeweetan.github.io/categories/%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="PHP" scheme="https://weeweetan.github.io/tags/PHP/"/>
     
   </entry>
   
