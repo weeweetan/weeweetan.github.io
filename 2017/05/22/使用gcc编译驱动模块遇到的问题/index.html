@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="背景 由于工作中需要了解Linux的驱动模块，所以就开始学习，初看Linux驱动编程，跟着博客写一个块设备驱动学习，练习环境为centos6.5 gcc版本为6.3。  遇到的问题 跟着敲完那个简单的驱动程序后，发现编译出错，错误信息为  include/linux/compiler-gcc.h:89:30: fatal error: linux/compiler-gcc6.h: No such">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-17T15:39:01.178Z">
+<meta property="og:updated_time" content="2019-05-17T15:43:16.624Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用gcc编译驱动模块遇到的问题">
 <meta name="twitter:description" content="背景 由于工作中需要了解Linux的驱动模块，所以就开始学习，初看Linux驱动编程，跟着博客写一个块设备驱动学习，练习环境为centos6.5 gcc版本为6.3。  遇到的问题 跟着敲完那个简单的驱动程序后，发现编译出错，错误信息为  include/linux/compiler-gcc.h:89:30: fatal error: linux/compiler-gcc6.h: No such">
@@ -423,11 +423,10 @@
 </blockquote>
 <pre><code>include/linux/compiler.h:163:24: error: expected &apos;=&apos;, &apos;,&apos;, &apos;;&apos;, &apos;asm&apos; or &apos;__attribute__&apos; before &apos;void&apos;
 static __always_inline void data_access_exceeds_word_size(void)
-                        ^<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include/linux/compiler.h:169:24: error: expected &apos;=&apos;, &apos;,&apos;, &apos;;&apos;, &apos;asm&apos; or &apos;__attribute__&apos; before &apos;void&apos;</span><br><span class="line">static __always_inline void data_access_exceeds_word_size(void)</span><br><span class="line">                        ^</span><br></pre></td></tr></table></figure>
-
+include/linux/compiler.h:169:24: error: expected &apos;=&apos;, &apos;,&apos;, &apos;;&apos;, &apos;asm&apos; or &apos;__attribute__&apos; before &apos;void&apos;
+static __always_inline void data_access_exceeds_word_size(void)
 include/linux/compiler.h:173:24: error: expected &apos;=&apos;, &apos;,&apos;, &apos;;&apos;, &apos;asm&apos; or &apos;__attribute__&apos; before &apos;void&apos;
 static __always_inline void __read_once_size(volatile void *p, void *res, int size)
-                        ^~~~
 include/linux/compiler.h:190:24: error: expected &apos;=&apos;, &apos;,&apos;, &apos;;&apos;, &apos;asm&apos; or &apos;__attribute__&apos; before &apos;void&apos;
 static __always_inline void __write_once_size(volatile void *p, void *res, int size)
 </code></pre><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><blockquote>
