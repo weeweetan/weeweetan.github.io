@@ -17,24 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>安装vCenter Server出现1603错误的一种解决方法 | weeweetan</title>
-  <meta name="description" content="背景 vCeter Server部署在一个Windows Server 2008 R2的虚拟机上，由于更改了虚拟机网卡配置，导致vCenter Server相关服务无法启动，查找解决方法无果后，就打算重装vCenter Server。  遇到的问题 部署过程主要参考VMware Vsphere 6.0安装部署 （三） vCenter Server安装。在这里我主要说明一下我所遇到的问题以及解决方法">
-<meta name="keywords" content="VMware-vSphere">
+  <title>linux下编译vddk例程的错误总结 | weeweetan</title>
+  <meta name="description" content="背景 vddk是visual disk development kit的缩写，是VMware vSphere提供的可用来操作虚拟磁盘的一套SDK，具体可看VDDK Document，在这里记录一下编译问题。  遇到的问题 按照官方文档编译vixDiskLibSample.cpp时报错  Package vix-disklib was not found in the pkg-config sear">
+<meta name="keywords" content="VMware-vSphere,vddk">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安装vCenter Server出现1603错误的一种解决方法">
-<meta property="og:url" content="https://weeweetan.github.io/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/index.html">
+<meta property="og:title" content="linux下编译vddk例程的错误总结">
+<meta property="og:url" content="https://weeweetan.github.io/2016/11/10/linux下编译vddk例程的错误总结/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="背景 vCeter Server部署在一个Windows Server 2008 R2的虚拟机上，由于更改了虚拟机网卡配置，导致vCenter Server相关服务无法启动，查找解决方法无果后，就打算重装vCenter Server。  遇到的问题 部署过程主要参考VMware Vsphere 6.0安装部署 （三） vCenter Server安装。在这里我主要说明一下我所遇到的问题以及解决方法">
+<meta property="og:description" content="背景 vddk是visual disk development kit的缩写，是VMware vSphere提供的可用来操作虚拟磁盘的一套SDK，具体可看VDDK Document，在这里记录一下编译问题。  遇到的问题 按照官方文档编译vixDiskLibSample.cpp时报错  Package vix-disklib was not found in the pkg-config sear">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://weeweetan.github.io/images/2018-11-29_error.png">
-<meta property="og:image" content="https://weeweetan.github.io/images/2018-11-29_error_code.png">
-<meta property="og:updated_time" content="2019-05-15T14:12:39.771Z">
+<meta property="og:updated_time" content="2019-05-18T01:37:06.311Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安装vCenter Server出现1603错误的一种解决方法">
-<meta name="twitter:description" content="背景 vCeter Server部署在一个Windows Server 2008 R2的虚拟机上，由于更改了虚拟机网卡配置，导致vCenter Server相关服务无法启动，查找解决方法无果后，就打算重装vCenter Server。  遇到的问题 部署过程主要参考VMware Vsphere 6.0安装部署 （三） vCenter Server安装。在这里我主要说明一下我所遇到的问题以及解决方法">
-<meta name="twitter:image" content="https://weeweetan.github.io/images/2018-11-29_error.png">
+<meta name="twitter:title" content="linux下编译vddk例程的错误总结">
+<meta name="twitter:description" content="背景 vddk是visual disk development kit的缩写，是VMware vSphere提供的可用来操作虚拟磁盘的一套SDK，具体可看VDDK Document，在这里记录一下编译问题。  遇到的问题 按照官方文档编译vixDiskLibSample.cpp时报错  Package vix-disklib was not found in the pkg-config sear">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://weeweetan.github.io/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/index.html">
+  <link rel="canonical" href="https://weeweetan.github.io/2016/11/10/linux下编译vddk例程的错误总结/index.html">
   
     <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
   
@@ -353,21 +350,21 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到的问题"><span class="toc-number">2.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到的问题"><span class="toc-number">2.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">3.</span> <span class="toc-text">解决方法</span></a></li></ol>
     </nav>
   </div>
 </aside>
 
 <main class="main" role="main">
   <div class="content">
-  <article id="post-安装vCenter-Server出现1603错误的一种解决方法" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-linux下编译vddk例程的错误总结" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      安装vCenter Server出现1603错误的一种解决方法
+      linux下编译vddk例程的错误总结
     </h1>
   
 
@@ -375,8 +372,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/" class="article-date">
-	  <time datetime="2018-11-29T02:04:37.000Z" itemprop="datePublished">2018-11-29</time>
+	<a href="/2016/11/10/linux下编译vddk例程的错误总结/" class="article-date">
+	  <time datetime="2016-11-10T09:29:27.000Z" itemprop="datePublished">2016-11-10</time>
 	</a>
 </span>
         
@@ -388,7 +385,7 @@
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/VMware-vSphere/">VMware-vSphere</a>
+	<a class="article-tag-link" href="/tags/VMware-vSphere/">VMware-vSphere</a>, <a class="article-tag-link" href="/tags/vddk/">vddk</a>
   </span>
 
 
@@ -401,10 +398,10 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/11/10/linux下编译vddk例程的错误总结/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 273(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 170(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -415,22 +412,30 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote>
-<p>vCeter Server部署在一个Windows Server 2008 R2的虚拟机上，由于更改了虚拟机网卡配置，导致vCenter Server相关服务无法启动，查找解决方法无果后，就打算重装vCenter Server。</p>
+<p>vddk是<em>visual disk development kit</em>的缩写，是VMware vSphere提供的可用来操作虚拟磁盘的一套SDK，具体可看<a href="https://www.vmware.com/support/developer/vddk/" target="_blank" rel="noopener">VDDK Document</a>，在这里记录一下编译问题。</p>
 </blockquote>
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote>
-<p>部署过程主要参考<a href="https://blog.csdn.net/shengxia1999/article/details/52353177" target="_blank" rel="noopener">VMware Vsphere 6.0安装部署 （三） vCenter Server安装</a>。在这里我主要说明一下我所遇到的问题以及解决方法。在安装过程中遇到Encountered an internal error，Install-parameter rhttpproxy.ext.port1 not set具体错误信息如下图所示：<br><img src="/images/2018-11-29_error.png" alt></p>
+<p>按照官方文档编译vixDiskLibSample.cpp时报错</p>
 </blockquote>
-<blockquote>
-<p>出现这个错误后，会退出安装，在最后会报‘安装组件VCSServiceManager失败并显示错误代码1603’，如下图所示：<br><img src="/images/2018-11-29_error_code.png" alt><br>出现这个错误，首先应当排查在安装vCenter Server 过程中配置的http端口是否被占用(使用命令netstat -nao)，如果端口没有被占用，则使用如下方法：</p>
+<pre><code>Package vix-disklib was not found in the pkg-config search path.
+Perhaps you should add the directory containing `vix-disklib.pc&apos;
+to the PKG_CONFIG_PATH environment variable
+No package &apos;vix-disklib&apos; found
+</code></pre><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><blockquote>
+<p>按照官方文档的说明编辑~/.bash_profile,添加如下内容：</p>
 </blockquote>
-<ol>
-<li><p>删除C:\Program Files\VMware\vCenter Server目录；</p>
-</li>
-<li><p>重启虚拟机，重新安装</p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>这个方法不一定能解决所有这类问题，这只是其中一种解决方法。</p>
+<pre><code>PKG_CONFIG_PATH=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH
+
+LD_LIBRARY_PATH=/usr/lib/vmware-vix-disklib/lib64
+
+export LD_LIBRARY_PATH
+</code></pre><blockquote>
+<p>其中/usr/lib/vmware-vix-disklib/lib64是vddk安装后，默认的lib路径，添加完成后执行</p>
+</blockquote>
+<pre><code>source bash_profile
+</code></pre><blockquote>
+<p>再次编译就成功了        </p>
 </blockquote>
 
       
@@ -441,7 +446,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://weeweetan.github.io/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/" title="安装vCenter Server出现1603错误的一种解决方法" target="_blank" rel="external">https://weeweetan.github.io/2018/11/29/安装vCenter-Server出现1603错误的一种解决方法/</a>
+      <a href="https://weeweetan.github.io/2016/11/10/linux下编译vddk例程的错误总结/" title="linux下编译vddk例程的错误总结" target="_blank" rel="external">https://weeweetan.github.io/2016/11/10/linux下编译vddk例程的错误总结/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -488,13 +493,9 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2019/04/18/调用glib库出现0xc000007b解决办法/" title="调用glib库出现0xc000007b解决办法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2017/01/13/Esxi5-1挂载NFS存储遇到的问题及解决办法/" title="Esxi5.1挂载NFS存储遇到的问题及解决办法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
-    
-    <li class="next">
-      <a href="/2018/08/08/Java与PHP之间的Socket通信/" title="Java与PHP之间的Socket通信"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
-    </li>
     
     
     <li class="toggle-toc">

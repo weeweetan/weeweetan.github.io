@@ -333,4 +333,32 @@
     
   </entry>
   
+  <entry>
+    <title>linux下编译vddk例程的错误总结</title>
+    <link href="https://weeweetan.github.io/2016/11/10/linux%E4%B8%8B%E7%BC%96%E8%AF%91vddk%E4%BE%8B%E7%A8%8B%E7%9A%84%E9%94%99%E8%AF%AF%E6%80%BB%E7%BB%93/"/>
+    <id>https://weeweetan.github.io/2016/11/10/linux下编译vddk例程的错误总结/</id>
+    <published>2016-11-10T09:29:27.000Z</published>
+    <updated>2019-05-18T01:37:06.311Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>vddk是<em>visual disk development kit</em>的缩写，是VMware vSphere提供的可用来操作虚拟磁盘的一套SDK，具体可看<a href="https://www.vmware.com/support/developer/vddk/" target="_blank" rel="noopener">VDDK Document</a>，在这里记录一下编译问题。</p></blockquote><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote><p>按照官方文档编译vixDiskLibSample.cpp时报错</p></blockquote><pre><code>Package vix-disklib was not found in the pkg-config search path.Perhaps you should add the directory containing `vix-disklib.pc&apos;to the PKG_CONFIG_PATH environment variableNo package &apos;vix-disklib&apos; found</code></pre><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><blockquote><p>按照官方文档的说明编辑~/.bash_profile,添加如下内容：</p></blockquote><pre><code>PKG_CONFIG_PATH=/usr/lib/pkgconfigexport PKG_CONFIG_PATHLD_LIBRARY_PATH=/usr/lib/vmware-vix-disklib/lib64export LD_LIBRARY_PATH</code></pre><blockquote><p>其中/usr/lib/vmware-vix-disklib/lib64是vddk安装后，默认的lib路径，添加完成后执行</p></blockquote><pre><code>source bash_profile</code></pre><blockquote><p>再次编译就成功了        </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;vddk是&lt;em&gt;visual disk development kit&lt;/em&gt;的缩写，是VMware vSph
+      
+    
+    </summary>
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/categories/VMware-vSphere/"/>
+    
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/tags/VMware-vSphere/"/>
+    
+      <category term="vddk" scheme="https://weeweetan.github.io/tags/vddk/"/>
+    
+  </entry>
+  
 </feed>
