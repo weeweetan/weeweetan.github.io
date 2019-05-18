@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://weeweetan.github.io/"/>
-  <updated>2019-05-17T15:29:49.734Z</updated>
+  <updated>2019-05-18T02:32:50.166Z</updated>
   <id>https://weeweetan.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>中国菜翻译方法</title>
+    <link href="https://weeweetan.github.io/2019/05/18/%E4%B8%AD%E5%9B%BD%E8%8F%9C%E7%BF%BB%E8%AF%91%E6%96%B9%E6%B3%95/"/>
+    <id>https://weeweetan.github.io/2019/05/18/中国菜翻译方法/</id>
+    <published>2019-05-18T02:27:42.000Z</published>
+    <updated>2019-05-18T02:32:50.166Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="以主料为主"><a href="#以主料为主" class="headerlink" title="以主料为主"></a>以主料为主</h2><blockquote><p>配料或配汁为辅的翻译原则<br>菜肴的主料和配料</p><p>主料（名称/形状）+ with + 配料</p><p>如：松仁香菇 Chinese Mushrooms with Pine Nuts</p><p>菜肴的主料和配汁</p><p>主料 + with / in + 汤汁（Sauce）</p><p>如：冰梅凉瓜 Bitter Melon in Plum Sauc</p></blockquote><h2 id="以烹制方法为主"><a href="#以烹制方法为主" class="headerlink" title="以烹制方法为主"></a>以烹制方法为主</h2><blockquote><p>原料为辅的翻译原则<br>菜肴的做法和主料</p><p>做法（动词过去分词）+ 主料（名称/形状）</p><p>如：拌双耳 Tossed Black and White Fungus</p><p>菜肴的做法、主料和汤汁</p><p>做法(动词过去分词) + 主料（名称/形状）+ with / in + 汤汁</p><p>如：京酱肉丝 Sautéed Shredded Pork in Sweet Bean Sauce</p></blockquote><h2 id="以形状、口感为主"><a href="#以形状、口感为主" class="headerlink" title="以形状、口感为主"></a>以形状、口感为主</h2><blockquote><p>原料为辅的翻译原则<br>菜肴形状或口感以及主配料</p><p>形状/口感 + 主料</p><p>如：玉兔馒头 Rabbit-Shaped Mantou<br>菜肴的做法、形状或口感、做法以及主配料</p><p>做法（动词过去分词）+ 形状/口感 + 主料 + 配料</p><p>如： 小炒黑山羊 Sautéed Sliced Lamb with Pepper and Parsley</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;以主料为主&quot;&gt;&lt;a href=&quot;#以主料为主&quot; class=&quot;headerlink&quot; title=&quot;以主料为主&quot;&gt;&lt;/a&gt;以主料为主&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;配料或配汁为辅的翻译原则&lt;br&gt;菜肴的主料和配料&lt;/p&gt;
+&lt;p&gt;主料（名称/形状）+ wi
+      
+    
+    </summary>
+    
+      <category term="总结" scheme="https://weeweetan.github.io/categories/%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="翻译" scheme="https://weeweetan.github.io/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
   
   <entry>
     <title>C语言编程常见错误</title>
@@ -338,7 +365,7 @@
     <link href="https://weeweetan.github.io/2016/11/10/linux%E4%B8%8B%E7%BC%96%E8%AF%91vddk%E4%BE%8B%E7%A8%8B%E7%9A%84%E9%94%99%E8%AF%AF%E6%80%BB%E7%BB%93/"/>
     <id>https://weeweetan.github.io/2016/11/10/linux下编译vddk例程的错误总结/</id>
     <published>2016-11-10T09:29:27.000Z</published>
-    <updated>2019-05-18T01:37:06.311Z</updated>
+    <updated>2019-05-18T02:28:46.640Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>vddk是<em>visual disk development kit</em>的缩写，是VMware vSphere提供的可用来操作虚拟磁盘的一套SDK，具体可看<a href="https://www.vmware.com/support/developer/vddk/" target="_blank" rel="noopener">VDDK Document</a>，在这里记录一下编译问题。</p></blockquote><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote><p>按照官方文档编译vixDiskLibSample.cpp时报错</p></blockquote><pre><code>Package vix-disklib was not found in the pkg-config search path.Perhaps you should add the directory containing `vix-disklib.pc&apos;to the PKG_CONFIG_PATH environment variableNo package &apos;vix-disklib&apos; found</code></pre><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><blockquote><p>按照官方文档的说明编辑~/.bash_profile,添加如下内容：</p></blockquote><pre><code>PKG_CONFIG_PATH=/usr/lib/pkgconfigexport PKG_CONFIG_PATHLD_LIBRARY_PATH=/usr/lib/vmware-vix-disklib/lib64export LD_LIBRARY_PATH</code></pre><blockquote><p>其中/usr/lib/vmware-vix-disklib/lib64是vddk安装后，默认的lib路径，添加完成后执行</p></blockquote><pre><code>source bash_profile</code></pre><blockquote><p>再次编译就成功了        </p></blockquote>]]></content>
     
