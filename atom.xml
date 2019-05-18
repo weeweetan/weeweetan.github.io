@@ -97,15 +97,16 @@
     <link href="https://weeweetan.github.io/2019/04/28/GLib%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/"/>
     <id>https://weeweetan.github.io/2019/04/28/GLib使用心得/</id>
     <published>2019-04-28T05:51:59.000Z</published>
-    <updated>2019-05-15T07:05:34.079Z</updated>
+    <updated>2019-05-18T01:23:41.021Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于GLib的介绍这里就不赘述了，具体API介绍可以去<a href="https://developer.gnome.org/glib/" target="_blank" rel="noopener">GLib API Reference</a>查阅，这里只是记录一下使用相关API所遇到的一些坑。</p><h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><h3 id="字符串相关API"><a href="#字符串相关API" class="headerlink" title="字符串相关API"></a>字符串相关API</h3><pre><code>GString *g_string_new(const gchar *init);GString *g_string_append(GString *string, const gchar *val);GString *g_string_prepend(GString *string, const gchar *val);gchar *g_string_free(GString *string, gboolean free_segment);</code></pre><blockquote><p>如果需要对字符串进行拼接操作，使用GString相关API是非常方便的。<strong>注意</strong> g_string_new跟g_string_free一定要配套使用，否则会内存泄漏。<br><em>g_string_append</em>跟<em>g_string_prepend</em>都是直接在原字符串上操作，这点要切记。</p></blockquote><h3 id="字符转换相关API"><a href="#字符转换相关API" class="headerlink" title="字符转换相关API"></a>字符转换相关API</h3><pre><code>gchar *g_filename_display_basename(const gchar *filename);gchar *g_locale_from_utf8(const gchar *utf8string, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error);gchar *g_locale_to_utf8(const gchar *opsysstring, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error);</code></pre><blockquote><p>g_filename_display_basename 此函数的参数字符编码必须是UTF-8，否则返回的字符串为乱码<br>g_locale_from_utf8 此函数将参数字符串从UTF-8编码转换为程序当前的编码，一般是GB2312，一般用于读取UTF-8编码的文件<br>g_locale_to_utf8 此函数将参数字符串从程序当前编码转换为UTF-8<br>下面看个例子, 比如我们有个含中文的文件名 <em>/data/test/哈哈.txt</em>如果想获得 <em>哈哈.txt</em>，则必须首先使用 <em>g_locale_to_utf8</em>函数转换一次, 然后再去获取basename</p></blockquote><pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);gchar *str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL);gchar *basename = g_filename_display_basename(str);</code></pre><blockquote><p>如果想使用GString *类型保存basename，则必须重新申请内存块</p></blockquote><pre><code>GString *basename_string = g_string_new(basename); </code></pre><blockquote><p>千万别像下面这样做</p></blockquote><pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);string-&gt;str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL); </code></pre><blockquote><p>如果像上面那样做，因为转换后的字符串长度跟转换前不一样，后续使用会出问题，<em>g_locale_from_utf8</em> 同理<br><strong>注意</strong> <em>g_locale_to_utf8</em>返回的char *需要手动释放内存</p></blockquote><h3 id="解析key-value文件API"><a href="#解析key-value文件API" class="headerlink" title="解析key-value文件API"></a>解析key-value文件API</h3><pre><code>GKeyFile *g_key_file_new(void);gboolean g_key_file_load_from_file(GKeyFile *key_file, const gchar *file, GKeyFileFlags flags, GError **error);gint g_key_file_get_integer(GKeyFile *key_file, const gchar *group_name,  const gchar *key, GError **error);gchar *g_key_file_get_string(GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);void g_key_file_free(GKeyFile *key_file);</code></pre><blockquote><p>这几个API很好理解,用来解析具有键值对特征的文件,<em>g_key_file_new</em>跟<em>g_key_file_free</em>配套使用;<br>g_key_file_load_from_file的第二个参数的字符编码格式为UTF-8,在使用时一定要先转换一次;</p></blockquote>]]></content>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote><p>关于GLib的介绍这里就不赘述了，具体API介绍可以去<a href="https://developer.gnome.org/glib/" target="_blank" rel="noopener">GLib API Reference</a>查阅，这里只是记录一下使用相关API所遇到的一些坑。</p></blockquote><h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><h3 id="字符串相关API"><a href="#字符串相关API" class="headerlink" title="字符串相关API"></a>字符串相关API</h3><pre><code>GString *g_string_new(const gchar *init);GString *g_string_append(GString *string, const gchar *val);GString *g_string_prepend(GString *string, const gchar *val);gchar *g_string_free(GString *string, gboolean free_segment);</code></pre><blockquote><p>如果需要对字符串进行拼接操作，使用GString相关API是非常方便的。<strong>注意</strong> g_string_new跟g_string_free一定要配套使用，否则会内存泄漏。<br><em>g_string_append</em>跟<em>g_string_prepend</em>都是直接在原字符串上操作，这点要切记。</p></blockquote><h3 id="字符转换相关API"><a href="#字符转换相关API" class="headerlink" title="字符转换相关API"></a>字符转换相关API</h3><pre><code>gchar *g_filename_display_basename(const gchar *filename);gchar *g_locale_from_utf8(const gchar *utf8string, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error);gchar *g_locale_to_utf8(const gchar *opsysstring, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error);</code></pre><blockquote><p>g_filename_display_basename 此函数的参数字符编码必须是UTF-8，否则返回的字符串为乱码<br>g_locale_from_utf8 此函数将参数字符串从UTF-8编码转换为程序当前的编码，一般是GB2312，一般用于读取UTF-8编码的文件<br>g_locale_to_utf8 此函数将参数字符串从程序当前编码转换为UTF-8<br>下面看个例子, 比如我们有个含中文的文件名 <em>/data/test/哈哈.txt</em>如果想获得 <em>哈哈.txt</em>，则必须首先使用 <em>g_locale_to_utf8</em>函数转换一次, 然后再去获取basename</p></blockquote><pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);gchar *str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL);gchar *basename = g_filename_display_basename(str);</code></pre><blockquote><p>如果想使用GString *类型保存basename，则必须重新申请内存块</p></blockquote><pre><code>GString *basename_string = g_string_new(basename); </code></pre><blockquote><p>千万别像下面这样做</p></blockquote><pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);string-&gt;str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL); </code></pre><blockquote><p>如果像上面那样做，因为转换后的字符串长度跟转换前不一样，后续使用会出问题，<em>g_locale_from_utf8</em> 同理<br><strong>注意</strong> <em>g_locale_to_utf8</em>返回的char *需要手动释放内存</p></blockquote><h3 id="解析key-value文件API"><a href="#解析key-value文件API" class="headerlink" title="解析key-value文件API"></a>解析key-value文件API</h3><pre><code>GKeyFile *g_key_file_new(void);gboolean g_key_file_load_from_file(GKeyFile *key_file, const gchar *file, GKeyFileFlags flags, GError **error);gint g_key_file_get_integer(GKeyFile *key_file, const gchar *group_name,  const gchar *key, GError **error);gchar *g_key_file_get_string(GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);void g_key_file_free(GKeyFile *key_file);</code></pre><blockquote><p>这几个API很好理解,用来解析具有键值对特征的文件,<em>g_key_file_new</em>跟<em>g_key_file_free</em>配套使用;<br>g_key_file_load_from_file的第二个参数的字符编码格式为UTF-8,在使用时一定要先转换一次;</p></blockquote>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;关于GLib的介绍这里就不赘述了，具体API介绍可以去&lt;a href=&quot;https://developer.gnome.org/glib/&quot;
+        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;关于GLib的介绍这里就不赘述了，具体API介绍可以去&lt;a href=&quot;https://developer.gno
       
     
     </summary>
@@ -122,15 +123,16 @@
     <link href="https://weeweetan.github.io/2019/04/18/%E8%B0%83%E7%94%A8glib%E5%BA%93%E5%87%BA%E7%8E%B00xc000007b%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
     <id>https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/</id>
     <published>2019-04-18T14:47:29.000Z</published>
-    <updated>2019-05-15T07:05:59.833Z</updated>
+    <updated>2019-05-18T01:22:38.363Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="/images/2019-04-18_glib_1.png" alt></p><p>网上的解决办法都试过，没能解决问题。</p><h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p><h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="/images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p><h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="/images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p><h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="/images/2019-04-18_glib_1.png" alt></p></blockquote><blockquote><p>网上的解决办法都试过，没能解决问题。</p></blockquote><h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><blockquote><p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p></blockquote><h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><blockquote><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="/images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p></blockquote><h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><blockquote><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="/images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p></blockquote><h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><blockquote><p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p></blockquote>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用g
       
     
     </summary>
@@ -302,6 +304,32 @@
     
     
       <category term="PHP" scheme="https://weeweetan.github.io/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Esxi5.1挂载NFS存储遇到的问题及解决办法</title>
+    <link href="https://weeweetan.github.io/2017/01/13/Esxi5-1%E6%8C%82%E8%BD%BDNFS%E5%AD%98%E5%82%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>https://weeweetan.github.io/2017/01/13/Esxi5-1挂载NFS存储遇到的问题及解决办法/</id>
+    <published>2017-01-13T01:18:44.000Z</published>
+    <updated>2019-05-18T01:20:29.052Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>如何配置NFS以及怎样在Esxi中添加NFS，可以参考<a href="https://www.linuxidc.com/Linux/2017-04/142686.htm" target="_blank" rel="noopener">VMware ESXI 5.5使用NFS添加存储器</a>, 我也是按照这个博客来配置的。</p></blockquote><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote><p>遇到如下问题：<br><img src="/images/2017-01-13_nfs.jpg" alt></p></blockquote><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><blockquote><p>必须要检查你的esxi主机是否配置了<em>VMkernel</em>，检查步骤如下：<br>1、使用 VI/vSphere Client 连接到 Virtual Center/vCenter Server。<br>2、选择 ESX/ESXi 主机。<br>3、单击配置选项卡。<br>4、单击网络。<br>5、查看 VMKernel 的网络图，或单击属性 &gt; 端口 &gt; VMKernel。如果 VMKernel 未列出，必须添加它。</p></blockquote><h2 id="手动挂载"><a href="#手动挂载" class="headerlink" title="手动挂载"></a>手动挂载</h2><blockquote><p>手动挂载命令：</p></blockquote><pre><code>esxcli storage nfs add -H NFS_IP|NFS_HOSTNAME -s Share_mount_point_on_the_NFS -v DatastoreName</code></pre><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><blockquote><p><strong>必须保证esxi主机与NFS服务器在同一网段或者能够相互通信</strong></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;如何配置NFS以及怎样在Esxi中添加NFS，可以参考&lt;a href=&quot;https://www.linuxidc.
+      
+    
+    </summary>
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/categories/VMware-vSphere/"/>
+    
+    
+      <category term="VMware-vSphere" scheme="https://weeweetan.github.io/tags/VMware-vSphere/"/>
     
   </entry>
   

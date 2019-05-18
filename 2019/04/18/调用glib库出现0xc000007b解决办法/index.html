@@ -18,21 +18,21 @@
   
   
   <title>调用glib库出现0xc000007b解决办法 | weeweetan</title>
-  <meta name="description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+  <meta name="description" content="背景 之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：   网上的解决办法都试过，没能解决问题。  出现转机 出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。  开始分析 我使用depends分析libglib-2.0.dl">
 <meta name="keywords" content="GLib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调用glib库出现0xc000007b解决办法">
 <meta property="og:url" content="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta property="og:description" content="背景 之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：   网上的解决办法都试过，没能解决问题。  出现转机 出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。  开始分析 我使用depends分析libglib-2.0.dl">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_2.png">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-04-18_glib_3.png">
-<meta property="og:updated_time" content="2019-05-15T07:05:59.833Z">
+<meta property="og:updated_time" content="2019-05-18T01:22:38.363Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调用glib库出现0xc000007b解决办法">
-<meta name="twitter:description" content="背景之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示： 网上的解决办法都试过，没能解决问题。 出现转机出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。 开始分析我使用depends分析libglib-2.0.dll，结果如下图">
+<meta name="twitter:description" content="背景 之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：   网上的解决办法都试过，没能解决问题。  出现转机 出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。  开始分析 我使用depends分析libglib-2.0.dl">
 <meta name="twitter:image" content="https://weeweetan.github.io/images/2019-04-18_glib_1.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://weeweetan.github.io/2019/04/18/调用glib库出现0xc000007b解决办法/index.html">
@@ -223,7 +223,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Socket/">Socket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VMware-vSphere/">VMware-vSphere</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/总结/">总结</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Socket/">Socket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VMware-vSphere/">VMware-vSphere</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/总结/">总结</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -233,7 +233,7 @@
   <div class="widget">
     <h3 class="widget-title">标签</h3>
     <div class="widget-body">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/">GLib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/">Socket</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware-vSphere/">VMware-vSphere</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/">libxml</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/驱动模块/">驱动模块</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/">GLib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/">Socket</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware-vSphere/">VMware-vSphere</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/">libxml</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/驱动模块/">驱动模块</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -243,7 +243,7 @@
   <div class="widget">
     <h3 class="widget-title">标签云</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/C/" style="font-size: 13px;">C</a> <a href="/tags/GLib/" style="font-size: 13.5px;">GLib</a> <a href="/tags/Java/" style="font-size: 13px;">Java</a> <a href="/tags/Linux/" style="font-size: 13px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Socket/" style="font-size: 13.5px;">Socket</a> <a href="/tags/VMware-vSphere/" style="font-size: 13.5px;">VMware-vSphere</a> <a href="/tags/libxml/" style="font-size: 13px;">libxml</a> <a href="/tags/驱动模块/" style="font-size: 13px;">驱动模块</a>
+      <a href="/tags/C/" style="font-size: 13px;">C</a> <a href="/tags/GLib/" style="font-size: 13.5px;">GLib</a> <a href="/tags/Java/" style="font-size: 13px;">Java</a> <a href="/tags/Linux/" style="font-size: 13px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Socket/" style="font-size: 13.5px;">Socket</a> <a href="/tags/VMware-vSphere/" style="font-size: 14px;">VMware-vSphere</a> <a href="/tags/libxml/" style="font-size: 13px;">libxml</a> <a href="/tags/驱动模块/" style="font-size: 13px;">驱动模块</a>
     </div>
   </div>
 
@@ -252,7 +252,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -354,7 +354,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#出现转机"><span class="toc-number">2.</span> <span class="toc-text">出现转机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始分析"><span class="toc-number">3.</span> <span class="toc-text">开始分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题解决"><span class="toc-number">4.</span> <span class="toc-text">问题解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注意"><span class="toc-number">4.1.</span> <span class="toc-text">注意</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#出现转机"><span class="toc-number">2.</span> <span class="toc-text">出现转机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始分析"><span class="toc-number">3.</span> <span class="toc-text">开始分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题解决"><span class="toc-number">4.</span> <span class="toc-text">问题解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">5.</span> <span class="toc-text">注意</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -415,12 +415,24 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="/images/2019-04-18_glib_1.png" alt></p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote>
+<p>之前一直在Linux环境下使用glib库，也一直没有遇到过这样的问题，这次在visual studio上配置使用glib，出现问题，如下图所示：<br><img src="/images/2019-04-18_glib_1.png" alt></p>
+</blockquote>
+<blockquote>
 <p>网上的解决办法都试过，没能解决问题。</p>
-<h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p>
-<h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="/images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p>
-<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="/images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p>
+</blockquote>
+<h2 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h2><blockquote>
+<p>出现转机是在朋友推荐了一款名为depends的软件，可以分析执行程序所需要的库，关于depends的使用方法这里就不仔细介绍了。</p>
+</blockquote>
+<h2 id="开始分析"><a href="#开始分析" class="headerlink" title="开始分析"></a>开始分析</h2><blockquote>
+<p>我使用depends分析libglib-2.0.dll，结果如下图所示<br><img src="/images/2019-04-18_glib_2.png" alt><br>从图中左上方区域可以看出libglib-2.0.dll需要libintl-8.dll，而这个dll又缺失，解决办法就显而易见。<br>1、网上下载libintl-8.dll<br>2、将libintl-8.dll与libglib-2.0.dll存放在同一目录下</p>
+</blockquote>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><blockquote>
+<p>上述步骤完成之后，再次使用depends检查，如下图所示：<br><img src="/images/2019-04-18_glib_3.png" alt><br>程序也正常运行</p>
+</blockquote>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><blockquote>
+<p>我这里只是说明解决问题的方法，图中dll版本问题自行忽略</p>
+</blockquote>
 
       
     </div>
