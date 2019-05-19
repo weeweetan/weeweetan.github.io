@@ -17,17 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>个人简历 | weeweetan</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="个人简历">
-<meta property="og:url" content="https://weeweetan.github.io/resume/index.html">
+  <title>centos6.5下lamp环境部署laravel | weeweetan</title>
+  <meta name="description" content="安装composer，命令如下curl -sS https://getcomposer.org/installer | php mv composer.phar /usr/local/bin/composer chmod +x /usr/local/bin/composer  切换到Apache默认目录下cd /var/www/ composer create-project laravel/la">
+<meta name="keywords" content="PHP,Laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos6.5下lamp环境部署laravel">
+<meta property="og:url" content="https://weeweetan.github.io/2016/07/31/centos6-5下lamp环境部署laravel/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="安装composer，命令如下curl -sS https://getcomposer.org/installer | php mv composer.phar /usr/local/bin/composer chmod +x /usr/local/bin/composer  切换到Apache默认目录下cd /var/www/ composer create-project laravel/la">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-15T01:42:30.056Z">
+<meta property="og:updated_time" content="2019-05-18T13:56:16.929Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="个人简历">
+<meta name="twitter:title" content="centos6.5下lamp环境部署laravel">
+<meta name="twitter:description" content="安装composer，命令如下curl -sS https://getcomposer.org/installer | php mv composer.phar /usr/local/bin/composer chmod +x /usr/local/bin/composer  切换到Apache默认目录下cd /var/www/ composer create-project laravel/la">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://weeweetan.github.io/resume/index.html">
+  <link rel="canonical" href="https://weeweetan.github.io/2016/07/31/centos6-5下lamp环境部署laravel/index.html">
   
     <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
   
@@ -342,16 +346,25 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装composer，命令如下"><span class="toc-number">1.</span> <span class="toc-text">安装composer，命令如下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#切换到Apache默认目录下"><span class="toc-number">2.</span> <span class="toc-text">切换到Apache默认目录下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改权限"><span class="toc-number">3.</span> <span class="toc-text">修改权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改配置"><span class="toc-number">4.</span> <span class="toc-text">修改配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重启Apache服务"><span class="toc-number">5.</span> <span class="toc-text">重启Apache服务</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
-  <article id="page-" class="article article-type-page" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-centos6-5下lamp环境部署laravel" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      个人简历
+      centos6.5下lamp环境部署laravel
     </h1>
   
 
@@ -359,12 +372,22 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/resume/index.html" class="article-date">
-	  <time datetime="2019-05-15T01:36:14.000Z" itemprop="datePublished">2019-05-15</time>
+	<a href="/2016/07/31/centos6-5下lamp环境部署laravel/" class="article-date">
+	  <time datetime="2016-07-31T13:54:35.000Z" itemprop="datePublished">2016-07-31</time>
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/总结/">总结</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Laravel/">Laravel</a>, <a class="article-tag-link" href="/tags/PHP/">PHP</a>
+  </span>
+
 
         
 	<span class="article-read hidden-xs">
@@ -375,10 +398,10 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/resume/index.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/07/31/centos6-5下lamp环境部署laravel/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 0(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 91(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -388,7 +411,20 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        
+        <h2 id="安装composer，命令如下"><a href="#安装composer，命令如下" class="headerlink" title="安装composer，命令如下"></a>安装composer，命令如下</h2><pre><code>curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+chmod +x /usr/local/bin/composer 
+</code></pre><h2 id="切换到Apache默认目录下"><a href="#切换到Apache默认目录下" class="headerlink" title="切换到Apache默认目录下"></a>切换到Apache默认目录下</h2><pre><code>cd /var/www/
+composer create-project laravel/laravel --prefer-dist &quot;5.1.11&quot;
+composer install
+</code></pre><h2 id="修改权限"><a href="#修改权限" class="headerlink" title="修改权限"></a>修改权限</h2><pre><code>cd laravel
+chmod -R 777 storage/
+</code></pre><h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><pre><code>vim/etc/httpd/conf/httpd.conf
+</code></pre><blockquote>
+<p>把<em>DocumentRoot “/var/www/html”</em>改为<em>DocumentRoot “/var/www/laravel/public”</em></p>
+</blockquote>
+<h2 id="重启Apache服务"><a href="#重启Apache服务" class="headerlink" title="重启Apache服务"></a>重启Apache服务</h2><pre><code>service httpd restart
+</code></pre>
       
     </div>
     <div class="article-footer">
@@ -397,7 +433,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://weeweetan.github.io/resume/index.html" title="个人简历" target="_blank" rel="external">https://weeweetan.github.io/resume/index.html</a>
+      <a href="https://weeweetan.github.io/2016/07/31/centos6-5下lamp环境部署laravel/" title="centos6.5下lamp环境部署laravel" target="_blank" rel="external">https://weeweetan.github.io/2016/07/31/centos6-5下lamp环境部署laravel/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -440,6 +476,25 @@
 
   <nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/08/05/Linux常用命令/" title="Linux常用命令"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
   
   
   <!-- Button trigger modal -->
@@ -552,6 +607,12 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 </script>
 <script src="/js/insight.js"></script>
 
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
