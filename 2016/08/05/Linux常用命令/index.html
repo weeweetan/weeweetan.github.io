@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="vim 1、使用u退回上一步2、使用U一次撤销对当前行的全部操作3、vim + filename 表示把光标定位到文件最后一行4、vim +数字 filemame 定位到数字行，如果超过文件行数，定位到最后一行5、vim +/word filename 定位到Word第一次出现的行，按n切换6、vim file1 file2 file3 一次性打开或者创建多个文件，底行模式下使用:n向后切换文件，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-19T14:56:48.152Z">
+<meta property="og:updated_time" content="2019-05-19T15:22:43.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux常用命令">
 <meta name="twitter:description" content="vim 1、使用u退回上一步2、使用U一次撤销对当前行的全部操作3、vim + filename 表示把光标定位到文件最后一行4、vim +数字 filemame 定位到数字行，如果超过文件行数，定位到最后一行5、vim +/word filename 定位到Word第一次出现的行，按n切换6、vim file1 file2 file3 一次性打开或者创建多个文件，底行模式下使用:n向后切换文件，">
@@ -350,7 +350,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim"><span class="toc-number">1.</span> <span class="toc-text">vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#df"><span class="toc-number">2.</span> <span class="toc-text">df</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#du"><span class="toc-number">3.</span> <span class="toc-text">du</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lsof"><span class="toc-number">4.</span> <span class="toc-text">lsof</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#怎样使用lsof"><span class="toc-number">4.1.</span> <span class="toc-text">怎样使用lsof</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#top系列"><span class="toc-number">5.</span> <span class="toc-text">top系列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iotop-–-I-O-监控"><span class="toc-number">5.1.</span> <span class="toc-text">iotop – I/O 监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#htop-–-交互式的进程查看器"><span class="toc-number">5.2.</span> <span class="toc-text">htop – 交互式的进程查看器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#atop-–-高级版系统与进程监控工具"><span class="toc-number">5.3.</span> <span class="toc-text">atop – 高级版系统与进程监控工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iftop-–-显示主机上网络接口的带宽使用情况"><span class="toc-number">5.4.</span> <span class="toc-text">iftop – 显示主机上网络接口的带宽使用情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vmstat"><span class="toc-number">6.</span> <span class="toc-text">vmstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">7.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高亮搜索关键字"><span class="toc-number">7.1.</span> <span class="toc-text">高亮搜索关键字</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netstat"><span class="toc-number">8.</span> <span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">9.</span> <span class="toc-text">ps</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim"><span class="toc-number">1.</span> <span class="toc-text">vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#df"><span class="toc-number">2.</span> <span class="toc-text">df</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#du"><span class="toc-number">3.</span> <span class="toc-text">du</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lsof"><span class="toc-number">4.</span> <span class="toc-text">lsof</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#怎样使用lsof"><span class="toc-number">4.1.</span> <span class="toc-text">怎样使用lsof</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#top系列"><span class="toc-number">5.</span> <span class="toc-text">top系列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iotop-–-I-O-监控"><span class="toc-number">5.1.</span> <span class="toc-text">iotop – I/O 监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#htop-–-交互式的进程查看器"><span class="toc-number">5.2.</span> <span class="toc-text">htop – 交互式的进程查看器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#atop-–-高级版系统与进程监控工具"><span class="toc-number">5.3.</span> <span class="toc-text">atop – 高级版系统与进程监控工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iftop-–-显示主机上网络接口的带宽使用情况"><span class="toc-number">5.4.</span> <span class="toc-text">iftop – 显示主机上网络接口的带宽使用情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vmstat"><span class="toc-number">6.</span> <span class="toc-text">vmstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">7.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高亮搜索关键字"><span class="toc-number">7.1.</span> <span class="toc-text">高亮搜索关键字</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netstat"><span class="toc-number">8.</span> <span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">9.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pmap"><span class="toc-number">10.</span> <span class="toc-text">pmap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sar"><span class="toc-number">11.</span> <span class="toc-text">sar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mpstat"><span class="toc-number">12.</span> <span class="toc-text">mpstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#w"><span class="toc-number">13.</span> <span class="toc-text">w</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcpdump"><span class="toc-number">14.</span> <span class="toc-text">tcpdump</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -401,10 +401,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/08/05/Linux常用命令/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.8k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.3k(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 7(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
 	
 
       </div>
@@ -543,6 +543,65 @@
 <p>找出占用 CPU 资源最多的前 10 个进程</p>
 </blockquote>
 <pre><code># ps -auxf | sort -nr -k 3 | head -10
+</code></pre><p>##ss</p>
+<blockquote>
+<p>ss 命令用于获取套接字统计信息。它可以显示类似于 netstat 的信息。不过 netstat 几乎要过时了，ss 命令更具优势。要显示所有 TCP 或 UDP 套接字：</p>
+</blockquote>
+<pre><code># ss -t -a
+</code></pre><p>或</p>
+<pre><code># ss -u -a
+</code></pre><blockquote>
+<p>显示所有带有 SELinux 安全上下文Security Context的 TCP 套接字：</p>
+</blockquote>
+<pre><code># ss -t -a -Z 
+</code></pre><h2 id="pmap"><a href="#pmap" class="headerlink" title="pmap"></a>pmap</h2><blockquote>
+<p>pmap 命令用以显示进程的内存映射，使用此命令可以查找内存瓶颈。</p>
+</blockquote>
+<pre><code># pmap -d PID
+</code></pre><blockquote>
+<p>显示 PID 为 47394 的进程的内存信息，请输入：</p>
+</blockquote>
+<pre><code># pmap -d 47394     
+</code></pre><h2 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h2><blockquote>
+<p>?sar 命令用于收集、汇报和保存系统活动信息。要查看网络统计，请输入：</p>
+</blockquote>
+<pre><code># sar -n DEV | more
+</code></pre><blockquote>
+<p>显示 24 日的网络统计：</p>
+</blockquote>
+<pre><code># sar -n DEV -f /var/log/sa/sa24 | more
+</code></pre><blockquote>
+<p>显示实时使用情况：</p>
+</blockquote>
+<pre><code># sar 4 5     
+</code></pre><h2 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h2><blockquote>
+<p>mpstat 命令显示每个可用处理器的使用情况，编号从 0 开始。命令 mpstat -P ALL 显示了每个处理器的平均使用率：</p>
+</blockquote>
+<pre><code># mpstat -P ALL     
+</code></pre><h2 id="w"><a href="#w" class="headerlink" title="w"></a>w</h2><blockquote>
+<p>显示了当前登录在该系统上的用户及其进程。</p>
+</blockquote>
+<pre><code># w username    
+</code></pre><h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><blockquote>
+<p>tcpdump 命令是简单的分析网络通信的命令。您需要充分了解 TCP/IP 协议才便于使用此工具。例如，要显示有关 DNS 的流量信息，请输入：</p>
+</blockquote>
+<pre><code># tcpdump -i eth1 &apos;udp port 53&apos;
+</code></pre><blockquote>
+<p>查看所有去往和来自端口 80 的 IPv4 HTTP 数据包，仅打印真正包含数据的包，而不是像 SYN、FIN 和仅含 ACK 这类的数据包，请输入：</p>
+</blockquote>
+<pre><code># tcpdump &apos;tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)&apos;
+</code></pre><blockquote>
+<p>显示所有目标地址为 202.54.1.5 的 FTP 会话，请输入：</p>
+</blockquote>
+<pre><code># tcpdump -i eth1 &apos;dst 202.54.1.5 and (port 21 or 20&apos;
+</code></pre><blockquote>
+<p>打印所有目标地址为 192.168.1.5 的 HTTP 会话：</p>
+</blockquote>
+<pre><code># tcpdump -ni eth0 &apos;dst 192.168.1.5 and tcp and port http&apos;
+</code></pre><blockquote>
+<p>使用 wireshark 查看文件的详细内容，请输入：</p>
+</blockquote>
+<pre><code># tcpdump -n -i eth1 -s 0 -w output.txt src or dst port 80    
 </code></pre>
       
     </div>

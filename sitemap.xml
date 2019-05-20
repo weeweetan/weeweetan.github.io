@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://weeweetan.github.io/2019/05/08/Nginx%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2019-05-20T03:02:28.521Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://weeweetan.github.io/2016/08/05/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
     
-    <lastmod>2019-05-19T14:56:48.152Z</lastmod>
+    <lastmod>2019-05-19T15:22:43.889Z</lastmod>
     
   </url>
   
@@ -103,13 +110,6 @@
     <loc>https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</loc>
     
     <lastmod>2019-05-15T13:27:59.170Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://weeweetan.github.io/2019/05/08/Nginx%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2019-05-15T07:06:29.000Z</lastmod>
     
   </url>
   
