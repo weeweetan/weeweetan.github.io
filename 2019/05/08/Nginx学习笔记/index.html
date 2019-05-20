@@ -27,7 +27,7 @@
 <meta property="og:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-05-20T03:02:28.521Z">
+<meta property="og:updated_time" content="2019-05-20T06:34:09.660Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
@@ -352,7 +352,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编译步骤"><span class="toc-number">1.</span> <span class="toc-text">编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">auto脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码解析"><span class="toc-number">2.</span> <span class="toc-text">源码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">handler模块的编写步骤</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编译步骤"><span class="toc-number">1.</span> <span class="toc-text">编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">auto脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#auto-options脚本"><span class="toc-number">1.2.1.</span> <span class="toc-text">auto/options脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#auto-init脚本"><span class="toc-number">1.2.2.</span> <span class="toc-text">auto/init脚本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码解析"><span class="toc-number">2.</span> <span class="toc-text">源码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">handler模块的编写步骤</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -403,10 +403,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 439(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 617(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
 	
 
       </div>
@@ -418,6 +418,18 @@
 </blockquote>
 <h3 id="auto脚本"><a href="#auto脚本" class="headerlink" title="auto脚本"></a>auto脚本</h3><blockquote>
 <p>auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如option）。脚本之间的主要执行顺序及调用关系如下图所示（由上到下，表示主流程的执行）：<br><img src="/images/2019-05-13_nginx.png" alt><br>上图中的脚本都位于auto目录下，所以省略，而configure与auto同级目录，故完整执行脚本如.auto/options所示。</p>
+</blockquote>
+<h4 id="auto-options脚本"><a href="#auto-options脚本" class="headerlink" title="auto/options脚本"></a>auto/options脚本</h4><blockquote>
+<p>auto/options主是处理用户输入的configure选项，以及输出帮助信息等。auto/options的目的主要是处理用户选项，并由选项生成一些全局变量的值，这些值在其它文件中会用到。该文件也会输出configure的帮助信息。<br>应当注意如下代码</p>
+</blockquote>
+<pre><code>for option
+do
+    opt=&quot;$opt `echo $option | sed -e \&quot;s/\(--[^=]*=\)\(.* .*\)/\1&apos;\2&apos;/\&quot;`&quot;
+</code></pre><blockquote>
+<p>for后面可以省略要遍历的变量,这时,表示在遍历$@,即用户传入的所有变量组合</p>
+</blockquote>
+<h4 id="auto-init脚本"><a href="#auto-init脚本" class="headerlink" title="auto/init脚本"></a>auto/init脚本</h4><blockquote>
+<p>该文件的目录在于初始化一些临时文件的路径，检查echo的兼容性，并创建最原始的Makefile文件。</p>
 </blockquote>
 <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><blockquote>
 <p>在<em>ngx_module.h</em>中引用了两个至关重要的外部变量</p>
