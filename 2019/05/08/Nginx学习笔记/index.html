@@ -27,7 +27,7 @@
 <meta property="og:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-05-20T06:34:09.660Z">
+<meta property="og:updated_time" content="2019-05-20T06:39:08.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="编译步骤configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是完成一些特定的功能（如">
@@ -444,18 +444,27 @@ extern char          *ngx_module_names[];
 <p>此函数的目的是将ngx_modules中的数据复制到cycle中，函数调用顺序如下：</p>
 </blockquote>
 <pre><code>main-&gt;ngx_init_cycle-&gt;ngx_cycle_modules
-</code></pre><h2 id="handler模块的编写步骤"><a href="#handler模块的编写步骤" class="headerlink" title="handler模块的编写步骤"></a>handler模块的编写步骤</h2><ol>
-<li><p>编写模块基本结构。包括模块的定义，模块上下文结构，模块的配置结构等，即分别初始化如下变量：</p>
-<p> static ngx_command_t ngx_http_module_name_commands[] = {};<br> static ngx_http_module_t ngx_http_module_name_module_ctx = {};<br> ngx_module_t ngx_http_module_name_module = {};</p>
-</li>
-<li><p>实现handler的挂载函数。根据模块的需求选择正确的挂载方式，即实现如下函数：</p>
-<p> static ngx_int_t ngx_http_module_name_init(ngx_conf_t *cf)；</p>
-</li>
-<li><p>编写handler处理函数。模块的功能主要通过这个函数来完成，即实现如下函数：</p>
-<p> static ngx_int_t ngx_http_module_name_handler(ngx_http_request_t *r);</p>
-</li>
+</code></pre><h2 id="handler模块的编写步骤"><a href="#handler模块的编写步骤" class="headerlink" title="handler模块的编写步骤"></a>handler模块的编写步骤</h2><blockquote>
+<ol>
+<li>编写模块基本结构。包括模块的定义，模块上下文结构，模块的配置结构等，即分别初始化如下变量：</li>
 </ol>
-
+</blockquote>
+<pre><code>static ngx_command_t ngx_http_module_name_commands[] = {};
+static ngx_http_module_t ngx_http_module_name_module_ctx = {};
+ngx_module_t ngx_http_module_name_module = {};
+</code></pre><blockquote>
+<ol start="2">
+<li>实现handler的挂载函数。根据模块的需求选择正确的挂载方式，即实现如下函数：</li>
+</ol>
+</blockquote>
+<pre><code>static ngx_int_t ngx_http_module_name_init(ngx_conf_t *cf)；
+</code></pre><blockquote>
+<ol start="3">
+<li>编写handler处理函数。模块的功能主要通过这个函数来完成，即实现如下函数：</li>
+</ol>
+</blockquote>
+<pre><code>static ngx_int_t ngx_http_module_name_handler(ngx_http_request_t *r);
+</code></pre>
       
     </div>
     <div class="article-footer">
