@@ -467,4 +467,30 @@
     
   </entry>
   
+  <entry>
+    <title>MySQL常见问题</title>
+    <link href="https://weeweetan.github.io/2016/05/22/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"/>
+    <id>https://weeweetan.github.io/2016/05/22/MySQL常见问题/</id>
+    <published>2016-05-22T05:55:31.000Z</published>
+    <updated>2019-05-22T06:09:36.805Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="修改目录后MySQL无法启动"><a href="#修改目录后MySQL无法启动" class="headerlink" title="修改目录后MySQL无法启动"></a>修改目录后MySQL无法启动</h2><blockquote><p>这种问题一般是selinux造成的<br>1、终端输入sestatus，如出现SELinux status:                 enabled，则selinux为开启状态，<br>2、编辑/etc/selinux/config 文件，将SELINUX=enforcing改为SELINUX=disabled，重启机器</p></blockquote><h2 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h2><blockquote><p>修改密码分为两种情况，一种情况是拥有原来密码，另外一种情况则是忘记密码</p></blockquote><h3 id="拥有原来的myql的root的密码；"><a href="#拥有原来的myql的root的密码；" class="headerlink" title="拥有原来的myql的root的密码；"></a>拥有原来的myql的root的密码；</h3><h4 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h4><blockquote><p>在mysql系统外，使用mysqladmin</p></blockquote><pre><code># mysqladmin -u root -p password &quot;test123&quot;Enter password: 【输入原来的密码】</code></pre><h4 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h4><blockquote><p>通过登录mysql系统，</p></blockquote><pre><code># mysql -uroot -pEnter password: 【输入原来的密码】mysql&gt;use mysql;mysql&gt; update user set password=password(&quot;test&quot;) where user=&apos;root&apos;;mysql&gt; flush privileges;mysql&gt; exit;      </code></pre><h3 id="忘记原来的myql的root的密码；"><a href="#忘记原来的myql的root的密码；" class="headerlink" title="忘记原来的myql的root的密码；"></a>忘记原来的myql的root的密码；</h3><blockquote><p>首先，你必须要有操作系统的root权限了。要是连系统的root权限都没有的话，先考虑root系统再走下面的步骤。<br>类似于安全模式登录系统，有人建议说是pkill mysql，但是我不建议哈。因为当你执行了这个命令后，会导致这样的状况：<br>/etc/init.d/mysqld status<br>mysqld dead but subsys locked<br>这样即使你是在安全模式下启动mysql都未必会有用的，所以一般是这样/etc/init.d/mysqld stop，如果你不幸先用了pkill，那么就start一下再stop咯。</p></blockquote><pre><code># mysqld_safe --skip-grant-tables &amp;</code></pre><blockquote><p>&amp;，表示在后台运行，不再后台运行的话，就再打开一个终端咯。</p></blockquote><pre><code># mysqlmysql&gt; use mysql;mysql&gt; UPDATE user SET password=password(&quot;test123&quot;) WHERE user=&apos;root&apos;;   mysql&gt; flush privileges;mysql&gt; exit;                         </code></pre><blockquote><p>本来mysql是不分大小写的，但是这个是修改的mysql中的mysql数据库的具体的值，要注意到。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;修改目录后MySQL无法启动&quot;&gt;&lt;a href=&quot;#修改目录后MySQL无法启动&quot; class=&quot;headerlink&quot; title=&quot;修改目录后MySQL无法启动&quot;&gt;&lt;/a&gt;修改目录后MySQL无法启动&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这种问题一般是se
+      
+    
+    </summary>
+    
+      <category term="总结" scheme="https://weeweetan.github.io/categories/%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="MySQL" scheme="https://weeweetan.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
 </feed>
