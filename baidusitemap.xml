@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://weeweetan.github.io/2016/08/05/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2019-05-23</lastmod>
+  </url>  <url>
     <loc>https://weeweetan.github.io/2016/05/22/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</loc>
     <lastmod>2019-05-23</lastmod>
   </url>  <url>
@@ -9,9 +12,6 @@
   </url>  <url>
     <loc>https://weeweetan.github.io/2019/05/08/Nginx%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2019-05-20</lastmod>
-  </url>  <url>
-    <loc>https://weeweetan.github.io/2016/08/05/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2019-05-19</lastmod>
   </url>  <url>
     <loc>https://weeweetan.github.io/2016/07/31/centos6-5%E4%B8%8Blamp%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2laravel/</loc>
     <lastmod>2019-05-18</lastmod>
