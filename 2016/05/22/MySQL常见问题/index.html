@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="修改目录后MySQL无法启动 这种问题一般是selinux造成的1、终端输入sestatus，如出现SELinux status:                 enabled，则selinux为开启状态，2、编辑/etc/selinux/config 文件，将SELINUX=enforcing改为SELINUX=disabled，重启机器  修改密码 修改密码分为两种情况，一种情况是拥有原来密">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-23T15:23:13.168Z">
+<meta property="og:updated_time" content="2019-05-25T15:38:28.194Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL常见问题">
 <meta name="twitter:description" content="修改目录后MySQL无法启动 这种问题一般是selinux造成的1、终端输入sestatus，如出现SELinux status:                 enabled，则selinux为开启状态，2、编辑/etc/selinux/config 文件，将SELINUX=enforcing改为SELINUX=disabled，重启机器  修改密码 修改密码分为两种情况，一种情况是拥有原来密">
@@ -350,7 +350,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#修改目录后MySQL无法启动"><span class="toc-number">1.</span> <span class="toc-text">修改目录后MySQL无法启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改密码"><span class="toc-number">2.</span> <span class="toc-text">修改密码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拥有原来的myql的root的密码；"><span class="toc-number">2.1.</span> <span class="toc-text">拥有原来的myql的root的密码；</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#方法一："><span class="toc-number">2.1.1.</span> <span class="toc-text">方法一：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#方法二："><span class="toc-number">2.1.2.</span> <span class="toc-text">方法二：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#忘记原来的myql的root的密码；"><span class="toc-number">2.2.</span> <span class="toc-text">忘记原来的myql的root的密码；</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入10万条记录的SQL"><span class="toc-number">3.</span> <span class="toc-text">插入10万条记录的SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL开启远程访问"><span class="toc-number">4.</span> <span class="toc-text">MySQL开启远程访问</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#修改目录后MySQL无法启动"><span class="toc-number">1.</span> <span class="toc-text">修改目录后MySQL无法启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改密码"><span class="toc-number">2.</span> <span class="toc-text">修改密码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拥有原来的myql的root的密码；"><span class="toc-number">2.1.</span> <span class="toc-text">拥有原来的myql的root的密码；</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#方法一："><span class="toc-number">2.1.1.</span> <span class="toc-text">方法一：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#方法二："><span class="toc-number">2.1.2.</span> <span class="toc-text">方法二：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#忘记原来的myql的root的密码；"><span class="toc-number">2.2.</span> <span class="toc-text">忘记原来的myql的root的密码；</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入10万条记录的SQL"><span class="toc-number">3.</span> <span class="toc-text">插入10万条记录的SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL开启远程访问"><span class="toc-number">4.</span> <span class="toc-text">MySQL开启远程访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库优化十个原则"><span class="toc-number">5.</span> <span class="toc-text">数据库优化十个原则</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -401,10 +401,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/22/MySQL常见问题/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 634(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 851(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
 	
 
       </div>
@@ -495,7 +495,26 @@ call load_foo_test_data();
 <p>注释：其中：“ <em>.</em> ”代表所有数据库和表（也就是root权限） 其格式为:数据库名称 . 表名<br>刷新权限</p>
 </blockquote>
 <pre><code>mysql&gt;flush privileges;
-</code></pre>
+</code></pre><h2 id="数据库优化十个原则"><a href="#数据库优化十个原则" class="headerlink" title="数据库优化十个原则"></a>数据库优化十个原则</h2><blockquote>
+<ol>
+<li>尽量避免在列上进行计算，这样会导致索引失效</li>
+</ol>
+</blockquote>
+<pre><code>select * from t where year(d)&gt;=2011   =&gt;   select * from t where d&gt;=&apos;2011-01-01&apos;;
+</code></pre><blockquote>
+<ol start="2">
+<li>使用join时，应该用小结果集驱动大结果集。同时把复杂的join查询拆分成多个query。因为join多个表时，可能导致更多的锁定和堵塞。</li>
+<li>注意like模糊查询的使用，避免%%。</li>
+<li>仅列出需要查询的字段，这对速度不会又明显的影响，主要考虑节省内存。</li>
+<li>使用批量插入语句节省交互。</li>
+<li>limit的基数比较大时使用between。</li>
+<li>不要使用rand函数获取多条随机记录。</li>
+<li>避免使用null</li>
+<li>不要使用count(id),而应该是count(*)</li>
+<li>不要做所谓的排序操作，而应尽可能在索引中完成排序。</li>
+</ol>
+</blockquote>
+
       
     </div>
     <div class="article-footer">
