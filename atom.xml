@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://weeweetan.github.io/"/>
-  <updated>2019-05-18T02:32:50.166Z</updated>
+  <updated>2019-05-26T06:04:11.118Z</updated>
   <id>https://weeweetan.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Dos常用命令</title>
+    <link href="https://weeweetan.github.io/2019/05/26/Dos%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+    <id>https://weeweetan.github.io/2019/05/26/Dos常用命令/</id>
+    <published>2019-05-26T05:56:27.000Z</published>
+    <updated>2019-05-26T06:04:11.118Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="sc"><a href="#sc" class="headerlink" title="sc"></a>sc</h2><blockquote><p>sc命令可用于卸载windows服务，如下所示：</p></blockquote><pre><code>sc delete serv</code></pre><blockquote><p>其中serv为服务名，可在服务中查看</p></blockquote><h2 id="xcopy"><a href="#xcopy" class="headerlink" title="xcopy"></a>xcopy</h2><blockquote><p>xcopy命令用于Dos下复制文件夹及子文件夹，如下所示：</p></blockquote><pre><code>xcopy d:\abc\aaa\*.* c:\windows\system /s</code></pre><blockquote><p>其中第一个参数是源位置，第二个参数是目标位置<br>/s：复制目录和子目录，除了空的。        </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;sc&quot;&gt;&lt;a href=&quot;#sc&quot; class=&quot;headerlink&quot; title=&quot;sc&quot;&gt;&lt;/a&gt;sc&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;sc命令可用于卸载windows服务，如下所示：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;sc 
+      
+    
+    </summary>
+    
+      <category term="总结" scheme="https://weeweetan.github.io/categories/%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="Dos" scheme="https://weeweetan.github.io/tags/Dos/"/>
+    
+  </entry>
   
   <entry>
     <title>中国菜翻译方法</title>

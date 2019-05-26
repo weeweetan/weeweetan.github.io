@@ -17,24 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>VMware vSphere WebService SDK使用心得 | weeweetan</title>
-  <meta name="description" content="善用mob（Managed Object Browser） mob地址一般是https://vcenter的FQDN/mob，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。  善用GetMOREF类 GetMORE">
-<meta name="keywords" content="VMware-vSphere">
+  <title>Dos常用命令 | weeweetan</title>
+  <meta name="description" content="sc sc命令可用于卸载windows服务，如下所示：  sc delete serv  其中serv为服务名，可在服务中查看  xcopy xcopy命令用于Dos下复制文件夹及子文件夹，如下所示：  xcopy d:\abc\aaa\*.* c:\windows\system /s  其中第一个参数是源位置，第二个参数是目标位置/s：复制目录和子目录，除了空的。">
+<meta name="keywords" content="Dos">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VMware vSphere WebService SDK使用心得">
-<meta property="og:url" content="https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK使用心得/index.html">
+<meta property="og:title" content="Dos常用命令">
+<meta property="og:url" content="https://weeweetan.github.io/2019/05/26/Dos常用命令/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="善用mob（Managed Object Browser） mob地址一般是https://vcenter的FQDN/mob，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。  善用GetMOREF类 GetMORE">
+<meta property="og:description" content="sc sc命令可用于卸载windows服务，如下所示：  sc delete serv  其中serv为服务名，可在服务中查看  xcopy xcopy命令用于Dos下复制文件夹及子文件夹，如下所示：  xcopy d:\abc\aaa\*.* c:\windows\system /s  其中第一个参数是源位置，第二个参数是目标位置/s：复制目录和子目录，除了空的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://weeweetan.github.io/images/2018-07-25_mob.png">
-<meta property="og:image" content="https://weeweetan.github.io/images/2018-07-25_doc.png">
-<meta property="og:updated_time" content="2019-05-15T13:27:59.170Z">
+<meta property="og:updated_time" content="2019-05-26T06:04:11.118Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="VMware vSphere WebService SDK使用心得">
-<meta name="twitter:description" content="善用mob（Managed Object Browser） mob地址一般是https://vcenter的FQDN/mob，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。  善用GetMOREF类 GetMORE">
-<meta name="twitter:image" content="https://weeweetan.github.io/images/2018-07-25_mob.png">
+<meta name="twitter:title" content="Dos常用命令">
+<meta name="twitter:description" content="sc sc命令可用于卸载windows服务，如下所示：  sc delete serv  其中serv为服务名，可在服务中查看  xcopy xcopy命令用于Dos下复制文件夹及子文件夹，如下所示：  xcopy d:\abc\aaa\*.* c:\windows\system /s  其中第一个参数是源位置，第二个参数是目标位置/s：复制目录和子目录，除了空的。">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK使用心得/index.html">
+  <link rel="canonical" href="https://weeweetan.github.io/2019/05/26/Dos常用命令/index.html">
   
     <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
   
@@ -349,25 +346,16 @@
 
   
   
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <nav id="toc" class="article-toc">
-      <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#善用mob（Managed-Object-Browser）"><span class="toc-number">1.</span> <span class="toc-text">善用mob（Managed Object Browser）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#善用GetMOREF类"><span class="toc-number">2.</span> <span class="toc-text">善用GetMOREF类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#善用SDK里面的文档"><span class="toc-number">3.</span> <span class="toc-text">善用SDK里面的文档</span></a></li></ol>
-    </nav>
-  </div>
-</aside>
-
 <main class="main" role="main">
   <div class="content">
-  <article id="post-VMware-vSphere-WebService-SDK使用心得" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-Dos常用命令" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      VMware vSphere WebService SDK使用心得
+      Dos常用命令
     </h1>
   
 
@@ -375,20 +363,20 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2018/07/25/VMware-vSphere-WebService-SDK使用心得/" class="article-date">
-	  <time datetime="2018-07-25T12:13:58.000Z" itemprop="datePublished">2018-07-25</time>
+	<a href="/2019/05/26/Dos常用命令/" class="article-date">
+	  <time datetime="2019-05-26T05:56:27.000Z" itemprop="datePublished">2019-05-26</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/VMware-vSphere/">VMware-vSphere</a>
+    <a class="article-category-link" href="/categories/总结/">总结</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/VMware-vSphere/">VMware-vSphere</a>
+	<a class="article-tag-link" href="/tags/Dos/">Dos</a>
   </span>
 
 
@@ -401,10 +389,10 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/07/25/VMware-vSphere-WebService-SDK使用心得/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/26/Dos常用命令/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 355(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 95(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -414,29 +402,19 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h2 id="善用mob（Managed-Object-Browser）"><a href="#善用mob（Managed-Object-Browser）" class="headerlink" title="善用mob（Managed Object Browser）"></a>善用mob（Managed Object Browser）</h2><blockquote>
-<p>mob地址一般是<em><a href="https://vcenter的FQDN/mob" target="_blank" rel="noopener">https://vcenter的FQDN/mob</a></em>，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。<br><img src="/images/2018-07-25_mob.png" alt></p>
+        <h2 id="sc"><a href="#sc" class="headerlink" title="sc"></a>sc</h2><blockquote>
+<p>sc命令可用于卸载windows服务，如下所示：</p>
 </blockquote>
-<h2 id="善用GetMOREF类"><a href="#善用GetMOREF类" class="headerlink" title="善用GetMOREF类"></a>善用GetMOREF类</h2><blockquote>
-<p>GetMOREF类具体位置在<em>VMware-vSphere-SDK-6.0.0-2561048\SDK\vsphere-ws\java\JAXWS\samples\com\vmware\connection\helpers</em>，这是VMware官方提供的一个工具类，里面的每个函数对于开发都很有用。例如</p>
-</blockquote>
-<pre><code>​List&lt;VirtualDevice&gt; listvd = ((ArrayOfVirtualDevice) getMOREFs
-                                .entityProps(vmMor, new String[] { &quot;config.hardware.device&quot; })
-                                .get(&quot;config.hardware.device&quot;)).getVirtualDevice();
+<pre><code>sc delete serv
 </code></pre><blockquote>
-<p>这是VMReconfig.java中的一个片段，这段代码的作用就是去获取指定虚拟机对象的所有设备，vmMor可以通过GetMOREF类中的vmByVMname函数去获得。至于config.hardware.device，就需要用mob一层一层点进去看了，相信结合mob就能理解为什么要这么写。</p>
+<p>其中serv为服务名，可在服务中查看</p>
 </blockquote>
-<pre><code>​​
- ManagedObjectReference propCol = connection.getServiceContent().getPropertyCollector();
- ManagedObjectReference vmRef = getMOREFs.vmByVMname(virtualMachineName,propCol);
+<h2 id="xcopy"><a href="#xcopy" class="headerlink" title="xcopy"></a>xcopy</h2><blockquote>
+<p>xcopy命令用于Dos下复制文件夹及子文件夹，如下所示：</p>
+</blockquote>
+<pre><code>xcopy d:\abc\aaa\*.* c:\windows\system /s
 </code></pre><blockquote>
-<p>上面这段代码的作用就是如何根据虚拟机名去获取其对应的ManagedObjectReference</p>
-</blockquote>
-<h2 id="善用SDK里面的文档"><a href="#善用SDK里面的文档" class="headerlink" title="善用SDK里面的文档"></a>善用SDK里面的文档</h2><blockquote>
-<p>文档首页为<em>VMware-vSphere-SDK-6.0.0-2561048/SDK/vsphere-ws/docs/ReferenceGuide/index.html</em><br><img src="/images/2018-07-25_doc.png" alt><br>根据需求，在左侧导航栏对应的去找。</p>
-</blockquote>
-<blockquote>
-<p>对SDK我整理了一下，使其能够在idea中编译运行，项目地址在<a href="https://github.com/wulikanhua/VMwareProject" target="_blank" rel="noopener">VMwareProject</a>   ​</p>
+<p>其中第一个参数是源位置，第二个参数是目标位置<br>/s：复制目录和子目录，除了空的。        </p>
 </blockquote>
 
       
@@ -447,7 +425,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK使用心得/" title="VMware vSphere WebService SDK使用心得" target="_blank" rel="external">https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK使用心得/</a>
+      <a href="https://weeweetan.github.io/2019/05/26/Dos常用命令/" title="Dos常用命令" target="_blank" rel="external">https://weeweetan.github.io/2019/05/26/Dos常用命令/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -493,24 +471,11 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/2018/08/08/Java与PHP之间的Socket通信/" title="Java与PHP之间的Socket通信"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/2018/07/25/Socket粘包处理/" title="Socket粘包处理"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2019/05/18/中国菜翻译方法/" title="中国菜翻译方法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
-    
-    <li class="toggle-toc">
-      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
-        <span>[&nbsp;</span><span>文章目录</span>
-        <i class="text-collapsed icon icon-anchor"></i>
-        <i class="text-in icon icon-close"></i>
-        <span>]</span>
-      </a>
-    </li>
     
   </ul>
   
