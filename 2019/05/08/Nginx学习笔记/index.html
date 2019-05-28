@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-05-28T14:45:24.768Z">
+<meta property="og:updated_time" content="2019-05-28T14:53:04.330Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -403,7 +403,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 915(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 947(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
@@ -431,6 +431,7 @@ do
 <h4 id="1-2-2-auto-init脚本"><a href="#1-2-2-auto-init脚本" class="headerlink" title="1.2.2 auto/init脚本"></a>1.2.2 auto/init脚本</h4><blockquote>
 <blockquote><p>该文件的目录在于初始化一些临时文件的路径，检查echo的兼容性，并创建最原始的Makefile文件。</p>
 <footer><strong>淘宝</strong><cite><a href="http://tengine.taobao.org/book/chapter_09.html#auto" target="_blank" rel="noopener">Nginx开发从入门到精通</a></cite></footer></blockquote>
+<p>注意：这里生成的Makefile文件与configure文件在同一目录，真正执行编译指令的Makefile在objs目录下</p>
 </blockquote>
 <h4 id="1-2-3-auto-sources脚本"><a href="#1-2-3-auto-sources脚本" class="headerlink" title="1.2.3 auto/sources脚本"></a>1.2.3 auto/sources脚本</h4><blockquote>
 <blockquote><p>该文件从文件名中就可以看出，它的主要功能是跟源文件相关的。它的主要作用是定义不同功能或系统所需要的文件的变量。根据功能，分为CORE/REGEX/EVENT/UNIX/FREEBSD/HTTP等。每一个功能将会由四个变量组成，”_MODULES”表示此功能相关的模块，最终会输出到ngx_modules.c文件中，即动态生成需要编译到nginx中的模块；”INCS”表示此功能依赖的源码目录，查找头文件的时候会用到，在编译选项中，会出现在”-I”中；”DEPS”显示指明在Makefile中需要依赖的文件名，即编译时，需要检查这些文件的更新时间；”SRCS”表示需要此功能编译需要的源文件。</p>
