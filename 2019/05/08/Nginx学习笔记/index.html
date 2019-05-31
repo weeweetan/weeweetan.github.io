@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-05-28T14:53:04.330Z">
+<meta property="og:updated_time" content="2019-05-31T13:50:35.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -352,7 +352,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-编译步骤"><span class="toc-number">1.</span> <span class="toc-text">1. 编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 auto脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-auto-options脚本"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 auto/options脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-auto-init脚本"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 auto/init脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-3-auto-sources脚本"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 auto/sources脚本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-源码解析"><span class="toc-number">2.</span> <span class="toc-text">2. 源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-模块相关"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 模块相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">3. handler模块的编写步骤</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-编译步骤"><span class="toc-number">1.</span> <span class="toc-text">1. 编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 auto脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-auto-options脚本"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 auto/options脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-auto-init脚本"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 auto/init脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-3-auto-sources脚本"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 auto/sources脚本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-源码解析"><span class="toc-number">2.</span> <span class="toc-text">2. 源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-模块相关"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 模块相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-数据结构"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-ngx-str-t"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 ngx_str_t</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">3. handler模块的编写步骤</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -403,7 +403,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 947(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.1k(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
@@ -451,7 +451,22 @@ extern char          *ngx_module_names[];
 <p>此函数的目的是将ngx_modules中的数据复制到cycle中，函数调用顺序如下：</p>
 </blockquote>
 <pre><code>main-&gt;ngx_init_cycle-&gt;ngx_cycle_modules
-</code></pre><h2 id="3-handler模块的编写步骤"><a href="#3-handler模块的编写步骤" class="headerlink" title="3. handler模块的编写步骤"></a>3. handler模块的编写步骤</h2><blockquote>
+</code></pre><h3 id="2-2-数据结构"><a href="#2-2-数据结构" class="headerlink" title="2.2 数据结构"></a>2.2 数据结构</h3><h4 id="2-2-1-ngx-str-t"><a href="#2-2-1-ngx-str-t" class="headerlink" title="2.2.1 ngx_str_t"></a>2.2.1 ngx_str_t</h4><blockquote>
+<p>Nginx开发从入门到精通已经对<a href="http://tengine.taobao.org/book/chapter_02.html#ngx-str-t-100" target="_blank" rel="noopener">ngx_str_t</a>的定义以及相关api进行了非常详细的讲解，以下为定义：</p>
+</blockquote>
+<pre><code>typedef struct {
+    size_t      len;
+    u_char     *data;
+} ngx_str_t;
+</code></pre><blockquote>
+<p>注意事项：    </p>
+<ol>
+<li>不要试图复制char *到data所指向的内存，可能导致coredump</li>
+<li>初始化相关api都是基于常量字符串，char *类型慎用</li>
+<li>如果非要复制char *到data所指向的内存，一定先分配内存</li>
+</ol>
+</blockquote>
+<h2 id="3-handler模块的编写步骤"><a href="#3-handler模块的编写步骤" class="headerlink" title="3. handler模块的编写步骤"></a>3. handler模块的编写步骤</h2><blockquote>
 <ol>
 <li>编写模块基本结构。包括模块的定义，模块上下文结构，模块的配置结构等，即分别初始化如下变量：</li>
 </ol>
