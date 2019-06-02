@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-06-02T12:32:41.692Z">
+<meta property="og:updated_time" content="2019-06-02T12:48:03.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -403,10 +403,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.4k(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 5(分)</span>
 	
 
       </div>
@@ -507,7 +507,13 @@ ngx_module_t ngx_http_module_name_module = {};
 </code></pre><h2 id="4-日志系统"><a href="#4-日志系统" class="headerlink" title="4. 日志系统"></a>4. 日志系统</h2><blockquote>
 <p>Nginx的日志系统分为两个部分，一个是Nginx核心的错误日志（包括debug日志），一个是各模块的访问日志，整个Nginx框架中主要以核心的错误日志为主，各模块的访问日志根据模块调用顺序使用，下面分别介绍两种日志系统。</p>
 </blockquote>
-<h3 id="4-1-错误日志"><a href="#4-1-错误日志" class="headerlink" title="4.1 错误日志"></a>4.1 错误日志</h3><h3 id="4-2-访问日志"><a href="#4-2-访问日志" class="headerlink" title="4.2 访问日志"></a>4.2 访问日志</h3>
+<h3 id="4-1-错误日志"><a href="#4-1-错误日志" class="headerlink" title="4.1 错误日志"></a>4.1 错误日志</h3><blockquote>
+<p>关于错误日志的配置指令可以参考<a href="http://nginx.org/en/docs/ngx_core_module.html#error_log" target="_blank" rel="noopener">error_log</a>，分析Nginx源码可以发现，源码中多处使用ngx_log_debug0，ngx_log_debug1等类似的宏定义，启用这些宏定义需要在configure的时候执行–with-debug。</p>
+</blockquote>
+<h3 id="4-2-访问日志"><a href="#4-2-访问日志" class="headerlink" title="4.2 访问日志"></a>4.2 访问日志</h3><blockquote>
+<p>目前实现了访问日志的官方模块有http模块，stream模块，其中http模块的配置指令可以参考<a href="http://nginx.org/en/docs/http/ngx_http_log_module.html" target="_blank" rel="noopener">ngx_http_log_module</a>。http模块的日志系统是以http第三方模块的形式存在，所以编写的时候遵循第3节的规则。   </p>
+</blockquote>
+
       
     </div>
     <div class="article-footer">
