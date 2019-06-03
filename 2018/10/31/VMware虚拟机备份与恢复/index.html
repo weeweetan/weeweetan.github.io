@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="weeweetan&#39;s blog">
 <meta property="og:description" content="前言 本文主要是根据自己实际项目经验对云与备份之（1）：VMware虚机备份和恢复这篇文章进行补充说明。本文将以部分引用，部分说明的方式进行组织，加粗部分为我自己总结的内容。原文中提到两套SDK（vddk跟Web service SDK），整个虚拟机备份流程需要着两套SDK配合使用，我把这两套SDK整理了一下，使之能够在clion跟idea中运行，地址如下：VMwareProjectvix_dis">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-26T08:49:27.516Z">
+<meta property="og:updated_time" content="2019-06-03T13:42:20.859Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VMware虚拟机备份与恢复">
 <meta name="twitter:description" content="前言 本文主要是根据自己实际项目经验对云与备份之（1）：VMware虚机备份和恢复这篇文章进行补充说明。本文将以部分引用，部分说明的方式进行组织，加粗部分为我自己总结的内容。原文中提到两套SDK（vddk跟Web service SDK），整个虚拟机备份流程需要着两套SDK配合使用，我把这两套SDK整理了一下，使之能够在clion跟idea中运行，地址如下：VMwareProjectvix_dis">
@@ -350,7 +350,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-与备份有关的VMWare基础知识"><span class="toc-number">2.</span> <span class="toc-text">1. 与备份有关的VMWare基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-VMware-虚机磁盘在-ESXi-宿主机上的文件"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 VMware 虚机磁盘在 ESXi 宿主机上的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-虚拟磁盘类型"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 虚拟磁盘类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-虚拟磁盘模式"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 虚拟磁盘模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-vCenter-Server"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 vCenter Server</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-备份要点"><span class="toc-number">3.</span> <span class="toc-text">2. 备份要点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-如何确定虚拟机对象？"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 如何确定虚拟机对象？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-如何获取虚拟机相关配置？"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 如何获取虚拟机相关配置？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-如何获取变化数据？"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 如何获取变化数据？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-如何下载变化数据？"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 如何下载变化数据？</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-与备份有关的VMWare基础知识"><span class="toc-number">2.</span> <span class="toc-text">1. 与备份有关的VMWare基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-VMware-虚机磁盘在-ESXi-宿主机上的文件"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 VMware 虚机磁盘在 ESXi 宿主机上的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-虚拟磁盘类型"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 虚拟磁盘类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-虚拟磁盘模式"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 虚拟磁盘模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-vCenter-Server"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 vCenter Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-vSphere-Web-Client"><span class="toc-number">2.5.</span> <span class="toc-text">1.5 vSphere Web Client</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-虚拟机注册"><span class="toc-number">2.6.</span> <span class="toc-text">1.5 虚拟机注册</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-备份要点"><span class="toc-number">3.</span> <span class="toc-text">2. 备份要点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-如何确定虚拟机对象？"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 如何确定虚拟机对象？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-如何获取虚拟机相关配置？"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 如何获取虚拟机相关配置？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-如何获取变化数据？"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 如何获取变化数据？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-如何下载变化数据？"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 如何下载变化数据？</span></a></li></ol></li></ol>
     </nav>
   </div>
 </aside>
@@ -401,7 +401,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/10/31/VMware虚拟机备份与恢复/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.6k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
@@ -457,6 +457,12 @@ changeTrackPath=&quot;sammy-target-win-small-ctk.vmdk&quot;
 </blockquote>
 <h3 id="1-4-vCenter-Server"><a href="#1-4-vCenter-Server" class="headerlink" title="1.4 vCenter Server"></a>1.4 vCenter Server</h3><blockquote>
 <p>vCenter Server相当于一套管理多台Esxi服务器的系统，如果需要对虚拟机进行备份，则需要部署这么一套系统，具体怎么部署可以参考<a href="https://blog.csdn.net/shengxia1999/article/details/52353177" target="_blank" rel="noopener">VMware Vsphere 6.0安装部署 （三） vCenter Server安装</a>。备份所使用的Web serviceSDK依赖这套系统，对于这套系统的使用可以参考我其他关于vSphere的文章。</p>
+</blockquote>
+<h3 id="1-5-vSphere-Web-Client"><a href="#1-5-vSphere-Web-Client" class="headerlink" title="1.5 vSphere Web Client"></a>1.5 vSphere Web Client</h3><blockquote>
+<p>vSphere Web Client为vCenter Server提供一个web管理界面，文中关于对vCenter的操作都是在这界面上完成。</p>
+</blockquote>
+<h3 id="1-5-虚拟机注册"><a href="#1-5-虚拟机注册" class="headerlink" title="1.5 虚拟机注册"></a>1.5 虚拟机注册</h3><blockquote>
+<p>在vCenter Server中，Esxi服务器以及虚拟机以实体对象的形式存在，已有的虚拟机文件可以通过注册功能，将虚拟机文件激活成虚拟机，这里涉及到虚拟机的其他文件，可以参考<a href="https://docs.vmware.com/cn/VMware-vSphere/6.0/com.vmware.vsphere.vm_admin.doc/GUID-CEFF6D89-8C19-4143-8C26-4B6D6734D2CB.html" target="_blank" rel="noopener">什么是虚拟机?</a>。在vCenter Server中将.vmx文件作为虚拟机，所以在vCenter Server中找到虚拟机文件，右键注册就可以了。</p>
 </blockquote>
 <h2 id="2-备份要点"><a href="#2-备份要点" class="headerlink" title="2. 备份要点"></a>2. 备份要点</h2><blockquote>
 <p>原文中对备份流程进行了详细说明，我这里就不再赘述，我将从以下几个方面说明备份要点。其中具体代码实现可以去<a href="https://blog.csdn.net/u013385554" target="_blank" rel="noopener">我的csdn</a>查看相关文章</p>
