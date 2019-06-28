@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-06-25T14:00:45.315Z">
+<meta property="og:updated_time" content="2019-06-28T14:09:34.971Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -403,10 +403,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.5k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.6k(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 5(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
 	
 
       </div>
@@ -513,7 +513,21 @@ ngx_module_t ngx_http_module_name_module = {};
 <h3 id="4-2-访问日志"><a href="#4-2-访问日志" class="headerlink" title="4.2 访问日志"></a>4.2 访问日志</h3><blockquote>
 <p>目前实现了访问日志的官方模块有http模块，stream模块，其中http模块的配置指令可以参考<a href="http://nginx.org/en/docs/http/ngx_http_log_module.html" target="_blank" rel="noopener">ngx_http_log_module</a>。http模块的日志系统是以http第三方模块的形式存在，所以编写的时候遵循第3节的规则，Nginx将HTTP请求划分为11个阶段，访问日志是最后一个阶段，所以访问日志在HTTP请求完成时写入。</p>
 </blockquote>
-<h2 id="5-upstream机制"><a href="#5-upstream机制" class="headerlink" title="5. upstream机制"></a>5. upstream机制</h2><h2 id="6-反向代理"><a href="#6-反向代理" class="headerlink" title="6. 反向代理"></a>6. 反向代理</h2>
+<h2 id="5-upstream机制"><a href="#5-upstream机制" class="headerlink" title="5. upstream机制"></a>5. upstream机制</h2><blockquote>
+<p>upstream机制使得nginx能够作为代理服务器，或者负载均衡服务器，将来自客户端的请求转发到上游，并将上游响应转发到客户端。参考配置如下</p>
+</blockquote>
+<pre><code>#位于http上下文中
+upstream local {
+    server 127.0.0.1:8080 weight=5;
+    server 127.0.0.1:80 weight=2;
+}
+</code></pre><h2 id="6-反向代理"><a href="#6-反向代理" class="headerlink" title="6. 反向代理"></a>6. 反向代理</h2><blockquote>
+<p>nginx反向代理实际上是一个upstream模块，实现upstream机制的几个回调函数。参考配置如下：</p>
+</blockquote>
+<pre><code>location / {
+    proxy_pass http://local
+}   
+</code></pre>
       
     </div>
     <div class="article-footer">
