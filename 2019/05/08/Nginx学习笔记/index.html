@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-06-28T14:09:34.971Z">
+<meta property="og:updated_time" content="2019-07-07T15:09:47.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -352,7 +352,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-编译步骤"><span class="toc-number">1.</span> <span class="toc-text">1. 编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 auto脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-auto-options脚本"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 auto/options脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-auto-init脚本"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 auto/init脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-3-auto-sources脚本"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 auto/sources脚本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-源码解析"><span class="toc-number">2.</span> <span class="toc-text">2. 源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-模块相关"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 模块相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-数据结构"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-ngx-str-t"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 ngx_str_t</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-ngx-array-t"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2.2 ngx_array_t</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">3. handler模块的编写步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-日志系统"><span class="toc-number">4.</span> <span class="toc-text">4. 日志系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-错误日志"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 错误日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-访问日志"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 访问日志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-upstream机制"><span class="toc-number">5.</span> <span class="toc-text">5. upstream机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-反向代理"><span class="toc-number">6.</span> <span class="toc-text">6. 反向代理</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-编译步骤"><span class="toc-number">1.</span> <span class="toc-text">1. 编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-configure原理"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 configure原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-auto脚本"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 auto脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-auto-options脚本"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 auto/options脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-auto-init脚本"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 auto/init脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-3-auto-sources脚本"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 auto/sources脚本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-源码解析"><span class="toc-number">2.</span> <span class="toc-text">2. 源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-模块相关"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 模块相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-数据结构"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-ngx-str-t"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 ngx_str_t</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-ngx-array-t"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2.2 ngx_array_t</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-handler模块的编写步骤"><span class="toc-number">3.</span> <span class="toc-text">3. handler模块的编写步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-模块编译"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 模块编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-日志系统"><span class="toc-number">4.</span> <span class="toc-text">4. 日志系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-错误日志"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 错误日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-访问日志"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 访问日志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-upstream机制"><span class="toc-number">5.</span> <span class="toc-text">5. upstream机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-反向代理"><span class="toc-number">6.</span> <span class="toc-text">6. 反向代理</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -403,7 +403,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.6k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
@@ -504,6 +504,16 @@ ngx_module_t ngx_http_module_name_module = {};
 </ol>
 </blockquote>
 <pre><code>static ngx_int_t ngx_http_module_name_handler(ngx_http_request_t *r);
+</code></pre><h3 id="3-1-模块编译"><a href="#3-1-模块编译" class="headerlink" title="3.1 模块编译"></a>3.1 模块编译</h3><blockquote>
+<p>对于开发一个模块，我们是需要把这个模块的C代码组织到一个目录里，同时需要编写一个config文件。这个config文件的内容就是告诉nginx的编译脚本，该如何进行编译。</p>
+</blockquote>
+<pre><code>ngx_addon_name=ngx_http_hello_module
+HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_hello_module&quot;
+NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_hello_module.c&quot;
+</code></pre><blockquote>
+<p>执行如下命令进行编译</p>
+</blockquote>
+<pre><code>./configure –add-module=/home/jizhao/open_source/book_module        
 </code></pre><h2 id="4-日志系统"><a href="#4-日志系统" class="headerlink" title="4. 日志系统"></a>4. 日志系统</h2><blockquote>
 <p>Nginx的日志系统分为两个部分，一个是Nginx核心的错误日志（包括debug日志），一个是各模块的访问日志，整个Nginx框架中主要以核心的错误日志为主，各模块的访问日志根据模块调用顺序使用，下面分别介绍两种日志系统。</p>
 </blockquote>
