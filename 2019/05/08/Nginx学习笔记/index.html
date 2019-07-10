@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-07-10T06:41:31.338Z">
+<meta property="og:updated_time" content="2019-07-10T06:53:24.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -422,10 +422,8 @@
 <h4 id="1-2-1-auto-options脚本"><a href="#1-2-1-auto-options脚本" class="headerlink" title="1.2.1 auto/options脚本"></a>1.2.1 auto/options脚本</h4><blockquote>
 <p>auto/options主是处理用户输入的configure选项，以及输出帮助信息等。auto/options的目的主要是处理用户选项，并由选项生成一些全局变量的值，这些值在其它文件中会用到。该文件也会输出configure的帮助信息。<br>应当注意如下代码</p>
 </blockquote>
-<pre><code>for option
-do
-    opt=&quot;$opt `echo $option | sed -e \&quot;s/\(--[^=]*=\)\(.* .*\)/\1&apos;\2&apos;/\&quot;`&quot;
-</code></pre><blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for option</span><br><span class="line">do</span><br><span class="line">    opt="$opt `echo $option | sed -e \"s/\(--[^=]*=\)\(.* .*\)/\1'\2'/\"`"</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>for后面可以省略要遍历的变量,这时,表示在遍历$@,即用户传入的所有变量组合</p>
 </blockquote>
 <h4 id="1-2-2-auto-init脚本"><a href="#1-2-2-auto-init脚本" class="headerlink" title="1.2.2 auto/init脚本"></a>1.2.2 auto/init脚本</h4><blockquote>
@@ -441,24 +439,20 @@ do
 <h2 id="2-源码解析"><a href="#2-源码解析" class="headerlink" title="2. 源码解析"></a>2. 源码解析</h2><h3 id="2-1-模块相关"><a href="#2-1-模块相关" class="headerlink" title="2.1 模块相关"></a>2.1 模块相关</h3><blockquote>
 <p>在<em>ngx_module.h</em>中引用了两个至关重要的外部变量</p>
 </blockquote>
-<pre><code>extern ngx_module_t  *ngx_modules[];
-extern char          *ngx_module_names[];
-</code></pre><blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">ngx_module_t</span>  *ngx_modules[];</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span>          *ngx_module_names[];</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p><em>ngx_modules</em>跟<em>ngx_module_names</em>定义在<em>ngx_modules.c</em>中，这个文件并不存在于nginx源码中，在编译时执行configure动态生成。ngx_modules数组包含所有的Nginx模块，Nginx启动时会调用<em>ngx_cycle_modules</em>函数，原型如下：</p>
 </blockquote>
-<pre><code>ngx_int_t ngx_cycle_modules(ngx_cycle_t *cycle)
-</code></pre><blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ngx_int_t</span> ngx_cycle_modules(<span class="keyword">ngx_cycle_t</span> *cycle)</span><br></pre></td></tr></table></figure>    
+<blockquote>
 <p>此函数的目的是将ngx_modules中的数据复制到cycle中，函数调用顺序如下：</p>
 </blockquote>
 <pre><code>main-&gt;ngx_init_cycle-&gt;ngx_cycle_modules
 </code></pre><h3 id="2-2-数据结构"><a href="#2-2-数据结构" class="headerlink" title="2.2 数据结构"></a>2.2 数据结构</h3><h4 id="2-2-1-ngx-str-t"><a href="#2-2-1-ngx-str-t" class="headerlink" title="2.2.1 ngx_str_t"></a>2.2.1 ngx_str_t</h4><blockquote>
 <p>Nginx开发从入门到精通已经对<a href="http://tengine.taobao.org/book/chapter_02.html#ngx-str-t-100" target="_blank" rel="noopener">ngx_str_t</a>的定义以及相关api进行了非常详细的讲解，以下为定义：</p>
 </blockquote>
-<pre><code>typedef struct {
-    size_t      len;
-    u_char     *data;
-} ngx_str_t;
-</code></pre><blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">size_t</span>      len;</span><br><span class="line">    u_char     *data;</span><br><span class="line">&#125; <span class="keyword">ngx_str_t</span>;</span><br></pre></td></tr></table></figure>     
+<blockquote>
 <p>注意事项：    </p>
 <ol>
 <li>不要试图复制char *到data所指向的内存，可能导致coredump</li>
@@ -469,15 +463,8 @@ extern char          *ngx_module_names[];
 <h4 id="2-2-2-ngx-array-t"><a href="#2-2-2-ngx-array-t" class="headerlink" title="2.2.2 ngx_array_t"></a>2.2.2 ngx_array_t</h4><blockquote>
 <p>Nginx开发从入门到精通已经对<a href="http://tengine.taobao.org/book/chapter_02.html#ngx-array-t-100" target="_blank" rel="noopener">ngx_array_t</a>的定义以及相关api进行了非常详细的讲解，以下为定义：</p>
 </blockquote>
-<pre><code>typedef struct ngx_array_s       ngx_array_t;
-struct ngx_array_s {
-    void        *elts;
-    ngx_uint_t   nelts;
-    size_t       size;
-    ngx_uint_t   nalloc;
-    ngx_pool_t  *pool;
-};
-</code></pre><blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ngx_array_s</span>       <span class="title">ngx_array_t</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ngx_array_s</span> &#123;</span></span><br><span class="line">    <span class="keyword">void</span>        *elts;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>   nelts;</span><br><span class="line">    <span class="keyword">size_t</span>       size;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>   nalloc;</span><br><span class="line">    <span class="keyword">ngx_pool_t</span>  *pool;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>     
+<blockquote>
 <p>注意事项</p>
 <ol>
 <li>如果使用ngx_array_t作为字符串容器，在调用ngx_array_create时，使用字符串长度最后一个参数</li>
@@ -489,22 +476,20 @@ struct ngx_array_s {
 <li>编写模块基本结构。包括模块的定义，模块上下文结构，模块的配置结构等，即分别初始化如下变量：</li>
 </ol>
 </blockquote>
-<pre><code>static ngx_command_t ngx_http_module_name_commands[] = {};
-static ngx_http_module_t ngx_http_module_name_module_ctx = {};
-ngx_module_t ngx_http_module_name_module = {};
-</code></pre><blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">ngx_command_t</span> ngx_http_module_name_commands[] = &#123;&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">ngx_http_module_t</span> ngx_http_module_name_module_ctx = &#123;&#125;;</span><br><span class="line"><span class="keyword">ngx_module_t</span> ngx_http_module_name_module = &#123;&#125;;</span><br></pre></td></tr></table></figure> 
+<blockquote>
 <ol start="2">
 <li>实现handler的挂载函数。根据模块的需求选择正确的挂载方式，即实现如下函数：</li>
 </ol>
 </blockquote>
-<pre><code>static ngx_int_t ngx_http_module_name_init(ngx_conf_t *cf)；
-</code></pre><blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static ngx_int_t ngx_http_module_name_init(ngx_conf_t *cf)；</span><br></pre></td></tr></table></figure> 
+<blockquote>
 <ol start="3">
 <li>编写handler处理函数。模块的功能主要通过这个函数来完成，即实现如下函数：</li>
 </ol>
 </blockquote>
-<pre><code>static ngx_int_t ngx_http_module_name_handler(ngx_http_request_t *r);
-</code></pre><h3 id="3-1-模块编译"><a href="#3-1-模块编译" class="headerlink" title="3.1 模块编译"></a>3.1 模块编译</h3><blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> ngx_int_t <span class="title">ngx_http_module_name_handler</span><span class="params">(<span class="keyword">ngx_http_request_t</span> *r)</span></span>;</span><br></pre></td></tr></table></figure>     
+<h3 id="3-1-模块编译"><a href="#3-1-模块编译" class="headerlink" title="3.1 模块编译"></a>3.1 模块编译</h3><blockquote>
 <p>对于开发一个模块，我们是需要把这个模块的C代码组织到一个目录里，同时需要编写一个config文件。这个config文件的内容就是告诉nginx的编译脚本，该如何进行编译。</p>
 </blockquote>
 <pre><code>ngx_addon_name=ngx_http_hello_module
