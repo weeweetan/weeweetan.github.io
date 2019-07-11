@@ -27,7 +27,7 @@
 <meta property="og:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weeweetan.github.io/images/2019-05-13_nginx.png">
-<meta property="og:updated_time" content="2019-07-10T06:53:24.815Z">
+<meta property="og:updated_time" content="2019-07-11T03:06:28.483Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
 <meta name="twitter:description" content="1. 编译步骤1.1 configure原理 configure本质上是个shell脚本，所以如果要完全理解configure需要熟悉shell基本语法，除此之外，脚本中大量运用了test、sed、cat、echo、grep等命令以及重定向符，所以也需要了解这些命令的用法。  1.2 auto脚本 auto脚本由一系列脚本组成，他们有一些是实现一些通用功能由其它脚本来调用（如have），有一些则是">
@@ -403,7 +403,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/08/Nginx学习笔记/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.8k(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
@@ -490,16 +490,15 @@
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> ngx_int_t <span class="title">ngx_http_module_name_handler</span><span class="params">(<span class="keyword">ngx_http_request_t</span> *r)</span></span>;</span><br></pre></td></tr></table></figure>     
 <h3 id="3-1-模块编译"><a href="#3-1-模块编译" class="headerlink" title="3.1 模块编译"></a>3.1 模块编译</h3><blockquote>
-<p>对于开发一个模块，我们是需要把这个模块的C代码组织到一个目录里，同时需要编写一个config文件。这个config文件的内容就是告诉nginx的编译脚本，该如何进行编译。</p>
+<blockquote><p>对于开发一个模块，我们是需要把这个模块的C代码组织到一个目录里，同时需要编写一个config文件。这个config文件的内容就是告诉nginx的编译脚本，该如何进行编译。</p>
+<footer><strong>淘宝</strong><cite><a href="http://tengine.taobao.org/book/chapter_03.html#config" target="_blank" rel="noopener">Nginx开发从入门到精通</a></cite></footer></blockquote>
 </blockquote>
-<pre><code>ngx_addon_name=ngx_http_hello_module
-HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_hello_module&quot;
-NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_hello_module.c&quot;
-</code></pre><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">ngx_addon_name=ngx_http_hello_module</span><br><span class="line">HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_hello_module&quot;</span><br><span class="line">NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_hello_module.c&quot;</span><br></pre></td></tr></table></figure> 
+<blockquote>
 <p>执行如下命令进行编译</p>
 </blockquote>
-<pre><code>./configure –add-module=/home/jizhao/open_source/book_module        
-</code></pre><h2 id="4-日志系统"><a href="#4-日志系统" class="headerlink" title="4. 日志系统"></a>4. 日志系统</h2><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure –add-module=/home/jizhao/open_source/book_module        </span><br></pre></td></tr></table></figure>    
+<h2 id="4-日志系统"><a href="#4-日志系统" class="headerlink" title="4. 日志系统"></a>4. 日志系统</h2><blockquote>
 <p>Nginx的日志系统分为两个部分，一个是Nginx核心的错误日志（包括debug日志），一个是各模块的访问日志，整个Nginx框架中主要以核心的错误日志为主，各模块的访问日志根据模块调用顺序使用，下面分别介绍两种日志系统。</p>
 </blockquote>
 <h3 id="4-1-错误日志"><a href="#4-1-错误日志" class="headerlink" title="4.1 错误日志"></a>4.1 错误日志</h3><blockquote>
