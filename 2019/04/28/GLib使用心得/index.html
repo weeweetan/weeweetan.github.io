@@ -18,18 +18,18 @@
   
   
   <title>GLib使用心得 | weeweetan</title>
-  <meta name="description" content="前言 关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。  相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string, const gchar *val); GString">
+  <meta name="description" content="前言 关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。  相关API字符串相关API12345 GString *g_string_new(const gchar *init);GString *g_string_append(GString *string, const gchar *val);GStr">
 <meta name="keywords" content="GLib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GLib使用心得">
 <meta property="og:url" content="https://weeweetan.github.io/2019/04/28/GLib使用心得/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="前言 关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。  相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string, const gchar *val); GString">
+<meta property="og:description" content="前言 关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。  相关API字符串相关API12345 GString *g_string_new(const gchar *init);GString *g_string_append(GString *string, const gchar *val);GStr">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-18T01:23:41.021Z">
+<meta property="og:updated_time" content="2019-07-11T03:11:05.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GLib使用心得">
-<meta name="twitter:description" content="前言 关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。  相关API字符串相关APIGString *g_string_new(const gchar *init); GString *g_string_append(GString *string, const gchar *val); GString">
+<meta name="twitter:description" content="前言 关于GLib的介绍这里就不赘述了，具体API介绍可以去GLib API Reference查阅，这里只是记录一下使用相关API所遇到的一些坑。  相关API字符串相关API12345 GString *g_string_new(const gchar *init);GString *g_string_append(GString *string, const gchar *val);GStr">
   <!-- Canonical links -->
   <link rel="canonical" href="https://weeweetan.github.io/2019/04/28/GLib使用心得/index.html">
   
@@ -401,7 +401,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/28/GLib使用心得/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 558(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 555(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
@@ -414,40 +414,20 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>关于GLib的介绍这里就不赘述了，具体API介绍可以去<a href="https://developer.gnome.org/glib/" target="_blank" rel="noopener">GLib API Reference</a>查阅，这里只是记录一下使用相关API所遇到的一些坑。</p>
 </blockquote>
-<h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><h3 id="字符串相关API"><a href="#字符串相关API" class="headerlink" title="字符串相关API"></a>字符串相关API</h3><pre><code>GString *g_string_new(const gchar *init);
-GString *g_string_append(GString *string, const gchar *val);
-GString *g_string_prepend(GString *string, const gchar *val);
-gchar *g_string_free(GString *string, gboolean free_segment);
-</code></pre><blockquote>
+<h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><h3 id="字符串相关API"><a href="#字符串相关API" class="headerlink" title="字符串相关API"></a>字符串相关API</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="function">GString *<span class="title">g_string_new</span><span class="params">(<span class="keyword">const</span> gchar *init)</span></span>;</span><br><span class="line"><span class="function">GString *<span class="title">g_string_append</span><span class="params">(GString *<span class="built_in">string</span>, <span class="keyword">const</span> gchar *val)</span></span>;</span><br><span class="line"><span class="function">GString *<span class="title">g_string_prepend</span><span class="params">(GString *<span class="built_in">string</span>, <span class="keyword">const</span> gchar *val)</span></span>;</span><br><span class="line"><span class="function">gchar *<span class="title">g_string_free</span><span class="params">(GString *<span class="built_in">string</span>, gboolean free_segment)</span></span>;</span><br></pre></td></tr></table></figure> 
+<blockquote>
 <p>如果需要对字符串进行拼接操作，使用GString相关API是非常方便的。<strong>注意</strong> g_string_new跟g_string_free一定要配套使用，否则会内存泄漏。<br><em>g_string_append</em>跟<em>g_string_prepend</em>都是直接在原字符串上操作，这点要切记。</p>
 </blockquote>
-<h3 id="字符转换相关API"><a href="#字符转换相关API" class="headerlink" title="字符转换相关API"></a>字符转换相关API</h3><pre><code>gchar *g_filename_display_basename(const gchar *filename);
-gchar *g_locale_from_utf8(const gchar *utf8string, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error);
-gchar *g_locale_to_utf8(const gchar *opsysstring, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error);
-</code></pre><blockquote>
+<h3 id="字符转换相关API"><a href="#字符转换相关API" class="headerlink" title="字符转换相关API"></a>字符转换相关API</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">gchar *<span class="title">g_filename_display_basename</span><span class="params">(<span class="keyword">const</span> gchar *filename)</span></span>;</span><br><span class="line"><span class="function">gchar *<span class="title">g_locale_from_utf8</span><span class="params">(<span class="keyword">const</span> gchar *utf8string, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error)</span></span>;</span><br><span class="line"><span class="function">gchar *<span class="title">g_locale_to_utf8</span><span class="params">(<span class="keyword">const</span> gchar *opsysstring, gssize len, gsize *bytes_read, gsize *bytes_written, GError **error)</span></span>;</span><br></pre></td></tr></table></figure> 
+<blockquote>
 <p>g_filename_display_basename 此函数的参数字符编码必须是UTF-8，否则返回的字符串为乱码<br>g_locale_from_utf8 此函数将参数字符串从UTF-8编码转换为程序当前的编码，一般是GB2312，一般用于读取UTF-8编码的文件<br>g_locale_to_utf8 此函数将参数字符串从程序当前编码转换为UTF-8<br>下面看个例子, 比如我们有个含中文的文件名 <em>/data/test/哈哈.txt</em>如果想获得 <em>哈哈.txt</em>，则必须首先使用 <em>g_locale_to_utf8</em>函数转换一次, 然后再去获取basename</p>
 </blockquote>
-<pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);
-gchar *str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL);
-gchar *basename = g_filename_display_basename(str);
-</code></pre><blockquote>
-<p>如果想使用GString *类型保存basename，则必须重新申请内存块</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GString *<span class="built_in">string</span> = g_string_new(<span class="string">"/data/test/哈哈.txt"</span>);</span><br><span class="line">gchar *str = g_locale_to_utf8(<span class="built_in">string</span>-&gt;str, <span class="built_in">string</span>-&gt;len, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">gchar *basename = g_filename_display_basename(str);</span><br></pre></td></tr></table></figure>     
+<blockquote>
+<p>如果想使用GString <em>类型保存basename，则必须重新申请内存块<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GString *basename_string = g_string_new(basename); </span><br></pre></td></tr></table></figure><br>千万别像下面这样做<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GString *<span class="built_in">string</span> = g_string_new(<span class="string">"/data/test/哈哈.txt"</span>);</span><br><span class="line"><span class="built_in">string</span>-&gt;str = g_locale_to_utf8(<span class="built_in">string</span>-&gt;str, <span class="built_in">string</span>-&gt;len, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>); </span><br></pre></td></tr></table></figure><br>如果像上面那样做，因为转换后的字符串长度跟转换前不一样，后续使用会出问题，</em>g_locale_from_utf8<em> 同理<br><strong>注意</strong> </em>g_locale_to_utf8<em>返回的char </em>需要手动释放内存</p>
 </blockquote>
-<pre><code>GString *basename_string = g_string_new(basename); 
-</code></pre><blockquote>
-<p>千万别像下面这样做</p>
-</blockquote>
-<pre><code>GString *string = g_string_new(&quot;/data/test/哈哈.txt&quot;);
-string-&gt;str = g_locale_to_utf8(string-&gt;str, string-&gt;len, NULL, NULL, NULL); 
-</code></pre><blockquote>
-<p>如果像上面那样做，因为转换后的字符串长度跟转换前不一样，后续使用会出问题，<em>g_locale_from_utf8</em> 同理<br><strong>注意</strong> <em>g_locale_to_utf8</em>返回的char *需要手动释放内存</p>
-</blockquote>
-<h3 id="解析key-value文件API"><a href="#解析key-value文件API" class="headerlink" title="解析key-value文件API"></a>解析key-value文件API</h3><pre><code>GKeyFile *g_key_file_new(void);
-gboolean g_key_file_load_from_file(GKeyFile *key_file, const gchar *file, GKeyFileFlags flags, GError **error);
-gint g_key_file_get_integer(GKeyFile *key_file, const gchar *group_name,  const gchar *key, GError **error);
-gchar *g_key_file_get_string(GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);
-void g_key_file_free(GKeyFile *key_file);
-</code></pre><blockquote>
+<h3 id="解析key-value文件API"><a href="#解析key-value文件API" class="headerlink" title="解析key-value文件API"></a>解析key-value文件API</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">GKeyFile *<span class="title">g_key_file_new</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function">gboolean <span class="title">g_key_file_load_from_file</span><span class="params">(GKeyFile *key_file, <span class="keyword">const</span> gchar *file, GKeyFileFlags flags, GError **error)</span></span>;</span><br><span class="line"><span class="function">gint <span class="title">g_key_file_get_integer</span><span class="params">(GKeyFile *key_file, <span class="keyword">const</span> gchar *group_name,  <span class="keyword">const</span> gchar *key, GError **error)</span></span>;</span><br><span class="line"><span class="function">gchar *<span class="title">g_key_file_get_string</span><span class="params">(GKeyFile *key_file, <span class="keyword">const</span> gchar *group_name, <span class="keyword">const</span> gchar *key, GError **error)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">g_key_file_free</span><span class="params">(GKeyFile *key_file)</span></span>;</span><br></pre></td></tr></table></figure>     
+<blockquote>
 <p>这几个API很好理解,用来解析具有键值对特征的文件,<em>g_key_file_new</em>跟<em>g_key_file_free</em>配套使用;<br>g_key_file_load_from_file的第二个参数的字符编码格式为UTF-8,在使用时一定要先转换一次;</p>
 </blockquote>
 
