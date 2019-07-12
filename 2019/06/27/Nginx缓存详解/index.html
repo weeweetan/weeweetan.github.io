@@ -18,18 +18,18 @@
   
   
   <title>Nginx缓存详解 | weeweetan</title>
-  <meta name="description" content="1. 相关配置1.1 配置指令 Nginx缓存由proxy_cache_path指令开启  1proxy_cache_path D:\output levels=1:2 keys_zone=cache1:10m max_size=2g inactive=60m use_temp_path=off; 2. 源码解析 Nginx与文件缓存相关的代码在src/http/ngx_http_file_cac">
+  <meta name="description" content="1. 相关配置1.1 配置指令 Nginx缓存由proxy_cache_path指令开启  1proxy_cache_path D:\output levels=1:2 keys_zone=my_cache:10m max_size=2g inactive=60m use_temp_path=off;  对于每个参数的具体含义可以参考nginx官方文档，对于缓存文件名则需要proxy_cache_">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx缓存详解">
 <meta property="og:url" content="https://weeweetan.github.io/2019/06/27/Nginx缓存详解/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="1. 相关配置1.1 配置指令 Nginx缓存由proxy_cache_path指令开启  1proxy_cache_path D:\output levels=1:2 keys_zone=cache1:10m max_size=2g inactive=60m use_temp_path=off; 2. 源码解析 Nginx与文件缓存相关的代码在src/http/ngx_http_file_cac">
+<meta property="og:description" content="1. 相关配置1.1 配置指令 Nginx缓存由proxy_cache_path指令开启  1proxy_cache_path D:\output levels=1:2 keys_zone=my_cache:10m max_size=2g inactive=60m use_temp_path=off;  对于每个参数的具体含义可以参考nginx官方文档，对于缓存文件名则需要proxy_cache_">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-11T09:09:12.532Z">
+<meta property="og:updated_time" content="2019-07-12T01:58:03.101Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx缓存详解">
-<meta name="twitter:description" content="1. 相关配置1.1 配置指令 Nginx缓存由proxy_cache_path指令开启  1proxy_cache_path D:\output levels=1:2 keys_zone=cache1:10m max_size=2g inactive=60m use_temp_path=off; 2. 源码解析 Nginx与文件缓存相关的代码在src/http/ngx_http_file_cac">
+<meta name="twitter:description" content="1. 相关配置1.1 配置指令 Nginx缓存由proxy_cache_path指令开启  1proxy_cache_path D:\output levels=1:2 keys_zone=my_cache:10m max_size=2g inactive=60m use_temp_path=off;  对于每个参数的具体含义可以参考nginx官方文档，对于缓存文件名则需要proxy_cache_">
   <!-- Canonical links -->
   <link rel="canonical" href="https://weeweetan.github.io/2019/06/27/Nginx缓存详解/index.html">
   
@@ -350,7 +350,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-相关配置"><span class="toc-number">1.</span> <span class="toc-text">1. 相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-配置指令"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 配置指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-源码解析"><span class="toc-number">2.</span> <span class="toc-text">2. 源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-缓存文件名生成"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 缓存文件名生成</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-相关配置"><span class="toc-number">1.</span> <span class="toc-text">1. 相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-配置指令"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 配置指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-源码解析"><span class="toc-number">2.</span> <span class="toc-text">2. 源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-缓存文件名生成"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 缓存文件名生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-生成由levels参数指定的目录层级"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 生成由levels参数指定的目录层级</span></a></li></ol></li></ol>
     </nav>
   </div>
 </aside>
@@ -401,10 +401,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/06/27/Nginx缓存详解/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 529(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 976(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
 	
 
       </div>
@@ -414,7 +414,14 @@
         <h2 id="1-相关配置"><a href="#1-相关配置" class="headerlink" title="1. 相关配置"></a>1. 相关配置</h2><h3 id="1-1-配置指令"><a href="#1-1-配置指令" class="headerlink" title="1.1 配置指令"></a>1.1 配置指令</h3><blockquote>
 <p>Nginx缓存由<strong>proxy_cache_path</strong>指令开启</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_cache_path D:\output levels=1:2 keys_zone=cache1:10m max_size=2g inactive=60m use_temp_path=off;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_cache_path D:\output levels=1:2 keys_zone=my_cache:10m max_size=2g inactive=60m use_temp_path=off;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于每个参数的具体含义可以参考<a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path" target="_blank" rel="noopener">nginx官方文档</a>，对于缓存文件名则需要proxy_cache_key指令指定</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_cache_key $scheme$proxy_host$request_uri;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于该指令的具体用法可以参考<a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_key" target="_blank" rel="noopener">nginx官方文档</a></p>
+</blockquote>
 <h2 id="2-源码解析"><a href="#2-源码解析" class="headerlink" title="2. 源码解析"></a>2. 源码解析</h2><blockquote>
 <p>Nginx与文件缓存相关的代码在<strong>src/http/ngx_http_file_cache.c</strong></p>
 </blockquote>
@@ -430,7 +437,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (c-&gt;file.name.len) &#123;</span><br><span class="line">    <span class="keyword">return</span> NGX_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <ol start="2">
-<li>接下来计算缓存文件名长度，其中path-&gt;name.len为proxy_cache_path指令第一个参数，path-&gt;len为level长度，比如level=1:2则path-&gt;len为5，包含两个/，代码如下：</li>
+<li>接下来计算缓存文件名长度，其中<em>path-&gt;name.len</em>为<em>proxy_cache_path</em>指令第一个参数，path-&gt;len为levels长度，比如level=1:2则path-&gt;len为5，包含两个/，代码如下：</li>
 </ol>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c-&gt;file.name.len = path-&gt;name.len + <span class="number">1</span> + path-&gt;len</span><br><span class="line">                   + <span class="number">2</span> * NGX_HTTP_CACHE_KEY_LEN;</span><br></pre></td></tr></table></figure>
@@ -442,25 +449,47 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c-&gt;file.name.data = ngx_pnalloc(r-&gt;pool, c-&gt;file.name.len + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <ol start="4">
-<li>接着将proxy_cache_path指令设置的路径复制到c-&gt;file.name.data最前端，完成后c-&gt;file.name.data的值为:D:\output,代码如下：</li>
+<li>接着将<em>proxy_cache_path</em>指令设置的路径复制到<em>c-&gt;file.name.data</em>最前端，完成后<em>c-&gt;file.name.data</em>的值为:D:\output,代码如下：</li>
 </ol>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngx_memcpy(c-&gt;file.name.data, path-&gt;name.data, path-&gt;name.len);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <ol start="5">
-<li>接着将p指向c-&gt;file.name.data偏移 path-&gt;name.len + 1 + path-&gt;len的位置处，这样做的目的是准备生成32位长的md5文件名，并预留level设置的目录</li>
+<li>接着将p指向<em>c-&gt;file.name.data</em>偏移 <em>path-&gt;name.len + 1 + path-&gt;len</em>的位置处，这样做的目的是准备生成32位长的md5文件名，并预留level设置的目录</li>
 </ol>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p = c-&gt;file.name.data + path-&gt;name.len + <span class="number">1</span> + path-&gt;len;</span><br><span class="line">p = ngx_hex_dump(p, c-&gt;key, NGX_HTTP_CACHE_KEY_LEN);</span><br><span class="line">*p = <span class="string">'\0'</span>;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>这一步完成之后c-&gt;file.name.data的值为D:\output屯屯屯md5(proxy_cache_key)</p>
+<p>这一步完成之后<em>c-&gt;file.name.data</em>的值为D:\output屯屯屯md5(proxy_cache_key)</p>
 </blockquote>
 <blockquote>
 <ol start="6">
-<li>调用ngx_create_hashed_filename函数补全第5步预留的level目录</li>
+<li>调用<em>ngx_create_hashed_filename</em>函数补全第5步预留的level目录</li>
 </ol>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngx_create_hashed_filename(path, c-&gt;file.name.data, c-&gt;file.name.len);</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-生成由levels参数指定的目录层级"><a href="#2-2-生成由levels参数指定的目录层级" class="headerlink" title="2.2 生成由levels参数指定的目录层级"></a>2.2 生成由levels参数指定的目录层级</h3><blockquote>
+<p>生成由levels参数指定的目录层级由<em>ngx_create_hashed_filename</em>实现，现在来看看源码</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">ngx_create_hashed_filename(<span class="keyword">ngx_path_t</span> *path, u_char *file, <span class="keyword">size_t</span> len)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">size_t</span>      i, level;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>  n;</span><br><span class="line"></span><br><span class="line">    i = path-&gt;name.len + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    file[path-&gt;name.len + path-&gt;len]  = <span class="string">'/'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (n = <span class="number">0</span>; n &lt; NGX_MAX_PATH_LEVEL; n++) &#123;</span><br><span class="line">        level = path-&gt;level[n];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (level == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        len -= level;</span><br><span class="line">        file[i - <span class="number">1</span>] = <span class="string">'/'</span>;</span><br><span class="line">        ngx_memcpy(&amp;file[i], &amp;file[len], level);</span><br><span class="line">        i += level + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>从上一节中我们知道参数file的值为D:\output屯屯屯md5(proxy_cache_key)，该函数首先用一个变量i保存path长度加1，这个设计非常巧妙，在后续中会使用到，代码如下：</li>
+</ol>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i = path-&gt;name.len + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol start="2">
+<li>接着修改file的值，在层级目录后添加一个反斜杠，修改后为D:\output屯屯屯/md5(proxy_cache_key)</li>
+</ol>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file[path-&gt;name.len + path-&gt;len]  = <span class="string">'/'</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol start="3">
+<li>接下来进入一个for循环，填充file中的屯屯屯，在第一次循环中首先获取levels=1：2中的1，接着用变量len减去变量level，接着在output后添加一个’/‘，然后将file中从len位置复制1个字符到<em>output/</em>后，修改i的值；第二次循环，首先获取levels=1：2中的2，接着用len减去2，接着在第一次缓存复制的字符后添加一个’/‘，然后把file从len处复制2个字符到上一步的’/‘后，修改i的值；第三次跳出循环，至此填充完成，代码如下：</li>
+</ol>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (n = <span class="number">0</span>; n &lt; NGX_MAX_PATH_LEVEL; n++) &#123;</span><br><span class="line">    level = path-&gt;level[n];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (level == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    len -= level;</span><br><span class="line">    file[i - <span class="number">1</span>] = <span class="string">'/'</span>;</span><br><span class="line">    ngx_memcpy(&amp;file[i], &amp;file[len], level);</span><br><span class="line">    i += level + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
