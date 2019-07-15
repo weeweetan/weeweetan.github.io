@@ -46,9 +46,17 @@
     <link href="https://weeweetan.github.io/2019/06/17/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E8%AF%A6%E8%A7%A3/"/>
     <id>https://weeweetan.github.io/2019/06/17/Nginx反向代理详解/</id>
     <published>2019-06-17T12:59:19.000Z</published>
-    <updated>2019-06-27T13:02:26.808Z</updated>
+    <updated>2019-07-12T09:01:47.668Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="1-相关配置"><a href="#1-相关配置" class="headerlink" title="1. 相关配置"></a>1. 相关配置</h2><blockquote><p>Nginx实现反向代理功能主要由proxy_pass、upstream指令实现，配置指令如下：</p></blockquote><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    ...</span><br><span class="line">    upstream proxy &#123;</span><br><span class="line">        server 127.0.0.1:8080</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    server &#123;</span><br><span class="line">        ...</span><br><span class="line">        location / &#123;</span><br><span class="line">            proxy_pass http://proxy</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="2-源码解析"><a href="#2-源码解析" class="headerlink" title="2. 源码解析"></a>2. 源码解析</h2><blockquote><p>Nginx实现反向代理功能的源码在src/http/modules/ngx_http_proxy_module.c，还有一些基础代码在src/http/ngx_http_upstream.c中</p></blockquote><h3 id="2-1-入口函数"><a href="#2-1-入口函数" class="headerlink" title="2.1 入口函数"></a>2.1 入口函数</h3>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;1-相关配置&quot;&gt;&lt;a href=&quot;#1-相关配置&quot; class=&quot;headerlink&quot; title=&quot;1. 相关配置&quot;&gt;&lt;/a&gt;1. 相关配置&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Nginx实现反向代理功能主要由proxy_pass、upstream指令实现
+      
     
     </summary>
     
