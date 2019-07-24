@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://weeweetan.github.io/2019/06/17/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E8%AF%A6%E8%A7%A3/</loc>
+    <lastmod>2019-07-24</lastmod>
+  </url>  <url>
     <loc>https://weeweetan.github.io/2019/06/27/Nginx%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/</loc>
     <lastmod>2019-07-23</lastmod>
   </url>  <url>
@@ -17,9 +20,6 @@
     <lastmod>2019-07-16</lastmod>
   </url>  <url>
     <loc>https://weeweetan.github.io/2019/06/15/Nginx%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/</loc>
-    <lastmod>2019-07-16</lastmod>
-  </url>  <url>
-    <loc>https://weeweetan.github.io/2019/06/17/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E8%AF%A6%E8%A7%A3/</loc>
     <lastmod>2019-07-16</lastmod>
   </url>  <url>
     <loc>https://weeweetan.github.io/2019/04/28/GLib%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</loc>
