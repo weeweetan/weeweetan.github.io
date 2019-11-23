@@ -121,15 +121,15 @@
     <link href="https://weeweetan.github.io/2019/10/12/Nginx%E5%8F%98%E9%87%8F%E8%AF%A6%E8%A7%A3/"/>
     <id>https://weeweetan.github.io/2019/10/12/Nginx变量详解/</id>
     <published>2019-10-12T01:19:08.000Z</published>
-    <updated>2019-11-22T14:44:26.667Z</updated>
+    <updated>2019-11-23T14:40:32.350Z</updated>
     
-    <content type="html"><![CDATA[<!-- build time:Fri Nov 22 2019 22:45:27 GMT+0800 (GMT+08:00) --><h2 id="1、源码解析"><a href="#1、源码解析" class="headerlink" title="1、源码解析"></a>1、源码解析</h2><h3 id="1-1-变量分类"><a href="#1-1-变量分类" class="headerlink" title="1.1 变量分类"></a>1.1 变量分类</h3><blockquote><ol><li>nginx变量分为两种，一种是nginx内置变量，可以通过官方网站查询到的含义，另外一种则是在nginx配置文件中通过set指令设置的变量。</li></ol></blockquote><h2 id="2、总结"><a href="#2、总结" class="headerlink" title="2、总结"></a>2、总结</h2><!-- rebuild by neat -->]]></content>
+    <content type="html"><![CDATA[<!-- build time:Sat Nov 23 2019 22:40:49 GMT+0800 (GMT+08:00) --><h2 id="1、源码解析"><a href="#1、源码解析" class="headerlink" title="1、源码解析"></a>1、源码解析</h2><h3 id="1-1-变量分类"><a href="#1-1-变量分类" class="headerlink" title="1.1 变量分类"></a>1.1 变量分类</h3><blockquote><ol><li>nginx变量分为两种，一种是nginx内置变量，可以通过官方网站查询到的含义，另外一种则是在nginx配置文件中通过set指令设置的变量，首先来看一下nginx的内置变量</li></ol></blockquote><h2 id="2、总结"><a href="#2、总结" class="headerlink" title="2、总结"></a>2、总结</h2><!-- rebuild by neat -->]]></content>
     
     <summary type="html">
     
       
       
-        &lt;!-- build time:Fri Nov 22 2019 22:45:27 GMT+0800 (GMT+08:00) --&gt;&lt;h2 id=&quot;1、源码解析&quot;&gt;&lt;a href=&quot;#1、源码解析&quot; class=&quot;headerlink&quot; title=&quot;1、源码解析&quot;&gt;&lt;/a&gt;1、源
+        &lt;!-- build time:Sat Nov 23 2019 22:40:49 GMT+0800 (GMT+08:00) --&gt;&lt;h2 id=&quot;1、源码解析&quot;&gt;&lt;a href=&quot;#1、源码解析&quot; class=&quot;headerlink&quot; title=&quot;1、源码解析&quot;&gt;&lt;/a&gt;1、源
       
     
     </summary>
