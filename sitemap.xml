@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://weeweetan.github.io/2019/09/15/Nginx%E7%9A%84%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95/</loc>
+    
+    <lastmod>2020-02-12T09:49:37.064Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://weeweetan.github.io/2019/05/17/C%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/</loc>
     
     <lastmod>2020-02-10T13:26:39.614Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>https://weeweetan.github.io/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/</loc>
     
     <lastmod>2019-11-21T14:42:06.501Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://weeweetan.github.io/2019/09/15/Nginx%E7%9A%84%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95/</loc>
-    
-    <lastmod>2019-10-09T03:10:52.576Z</lastmod>
     
   </url>
   
@@ -233,14 +233,7 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/tags/index.html</loc>
-    
-    <lastmod>2019-05-15T04:37:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://weeweetan.github.io/categories/index.html</loc>
+    <loc>https://weeweetan.github.io/repository/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
@@ -254,7 +247,7 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/repository/index.html</loc>
+    <loc>https://weeweetan.github.io/tags/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
@@ -262,6 +255,13 @@
   
   <url>
     <loc>https://weeweetan.github.io/books/index.html</loc>
+    
+    <lastmod>2019-05-15T04:37:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://weeweetan.github.io/categories/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
