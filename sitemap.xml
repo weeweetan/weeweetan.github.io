@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://weeweetan.github.io/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/</loc>
+    
+    <lastmod>2020-09-22T09:57:22.531Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://weeweetan.github.io/2019/09/15/Nginx%E7%9A%84%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95/</loc>
     
     <lastmod>2020-09-20T05:38:23.878Z</lastmod>
@@ -82,13 +89,6 @@
     <loc>https://weeweetan.github.io/2019/10/12/Nginx%E7%9A%84geo%E6%A8%A1%E5%9D%97/</loc>
     
     <lastmod>2019-12-20T12:45:20.028Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://weeweetan.github.io/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/</loc>
-    
-    <lastmod>2019-11-21T14:42:06.501Z</lastmod>
     
   </url>
   
@@ -254,14 +254,14 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/tags/index.html</loc>
+    <loc>https://weeweetan.github.io/links/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/links/index.html</loc>
+    <loc>https://weeweetan.github.io/books/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
@@ -282,7 +282,7 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/books/index.html</loc>
+    <loc>https://weeweetan.github.io/tags/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
