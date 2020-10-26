@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://weeweetan.github.io/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/</loc>
+    <lastmod>2020-10-26</lastmod>
+  </url>  <url>
     <loc>https://weeweetan.github.io/2019/06/27/Nginx%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/</loc>
     <lastmod>2020-10-25</lastmod>
-  </url>  <url>
-    <loc>https://weeweetan.github.io/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/</loc>
-    <lastmod>2020-10-23</lastmod>
   </url>  <url>
     <loc>https://weeweetan.github.io/2020/02/26/GDB%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/</loc>
     <lastmod>2020-10-19</lastmod>
