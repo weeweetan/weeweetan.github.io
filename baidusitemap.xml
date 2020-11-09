@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://weeweetan.github.io/2019/05/04/libxml2%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</loc>
+    <lastmod>2020-11-09</lastmod>
+  </url>  <url>
     <loc>https://weeweetan.github.io/2019/10/12/Nginx%E7%9A%84map%E6%A8%A1%E5%9D%97/</loc>
     <lastmod>2020-11-08</lastmod>
   </url>  <url>
@@ -101,9 +104,6 @@
     <lastmod>2019-05-15</lastmod>
   </url>  <url>
     <loc>https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</loc>
-    <lastmod>2019-05-15</lastmod>
-  </url>  <url>
-    <loc>https://weeweetan.github.io/2019/05/04/libxml2%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</loc>
     <lastmod>2019-05-15</lastmod>
   </url>
 </urlset>
