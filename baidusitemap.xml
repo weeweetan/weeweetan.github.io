@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://weeweetan.github.io/2016/08/05/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2020-11-23</lastmod>
+  </url>  <url>
     <loc>https://weeweetan.github.io/2020/11/14/FFmpeg%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2020-11-20</lastmod>
   </url>  <url>
@@ -21,9 +24,6 @@
   </url>  <url>
     <loc>https://weeweetan.github.io/2019/10/12/Nginx%E7%9A%84map%E6%A8%A1%E5%9D%97/</loc>
     <lastmod>2020-11-08</lastmod>
-  </url>  <url>
-    <loc>https://weeweetan.github.io/2016/08/05/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2020-11-05</lastmod>
   </url>  <url>
     <loc>https://weeweetan.github.io/2020/02/26/GDB%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/</loc>
     <lastmod>2020-10-19</lastmod>
