@@ -4,7 +4,7 @@
   <url>
     <loc>https://weeweetan.github.io/2023/02/26/Nginx%E7%9A%84try-files%E6%A8%A1%E5%9D%97/</loc>
     
-    <lastmod>2023-03-16T15:08:30.689Z</lastmod>
+    <lastmod>2023-03-17T15:43:25.290Z</lastmod>
     
   </url>
   
@@ -310,7 +310,7 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/books/index.html</loc>
+    <loc>https://weeweetan.github.io/tags/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
@@ -324,13 +324,6 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/repository/index.html</loc>
-    
-    <lastmod>2019-05-15T04:37:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://weeweetan.github.io/links/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
@@ -338,7 +331,14 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/tags/index.html</loc>
+    <loc>https://weeweetan.github.io/repository/index.html</loc>
+    
+    <lastmod>2019-05-15T04:37:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://weeweetan.github.io/books/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
