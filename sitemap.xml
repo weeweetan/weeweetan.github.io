@@ -4,7 +4,7 @@
   <url>
     <loc>https://weeweetan.github.io/2023/06/29/Nginx%E7%9A%84geoip%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/</loc>
     
-    <lastmod>2023-08-22T14:27:53.491Z</lastmod>
+    <lastmod>2023-08-23T15:05:42.211Z</lastmod>
     
   </url>
   
@@ -317,14 +317,21 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/books/index.html</loc>
+    <loc>https://weeweetan.github.io/links/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/tags/index.html</loc>
+    <loc>https://weeweetan.github.io/repository/index.html</loc>
+    
+    <lastmod>2019-05-15T04:37:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://weeweetan.github.io/books/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
@@ -338,14 +345,7 @@
   </url>
   
   <url>
-    <loc>https://weeweetan.github.io/links/index.html</loc>
-    
-    <lastmod>2019-05-15T04:37:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://weeweetan.github.io/repository/index.html</loc>
+    <loc>https://weeweetan.github.io/tags/index.html</loc>
     
     <lastmod>2019-05-15T04:37:44.000Z</lastmod>
     
