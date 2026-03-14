@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>GDB调试技巧 | weeweetan&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1 预备工作1.1 添加编译参数1gcc -g  只有在编译的时候添加了-g这个参数，才能够使用gdb进行调试。可以使用-O0，避免某些变量被优化  2 调试过程2.1 调试新进程 gdb 程序名称  2.2 调试已有进程 使用命令 gdb attach pid，跟踪现有进程，也可使用gdb -p pid, 输入bt，直接查看当前进程运行到哪里  2.3 常用命令  单步调式 s，全称step，意">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GDB调试技巧">
+<meta property="og:url" content="https://weeweetan.github.io/2020/02/26/GDB%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="1 预备工作1.1 添加编译参数1gcc -g  只有在编译的时候添加了-g这个参数，才能够使用gdb进行调试。可以使用-O0，避免某些变量被优化  2 调试过程2.1 调试新进程 gdb 程序名称  2.2 调试已有进程 使用命令 gdb attach pid，跟踪现有进程，也可使用gdb -p pid, 输入bt，直接查看当前进程运行到哪里  2.3 常用命令  单步调式 s，全称step，意">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-26T11:24:12.000Z">
+<meta property="article:modified_time" content="2023-05-18T15:38:50.610Z">
+<meta property="article:author" content="weeweetan">
+<meta property="article:tag" content="GDB">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">weeweetan&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://weeweetan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GDB调试技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/26/GDB%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2020-02-26T11:24:12.000Z" itemprop="datePublished">2020-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GDB调试技巧
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-预备工作"><a href="#1-预备工作" class="headerlink" title="1 预备工作"></a>1 预备工作</h2><h3 id="1-1-添加编译参数"><a href="#1-1-添加编译参数" class="headerlink" title="1.1 添加编译参数"></a>1.1 添加编译参数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -g</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>只有在编译的时候添加了-g这个参数，才能够使用gdb进行调试。可以使用-O0，避免某些变量被优化</p>
+</blockquote>
+<h2 id="2-调试过程"><a href="#2-调试过程" class="headerlink" title="2 调试过程"></a>2 调试过程</h2><h3 id="2-1-调试新进程"><a href="#2-1-调试新进程" class="headerlink" title="2.1 调试新进程"></a>2.1 调试新进程</h3><blockquote>
+<p>gdb 程序名称</p>
+</blockquote>
+<h3 id="2-2-调试已有进程"><a href="#2-2-调试已有进程" class="headerlink" title="2.2 调试已有进程"></a>2.2 调试已有进程</h3><blockquote>
+<p>使用命令 gdb attach pid，跟踪现有进程，也可使用gdb -p pid, 输入bt，直接查看当前进程运行到哪里</p>
+</blockquote>
+<h3 id="2-3-常用命令"><a href="#2-3-常用命令" class="headerlink" title="2.3 常用命令"></a>2.3 常用命令</h3><blockquote>
+<ol>
+<li>单步调式 s，全称step，意味着每个函数都会进入</li>
+<li>单步调试 n, 全称next，不会进入函数</li>
+<li>打印变量 p, 全称print，可以打印各种变量的值，打印二进制 p&#x2F;t xxx</li>
+<li>继续进程 c, 全称continue，设置好断点后，继续运行，直到发生断点</li>
+<li>设置断点 b, 全称breakpoint，可设置函数断点也可以设置代码行号断点</li>
+<li>打印堆栈 bt, 全称backtrace, 打印当前函数调用栈</li>
+<li>退出当前函数栈 finish, 当使用s命令进入到某个函数后，可以使用finish指令退出当前函数</li>
+<li>设置命令行参数 set args, 若函数需要argv，args，可以使用此命令设置</li>
+<li>跳转到指定调用栈 f (0…N), 后面跟随栈层，伴随bt命令使用，首先使用bt参看当前函数调用栈，然后使用f命令查看对应栈的信息</li>
+<li>显示隐藏字符串set print elements 0，字符串过长的情况下使用p打印会以…结束，无法完整显示，使用此命令可以显示完全</li>
+<li>条件断点 b point if condition，条件满足才会触发中断</li>
+<li>监控某个值 watch，值改变就会触发中断，也可监控某个内存地址，watch *(内存地址)，适用于跟踪一些全局的结构体指针。</li>
+<li>跳转到指定行 until 行号，对于跳出循环很有用</li>
+<li>格式化打印printf fmt, var，类似于C语言的库函数 printf “%s”, str</li>
+<li>打印错误号: p errno</li>
+<li>设置变量set $a</li>
+<li>while循环以end结束</li>
+<li>layout src, 加载源码</li>
+<li>info local, 打印当前帧所有局部变量</li>
+<li>p ‘a.c’::xx,打印其他文件的全局变量</li>
+<li>p *a@123, 打印以a开始的123字节，需要配合10使用</li>
+<li>info args，打印函数入参</li>
+<li>r，运行程序</li>
+</ol>
+</blockquote>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h2><blockquote>
+<p>以上就是gdb调试常用命令，大多数场景都能应用。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://weeweetan.github.io/2020/02/26/GDB%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/" data-id="cmmpygk61002uqcw35eoc22as" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GDB/" rel="tag">GDB</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/15/Nginx%E9%99%90%E6%B5%81%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nginx限流模块详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nginx缓存清理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BPF/">BPF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FFmpeg/">FFmpeg</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Socket/">Socket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/VMware-vSphere/">VMware-vSphere</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BPF/" rel="tag">BPF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/" rel="tag">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FFmpeg/" rel="tag">FFmpeg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GDB/" rel="tag">GDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/" rel="tag">GLib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Laravel/" rel="tag">Laravel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware-vSphere/" rel="tag">VMware-vSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/" rel="tag">libxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/systemtap/" rel="tag">systemtap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vddk/" rel="tag">vddk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" rel="tag">驱动模块</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BPF/" style="font-size: 10px;">BPF</a> <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/FFmpeg/" style="font-size: 10px;">FFmpeg</a> <a href="/tags/GDB/" style="font-size: 10px;">GDB</a> <a href="/tags/GLib/" style="font-size: 12.5px;">GLib</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Laravel/" style="font-size: 10px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 12.5px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Socket/" style="font-size: 12.5px;">Socket</a> <a href="/tags/VMware-vSphere/" style="font-size: 17.5px;">VMware-vSphere</a> <a href="/tags/libxml/" style="font-size: 10px;">libxml</a> <a href="/tags/systemtap/" style="font-size: 12.5px;">systemtap</a> <a href="/tags/vddk/" style="font-size: 10px;">vddk</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" style="font-size: 10px;">驱动模块</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">BPF之巅学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/14/Nginx%E7%9A%84mirror%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的mirror模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/21/Nginx%E7%9A%84auth-basic%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的auth_basic模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/29/Nginx%E7%9A%84geoip%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的geoip模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/26/Nginx%E7%9A%84try-files%E6%A8%A1%E5%9D%97/">Nginx的try_files模块</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 weeweetan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

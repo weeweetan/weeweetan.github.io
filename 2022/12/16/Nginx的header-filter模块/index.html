@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nginx的header_filter模块 | weeweetan&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.相关指令 header_filter模块主要有以下几个指令  123Syntax:	add_header name value [always];Default:	—  12345Context:	http, server, location, if in locationSyntax:	add_trailer name value [always];Default:	—Context:	ht">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx的header_filter模块">
+<meta property="og:url" content="https://weeweetan.github.io/2022/12/16/Nginx%E7%9A%84header-filter%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="1.相关指令 header_filter模块主要有以下几个指令  123Syntax:	add_header name value [always];Default:	—  12345Context:	http, server, location, if in locationSyntax:	add_trailer name value [always];Default:	—Context:	ht">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-16T15:41:15.000Z">
+<meta property="article:modified_time" content="2023-02-26T15:55:03.390Z">
+<meta property="article:author" content="weeweetan">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">weeweetan&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://weeweetan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nginx的header-filter模块" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/12/16/Nginx%E7%9A%84header-filter%E6%A8%A1%E5%9D%97/" class="article-date">
+  <time datetime="2022-12-16T15:41:15.000Z" itemprop="datePublished">2022-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nginx/">Nginx</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx的header_filter模块
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-相关指令"><a href="#1-相关指令" class="headerlink" title="1.相关指令"></a>1.相关指令</h2><blockquote>
+<p>header_filter模块主要有以下几个指令</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	add_header name value [always];</span><br><span class="line">Default:	—</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Context:	http, server, location, if in location</span><br><span class="line">Syntax:	add_trailer name value [always];</span><br><span class="line">Default:	—</span><br><span class="line">Context:	http, server, location, if in location</span><br><span class="line">This directive appeared in version 1.13.2.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Syntax:	expires [modified] time;</span><br><span class="line">expires epoch | max | off;</span><br><span class="line">Default:	</span><br><span class="line">expires off;</span><br><span class="line">Context:	http, server, location, <span class="keyword">if</span> in location</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>配置示例</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">expires    <span class="number">24</span>h;</span><br><span class="line">expires    modified +<span class="number">24</span>h;</span><br><span class="line">expires    @<span class="number">24</span>h;</span><br><span class="line">expires    <span class="number">0</span>;</span><br><span class="line">expires    <span class="number">-1</span>;</span><br><span class="line">expires    epoch;</span><br><span class="line">expires    $expires;</span><br><span class="line">add_header Cache-Control private;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-源码解析"><a href="#2-源码解析" class="headerlink" title="2. 源码解析"></a>2. 源码解析</h2><h3 id="2-1-配置解析函数"><a href="#2-1-配置解析函数" class="headerlink" title="2.1 配置解析函数"></a>2.1 配置解析函数</h3><blockquote>
+<ol>
+<li>首先来看下add_header指令解析函数</li>
+</ol>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">static char *</span><br><span class="line">ngx_http_headers_add(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)</span><br><span class="line">&#123;</span><br><span class="line">    ngx_http_headers_conf_t *hcf = conf;</span><br><span class="line"></span><br><span class="line">    ngx_str_t                          *value;</span><br><span class="line">    ngx_uint_t                          i;</span><br><span class="line">    ngx_array_t                       **headers;</span><br><span class="line">    ngx_http_header_val_t              *hv;</span><br><span class="line">    ngx_http_set_header_t              *set;</span><br><span class="line">    ngx_http_compile_complex_value_t    ccv;</span><br><span class="line"></span><br><span class="line">    value = cf-&gt;args-&gt;elts;</span><br><span class="line"></span><br><span class="line">    // 取到数组指针</span><br><span class="line">    headers = (ngx_array_t **) ((char *) hcf + cmd-&gt;offset);</span><br><span class="line"></span><br><span class="line">    if (*headers == NULL) &#123;</span><br><span class="line">        *headers = ngx_array_create(cf-&gt;pool, 1,</span><br><span class="line">                                    sizeof(ngx_http_header_val_t));</span><br><span class="line">        if (*headers == NULL) &#123;</span><br><span class="line">            return NGX_CONF_ERROR;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //从数组中push一个元素</span><br><span class="line">    hv = ngx_array_push(*headers);</span><br><span class="line">    if (hv == NULL) &#123;</span><br><span class="line">        return NGX_CONF_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 取配置header的key</span><br><span class="line">    hv-&gt;key = value[1];</span><br><span class="line">    hv-&gt;handler = NULL;</span><br><span class="line">    hv-&gt;offset = 0;</span><br><span class="line">    hv-&gt;always = 0;</span><br><span class="line"></span><br><span class="line">    if (headers == &amp;hcf-&gt;headers) &#123;</span><br><span class="line">        hv-&gt;handler = ngx_http_add_header;</span><br><span class="line"></span><br><span class="line">        set = ngx_http_set_headers;</span><br><span class="line">        for (i = 0; set[i].name.len; i++) &#123;</span><br><span class="line">            if (ngx_strcasecmp(value[1].data, set[i].name.data) != 0) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            hv-&gt;offset = set[i].offset;</span><br><span class="line">            hv-&gt;handler = set[i].handler;</span><br><span class="line"></span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (value[2].len == 0) &#123;</span><br><span class="line">        ngx_memzero(&amp;hv-&gt;value, sizeof(ngx_http_complex_value_t));</span><br><span class="line"></span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        ngx_memzero(&amp;ccv, sizeof(ngx_http_compile_complex_value_t));</span><br><span class="line"></span><br><span class="line">        ccv.cf = cf;</span><br><span class="line">        ccv.value = &amp;value[2];</span><br><span class="line">        ccv.complex_value = &amp;hv-&gt;value;</span><br><span class="line"></span><br><span class="line">        if (ngx_http_compile_complex_value(&amp;ccv) != NGX_OK) &#123;</span><br><span class="line">            return NGX_CONF_ERROR;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (cf-&gt;args-&gt;nelts == 3) &#123;</span><br><span class="line">        return NGX_CONF_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (ngx_strcmp(value[3].data, &quot;always&quot;) != 0) &#123;</span><br><span class="line">        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,</span><br><span class="line">                           &quot;invalid parameter \&quot;%V\&quot;&quot;, &amp;value[3]);</span><br><span class="line">        return NGX_CONF_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hv-&gt;always = 1;</span><br><span class="line"></span><br><span class="line">    return NGX_CONF_OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="2">
+<li>接下来看下expires指令解析函数</li>
+</ol>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">static char *</span><br><span class="line">ngx_http_headers_expires(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)</span><br><span class="line">&#123;</span><br><span class="line">    ngx_http_headers_conf_t *hcf = conf;</span><br><span class="line"></span><br><span class="line">    char                              *err;</span><br><span class="line">    ngx_str_t                         *value;</span><br><span class="line">    ngx_int_t                          rc;</span><br><span class="line">    ngx_uint_t                         n;</span><br><span class="line">    ngx_http_complex_value_t           cv;</span><br><span class="line">    ngx_http_compile_complex_value_t   ccv;</span><br><span class="line"></span><br><span class="line">    // 判断是否已经设置过该指令</span><br><span class="line">    if (hcf-&gt;expires != NGX_HTTP_EXPIRES_UNSET) &#123;</span><br><span class="line">        return &quot;is duplicate&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    value = cf-&gt;args-&gt;elts;</span><br><span class="line"></span><br><span class="line">    //判断指令后的参数</span><br><span class="line">    if (cf-&gt;args-&gt;nelts == 2) &#123;</span><br><span class="line"></span><br><span class="line">        hcf-&gt;expires = NGX_HTTP_EXPIRES_ACCESS;</span><br><span class="line"></span><br><span class="line">        n = 1;</span><br><span class="line"></span><br><span class="line">    &#125; else &#123; /* cf-&gt;args-&gt;nelts == 3 */</span><br><span class="line"></span><br><span class="line">        if (ngx_strcmp(value[1].data, &quot;modified&quot;) != 0) &#123;</span><br><span class="line">            return &quot;invalid value&quot;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        hcf-&gt;expires = NGX_HTTP_EXPIRES_MODIFIED;</span><br><span class="line"></span><br><span class="line">        n = 2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 准备变量</span><br><span class="line">    ngx_memzero(&amp;ccv, sizeof(ngx_http_compile_complex_value_t));</span><br><span class="line"></span><br><span class="line">    ccv.cf = cf;</span><br><span class="line">    ccv.value = &amp;value[n];</span><br><span class="line">    ccv.complex_value = &amp;cv;</span><br><span class="line"></span><br><span class="line">    //编译变量</span><br><span class="line">    if (ngx_http_compile_complex_value(&amp;ccv) != NGX_OK) &#123;</span><br><span class="line">        return NGX_CONF_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (cv.lengths != NULL) &#123;</span><br><span class="line"></span><br><span class="line">        hcf-&gt;expires_value = ngx_palloc(cf-&gt;pool,</span><br><span class="line">                                        sizeof(ngx_http_complex_value_t));</span><br><span class="line">        if (hcf-&gt;expires_value == NULL) &#123;</span><br><span class="line">            return NGX_CONF_ERROR;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        *hcf-&gt;expires_value = cv;</span><br><span class="line"></span><br><span class="line">        return NGX_CONF_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    rc = ngx_http_parse_expires(&amp;value[n], &amp;hcf-&gt;expires, &amp;hcf-&gt;expires_time,</span><br><span class="line">                                &amp;err);</span><br><span class="line">    if (rc != NGX_OK) &#123;</span><br><span class="line">        return err;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return NGX_CONF_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-filter函数"><a href="#2-2-filter函数" class="headerlink" title="2.2 filter函数"></a>2.2 filter函数</h3><h4 id="2-2-1-headers-filter函数"><a href="#2-2-1-headers-filter函数" class="headerlink" title="2.2.1 headers_filter函数"></a>2.2.1 headers_filter函数</h4><blockquote>
+<p>首先看下ngx_http_headers_filter函数实现</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">static ngx_int_t</span><br><span class="line">ngx_http_headers_filter(ngx_http_request_t *r)</span><br><span class="line">&#123;</span><br><span class="line">    ngx_str_t                 value;</span><br><span class="line">    ngx_uint_t                i, safe_status;</span><br><span class="line">    ngx_http_header_val_t    *h;</span><br><span class="line">    ngx_http_headers_conf_t  *conf;</span><br><span class="line"></span><br><span class="line">    // 子请求不做处理，直接返回</span><br><span class="line">    if (r != r-&gt;main) &#123;</span><br><span class="line">        return ngx_http_next_header_filter(r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 获取location级别配置</span><br><span class="line">    conf = ngx_http_get_module_loc_conf(r, ngx_http_headers_filter_module);</span><br><span class="line"></span><br><span class="line">    if (conf-&gt;expires == NGX_HTTP_EXPIRES_OFF</span><br><span class="line">        &amp;&amp; conf-&gt;headers == NULL</span><br><span class="line">        &amp;&amp; conf-&gt;trailers == NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        return ngx_http_next_header_filter(r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    switch (r-&gt;headers_out.status) &#123;</span><br><span class="line"></span><br><span class="line">    case NGX_HTTP_OK:</span><br><span class="line">    case NGX_HTTP_CREATED:</span><br><span class="line">    case NGX_HTTP_NO_CONTENT:</span><br><span class="line">    case NGX_HTTP_PARTIAL_CONTENT:</span><br><span class="line">    case NGX_HTTP_MOVED_PERMANENTLY:</span><br><span class="line">    case NGX_HTTP_MOVED_TEMPORARILY:</span><br><span class="line">    case NGX_HTTP_SEE_OTHER:</span><br><span class="line">    case NGX_HTTP_NOT_MODIFIED:</span><br><span class="line">    case NGX_HTTP_TEMPORARY_REDIRECT:</span><br><span class="line">    case NGX_HTTP_PERMANENT_REDIRECT:</span><br><span class="line">        safe_status = 1;</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    default:</span><br><span class="line">        safe_status = 0;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (conf-&gt;expires != NGX_HTTP_EXPIRES_OFF &amp;&amp; safe_status) &#123;</span><br><span class="line">        if (ngx_http_set_expires(r, conf) != NGX_OK) &#123;</span><br><span class="line">            return NGX_ERROR;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (conf-&gt;headers) &#123;</span><br><span class="line">        h = conf-&gt;headers-&gt;elts;</span><br><span class="line">        for (i = 0; i &lt; conf-&gt;headers-&gt;nelts; i++) &#123;</span><br><span class="line"></span><br><span class="line">            if (!safe_status &amp;&amp; !h[i].always) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (ngx_http_complex_value(r, &amp;h[i].value, &amp;value) != NGX_OK) &#123;</span><br><span class="line">                return NGX_ERROR;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (h[i].handler(r, &amp;h[i], &amp;value) != NGX_OK) &#123;</span><br><span class="line">                return NGX_ERROR;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (conf-&gt;trailers) &#123;</span><br><span class="line">        h = conf-&gt;trailers-&gt;elts;</span><br><span class="line">        for (i = 0; i &lt; conf-&gt;trailers-&gt;nelts; i++) &#123;</span><br><span class="line"></span><br><span class="line">            if (!safe_status &amp;&amp; !h[i].always) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            r-&gt;expect_trailers = 1;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return ngx_http_next_header_filter(r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-2-ngx-http-trailers-filter函数"><a href="#2-2-2-ngx-http-trailers-filter函数" class="headerlink" title="2.2.2 ngx_http_trailers_filter函数"></a>2.2.2 ngx_http_trailers_filter函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">ngx_int_t</span></span><br><span class="line"><span class="title function_">ngx_http_trailers_filter</span><span class="params">(<span class="type">ngx_http_request_t</span> *r, <span class="type">ngx_chain_t</span> *in)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">ngx_str_t</span>                 value;</span><br><span class="line">    <span class="type">ngx_uint_t</span>                i, safe_status;</span><br><span class="line">    <span class="type">ngx_chain_t</span>              *cl;</span><br><span class="line">    <span class="type">ngx_table_elt_t</span>          *t;</span><br><span class="line">    <span class="type">ngx_http_header_val_t</span>    *h;</span><br><span class="line">    <span class="type">ngx_http_headers_conf_t</span>  *conf;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取location级别配置</span></span><br><span class="line">    conf = ngx_http_get_module_loc_conf(r, ngx_http_headers_filter_module);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果满足如下条件，则跳过本filter</span></span><br><span class="line">    <span class="keyword">if</span> (in == <span class="literal">NULL</span></span><br><span class="line">        || conf-&gt;trailers == <span class="literal">NULL</span></span><br><span class="line">        || !r-&gt;expect_trailers</span><br><span class="line">        || r-&gt;header_only)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ngx_http_next_body_filter(r, in);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到最后一个buf</span></span><br><span class="line">    <span class="keyword">for</span> (cl = in; cl; cl = cl-&gt;next) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cl-&gt;buf-&gt;last_buf) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果cl为null，则跳过本filter</span></span><br><span class="line">    <span class="keyword">if</span> (cl == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ngx_http_next_body_filter(r, in);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据响应码做选择</span></span><br><span class="line">    <span class="keyword">switch</span> (r-&gt;headers_out.status) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_OK:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_CREATED:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_NO_CONTENT:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_PARTIAL_CONTENT:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_MOVED_PERMANENTLY:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_MOVED_TEMPORARILY:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_SEE_OTHER:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_NOT_MODIFIED:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_TEMPORARY_REDIRECT:</span><br><span class="line">    <span class="keyword">case</span> NGX_HTTP_PERMANENT_REDIRECT:</span><br><span class="line">        safe_status = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        safe_status = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历配置的所有trailer</span></span><br><span class="line">    h = conf-&gt;trailers-&gt;elts;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; conf-&gt;trailers-&gt;nelts; i++) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!safe_status &amp;&amp; !h[i].always) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (ngx_http_complex_value(r, &amp;h[i].value, &amp;value) != NGX_OK) &#123;</span><br><span class="line">            <span class="keyword">return</span> NGX_ERROR;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (value.len) &#123;</span><br><span class="line">            t = ngx_list_push(&amp;r-&gt;headers_out.trailers);</span><br><span class="line">            <span class="keyword">if</span> (t == <span class="literal">NULL</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> NGX_ERROR;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            t-&gt;key = h[i].key;</span><br><span class="line">            t-&gt;value = value;</span><br><span class="line">            t-&gt;hash = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ngx_http_next_body_filter(r, in);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://weeweetan.github.io/2022/12/16/Nginx%E7%9A%84header-filter%E6%A8%A1%E5%9D%97/" data-id="cmmpygk6d003qqcw31p3w1fk4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/02/26/Nginx%E7%9A%84try-files%E6%A8%A1%E5%9D%97/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nginx的try_files模块
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/12/docker%E4%B8%8B%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8systemptap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">docker下安装使用systemptap</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BPF/">BPF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FFmpeg/">FFmpeg</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Socket/">Socket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/VMware-vSphere/">VMware-vSphere</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BPF/" rel="tag">BPF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/" rel="tag">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FFmpeg/" rel="tag">FFmpeg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GDB/" rel="tag">GDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/" rel="tag">GLib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Laravel/" rel="tag">Laravel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware-vSphere/" rel="tag">VMware-vSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/" rel="tag">libxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/systemtap/" rel="tag">systemtap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vddk/" rel="tag">vddk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" rel="tag">驱动模块</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BPF/" style="font-size: 10px;">BPF</a> <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/FFmpeg/" style="font-size: 10px;">FFmpeg</a> <a href="/tags/GDB/" style="font-size: 10px;">GDB</a> <a href="/tags/GLib/" style="font-size: 12.5px;">GLib</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Laravel/" style="font-size: 10px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 12.5px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Socket/" style="font-size: 12.5px;">Socket</a> <a href="/tags/VMware-vSphere/" style="font-size: 17.5px;">VMware-vSphere</a> <a href="/tags/libxml/" style="font-size: 10px;">libxml</a> <a href="/tags/systemtap/" style="font-size: 12.5px;">systemtap</a> <a href="/tags/vddk/" style="font-size: 10px;">vddk</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" style="font-size: 10px;">驱动模块</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">BPF之巅学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/14/Nginx%E7%9A%84mirror%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的mirror模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/21/Nginx%E7%9A%84auth-basic%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的auth_basic模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/29/Nginx%E7%9A%84geoip%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的geoip模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/26/Nginx%E7%9A%84try-files%E6%A8%A1%E5%9D%97/">Nginx的try_files模块</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 weeweetan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

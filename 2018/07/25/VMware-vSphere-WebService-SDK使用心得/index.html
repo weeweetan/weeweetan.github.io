@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>VMware vSphere WebService SDK使用心得 | weeweetan&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="善用mob（Managed Object Browser） mob地址一般是https:&#x2F;&#x2F;vcenter的FQDN&#x2F;mob，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。  善用GetMOREF类 GetMORE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VMware vSphere WebService SDK使用心得">
+<meta property="og:url" content="https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/index.html">
+<meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="善用mob（Managed Object Browser） mob地址一般是https:&#x2F;&#x2F;vcenter的FQDN&#x2F;mob，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。  善用GetMOREF类 GetMORE">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://weeweetan.github.io/images/2018-07-25_mob.png">
+<meta property="og:image" content="https://weeweetan.github.io/images/2018-07-25_doc.png">
+<meta property="article:published_time" content="2018-07-25T12:13:58.000Z">
+<meta property="article:modified_time" content="2019-05-15T13:27:59.170Z">
+<meta property="article:author" content="weeweetan">
+<meta property="article:tag" content="VMware-vSphere">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://weeweetan.github.io/images/2018-07-25_mob.png">
+  
+    <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">weeweetan&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://weeweetan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-VMware-vSphere-WebService-SDK使用心得" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/25/VMware-vSphere-WebService-SDK%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/" class="article-date">
+  <time datetime="2018-07-25T12:13:58.000Z" itemprop="datePublished">2018-07-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/VMware-vSphere/">VMware-vSphere</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      VMware vSphere WebService SDK使用心得
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="善用mob（Managed-Object-Browser）"><a href="#善用mob（Managed-Object-Browser）" class="headerlink" title="善用mob（Managed Object Browser）"></a>善用mob（Managed Object Browser）</h2><blockquote>
+<p>mob地址一般是<em><a href="https://vcenter的fqdn/mob">https://vcenter的FQDN/mob</a></em>，mob可以让你更好的理解SDK中的那些例子，以及根据自己的业务逻辑改写一些功能。下图为mob首页图，图中的content为整个Managed Object的顶层，从这里进去可以找到整个vcenter server中所有对象及其属性。<br><img src="/images/2018-07-25_mob.png"></p>
+</blockquote>
+<h2 id="善用GetMOREF类"><a href="#善用GetMOREF类" class="headerlink" title="善用GetMOREF类"></a>善用GetMOREF类</h2><blockquote>
+<p>GetMOREF类具体位置在<em>VMware-vSphere-SDK-6.0.0-2561048\SDK\vsphere-ws\java\JAXWS\samples\com\vmware\connection\helpers</em>，这是VMware官方提供的一个工具类，里面的每个函数对于开发都很有用。例如</p>
+</blockquote>
+<pre><code>​List&lt;VirtualDevice&gt; listvd = ((ArrayOfVirtualDevice) getMOREFs
+                                .entityProps(vmMor, new String[] &#123; &quot;config.hardware.device&quot; &#125;)
+                                .get(&quot;config.hardware.device&quot;)).getVirtualDevice();
+</code></pre>
+<blockquote>
+<p>这是VMReconfig.java中的一个片段，这段代码的作用就是去获取指定虚拟机对象的所有设备，vmMor可以通过GetMOREF类中的vmByVMname函数去获得。至于config.hardware.device，就需要用mob一层一层点进去看了，相信结合mob就能理解为什么要这么写。</p>
+</blockquote>
+<pre><code>​​
+ ManagedObjectReference propCol = connection.getServiceContent().getPropertyCollector();
+ ManagedObjectReference vmRef = getMOREFs.vmByVMname(virtualMachineName,propCol);
+
+ 
+</code></pre>
+<blockquote>
+<p>上面这段代码的作用就是如何根据虚拟机名去获取其对应的ManagedObjectReference</p>
+</blockquote>
+<h2 id="善用SDK里面的文档"><a href="#善用SDK里面的文档" class="headerlink" title="善用SDK里面的文档"></a>善用SDK里面的文档</h2><blockquote>
+<p>文档首页为<em>VMware-vSphere-SDK-6.0.0-2561048&#x2F;SDK&#x2F;vsphere-ws&#x2F;docs&#x2F;ReferenceGuide&#x2F;index.html</em><br><img src="/images/2018-07-25_doc.png"><br>根据需求，在左侧导航栏对应的去找。</p>
+</blockquote>
+<blockquote>
+<p>对SDK我整理了一下，使其能够在idea中编译运行，项目地址在<a href="https://github.com/wulikanhua/VMwareProject">VMwareProject</a>   ​</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://weeweetan.github.io/2018/07/25/VMware-vSphere-WebService-SDK%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/" data-id="cmmpygk50000oqcw30lkl4rt7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VMware-vSphere/" rel="tag">VMware-vSphere</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/08/Java%E4%B8%8EPHP%E4%B9%8B%E9%97%B4%E7%9A%84Socket%E9%80%9A%E4%BF%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java与PHP之间的Socket通信
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/25/Socket%E7%B2%98%E5%8C%85%E5%A4%84%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Socket粘包处理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BPF/">BPF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FFmpeg/">FFmpeg</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Socket/">Socket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/VMware-vSphere/">VMware-vSphere</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BPF/" rel="tag">BPF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/" rel="tag">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FFmpeg/" rel="tag">FFmpeg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GDB/" rel="tag">GDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/" rel="tag">GLib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Laravel/" rel="tag">Laravel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware-vSphere/" rel="tag">VMware-vSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/" rel="tag">libxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/systemtap/" rel="tag">systemtap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vddk/" rel="tag">vddk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" rel="tag">驱动模块</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BPF/" style="font-size: 10px;">BPF</a> <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/FFmpeg/" style="font-size: 10px;">FFmpeg</a> <a href="/tags/GDB/" style="font-size: 10px;">GDB</a> <a href="/tags/GLib/" style="font-size: 12.5px;">GLib</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Laravel/" style="font-size: 10px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 12.5px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Socket/" style="font-size: 12.5px;">Socket</a> <a href="/tags/VMware-vSphere/" style="font-size: 17.5px;">VMware-vSphere</a> <a href="/tags/libxml/" style="font-size: 10px;">libxml</a> <a href="/tags/systemtap/" style="font-size: 12.5px;">systemtap</a> <a href="/tags/vddk/" style="font-size: 10px;">vddk</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" style="font-size: 10px;">驱动模块</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">BPF之巅学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/14/Nginx%E7%9A%84mirror%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的mirror模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/21/Nginx%E7%9A%84auth-basic%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的auth_basic模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/29/Nginx%E7%9A%84geoip%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的geoip模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/26/Nginx%E7%9A%84try-files%E6%A8%A1%E5%9D%97/">Nginx的try_files模块</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 weeweetan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

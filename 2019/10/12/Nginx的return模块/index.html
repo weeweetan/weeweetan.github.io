@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nginx的return模块 | weeweetan&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1 相关配置 return模块配置指令如下：  1return value;  详细用法参考nginx官方文档 2 源码解析2.1 首先看看指令解析函数，这个函数的主要功能就是把return指令后面的文本以nginx变量的形式保存，绑定此阶段的处理函数。12345678910111213141516171819202122232425262728293031static char *ngx_str">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx的return模块">
+<meta property="og:url" content="https://weeweetan.github.io/2019/10/12/Nginx%E7%9A%84return%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="weeweetan&#39;s blog">
+<meta property="og:description" content="1 相关配置 return模块配置指令如下：  1return value;  详细用法参考nginx官方文档 2 源码解析2.1 首先看看指令解析函数，这个函数的主要功能就是把return指令后面的文本以nginx变量的形式保存，绑定此阶段的处理函数。12345678910111213141516171819202122232425262728293031static char *ngx_str">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-12T06:05:34.000Z">
+<meta property="article:modified_time" content="2021-05-29T14:39:16.013Z">
+<meta property="article:author" content="weeweetan">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="weeweetan&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">weeweetan&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://weeweetan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nginx的return模块" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/12/Nginx%E7%9A%84return%E6%A8%A1%E5%9D%97/" class="article-date">
+  <time datetime="2019-10-12T06:05:34.000Z" itemprop="datePublished">2019-10-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nginx/">Nginx</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx的return模块
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-相关配置"><a href="#1-相关配置" class="headerlink" title="1 相关配置"></a>1 相关配置</h2><blockquote>
+<p>return模块配置指令如下：</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> value;</span><br></pre></td></tr></table></figure>
+
+<p>详细用法参考<a href="http://nginx.org/en/docs/stream/ngx_stream_return_module.html#return">nginx官方文档</a></p>
+<h2 id="2-源码解析"><a href="#2-源码解析" class="headerlink" title="2 源码解析"></a>2 源码解析</h2><h3 id="2-1-首先看看指令解析函数，这个函数的主要功能就是把return指令后面的文本以nginx变量的形式保存，绑定此阶段的处理函数。"><a href="#2-1-首先看看指令解析函数，这个函数的主要功能就是把return指令后面的文本以nginx变量的形式保存，绑定此阶段的处理函数。" class="headerlink" title="2.1 首先看看指令解析函数，这个函数的主要功能就是把return指令后面的文本以nginx变量的形式保存，绑定此阶段的处理函数。"></a>2.1 首先看看指令解析函数，这个函数的主要功能就是把return指令后面的文本以nginx变量的形式保存，绑定此阶段的处理函数。</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">char</span> *</span><br><span class="line"><span class="title function_">ngx_stream_return</span><span class="params">(<span class="type">ngx_conf_t</span> *cf, <span class="type">ngx_command_t</span> *cmd, <span class="type">void</span> *conf)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">ngx_stream_return_srv_conf_t</span> *rscf = conf;</span><br><span class="line"></span><br><span class="line">    <span class="type">ngx_str_t</span>                           *value;</span><br><span class="line">    <span class="type">ngx_stream_core_srv_conf_t</span>          *cscf;</span><br><span class="line">    <span class="type">ngx_stream_compile_complex_value_t</span>   ccv;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (rscf-&gt;text.value.data) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;is duplicate&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    value = cf-&gt;args-&gt;elts;</span><br><span class="line"></span><br><span class="line">    ngx_memzero(&amp;ccv, <span class="keyword">sizeof</span>(<span class="type">ngx_stream_compile_complex_value_t</span>));</span><br><span class="line"></span><br><span class="line">    ccv.cf = cf;</span><br><span class="line">    ccv.value = &amp;value[<span class="number">1</span>];</span><br><span class="line">    ccv.complex_value = &amp;rscf-&gt;text;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ngx_stream_compile_complex_value(&amp;ccv) != NGX_OK) &#123;</span><br><span class="line">        <span class="keyword">return</span> NGX_CONF_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cscf = ngx_stream_conf_get_module_srv_conf(cf, ngx_stream_core_module);</span><br><span class="line"></span><br><span class="line">    cscf-&gt;handler = ngx_stream_return_handler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NGX_CONF_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-在上一步设置好处理函数后，nginx运行到此阶段就会调用ngx-stream-return-handler函数，并给客户端响应"><a href="#2-2-在上一步设置好处理函数后，nginx运行到此阶段就会调用ngx-stream-return-handler函数，并给客户端响应" class="headerlink" title="2.2 在上一步设置好处理函数后，nginx运行到此阶段就会调用ngx_stream_return_handler函数，并给客户端响应"></a>2.2 在上一步设置好处理函数后，nginx运行到此阶段就会调用ngx_stream_return_handler函数，并给客户端响应</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">ngx_stream_return_handler</span><span class="params">(<span class="type">ngx_stream_session_t</span> *s)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">ngx_str_t</span>                      text;</span><br><span class="line">    <span class="type">ngx_buf_t</span>                     *b;</span><br><span class="line">    <span class="type">ngx_connection_t</span>              *c;</span><br><span class="line">    <span class="type">ngx_stream_return_ctx_t</span>       *ctx;</span><br><span class="line">    <span class="type">ngx_stream_return_srv_conf_t</span>  *rscf;</span><br><span class="line"></span><br><span class="line">    c = s-&gt;connection;</span><br><span class="line"></span><br><span class="line">    c-&gt;<span class="built_in">log</span>-&gt;action = <span class="string">&quot;returning text&quot;</span>;</span><br><span class="line"></span><br><span class="line">    rscf = ngx_stream_get_module_srv_conf(s, ngx_stream_return_module);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取变量值</span></span><br><span class="line">    <span class="keyword">if</span> (ngx_stream_complex_value(s, &amp;rscf-&gt;text, &amp;text) != NGX_OK) &#123;</span><br><span class="line">        ngx_stream_finalize_session(s, NGX_STREAM_INTERNAL_SERVER_ERROR);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ngx_log_debug1(NGX_LOG_DEBUG_STREAM, c-&gt;<span class="built_in">log</span>, <span class="number">0</span>,</span><br><span class="line">                   <span class="string">&quot;stream return text: \&quot;%V\&quot;&quot;</span>, &amp;text);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (text.len == <span class="number">0</span>) &#123;</span><br><span class="line">        ngx_stream_finalize_session(s, NGX_STREAM_OK);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分配上下文内存</span></span><br><span class="line">    ctx = ngx_pcalloc(c-&gt;pool, <span class="keyword">sizeof</span>(<span class="type">ngx_stream_return_ctx_t</span>));</span><br><span class="line">    <span class="keyword">if</span> (ctx == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        ngx_stream_finalize_session(s, NGX_STREAM_INTERNAL_SERVER_ERROR);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置模块上下文</span></span><br><span class="line">    ngx_stream_set_ctx(s, ctx, ngx_stream_return_module);</span><br><span class="line"></span><br><span class="line">    b = ngx_calloc_buf(c-&gt;pool);</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        ngx_stream_finalize_session(s, NGX_STREAM_INTERNAL_SERVER_ERROR);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    b-&gt;memory = <span class="number">1</span>;</span><br><span class="line">    b-&gt;pos = text.data;</span><br><span class="line">    b-&gt;last = text.data + text.len;</span><br><span class="line">    b-&gt;last_buf = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    ctx-&gt;out = ngx_alloc_chain_link(c-&gt;pool);</span><br><span class="line">    <span class="keyword">if</span> (ctx-&gt;out == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        ngx_stream_finalize_session(s, NGX_STREAM_INTERNAL_SERVER_ERROR);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 挂载输出buf</span></span><br><span class="line">    ctx-&gt;out-&gt;buf = b;</span><br><span class="line">    ctx-&gt;out-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置写回调函数</span></span><br><span class="line">    c-&gt;write-&gt;handler = ngx_stream_return_write_handler;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用写回调函数</span></span><br><span class="line">    ngx_stream_return_write_handler(c-&gt;write);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ngx_stream_return_handler函数首先解析出return指令后面的字符串值，然后为当前模块的ngx_stream_return_ctx_t申请内存，主要用来挂载发送数据的chain，再为发送数据的chain以及buf申请内存，设置写事件的handler，最后发送响应到客户端。</p>
+</blockquote>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h2><blockquote>
+<p>return模块属于stream模块，在stream模块中处于第4阶段，所以需要绑定handler函数，将return指令后的变量或者纯文本响应给客户端。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://weeweetan.github.io/2019/10/12/Nginx%E7%9A%84return%E6%A8%A1%E5%9D%97/" data-id="cmmpygk5y002nqcw32zlp50jd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/27/Nginx%E7%BC%93%E5%AD%98%E6%B8%85%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nginx缓存清理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/12/Nginx%E7%9A%84geo%E6%A8%A1%E5%9D%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nginx的geo模块</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BPF/">BPF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FFmpeg/">FFmpeg</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GLib/">GLib</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/">Nginx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Socket/">Socket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/VMware-vSphere/">VMware-vSphere</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/libxml/">libxml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BPF/" rel="tag">BPF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/" rel="tag">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FFmpeg/" rel="tag">FFmpeg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GDB/" rel="tag">GDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GLib/" rel="tag">GLib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Laravel/" rel="tag">Laravel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware-vSphere/" rel="tag">VMware-vSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libxml/" rel="tag">libxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/systemtap/" rel="tag">systemtap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vddk/" rel="tag">vddk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" rel="tag">驱动模块</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BPF/" style="font-size: 10px;">BPF</a> <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/FFmpeg/" style="font-size: 10px;">FFmpeg</a> <a href="/tags/GDB/" style="font-size: 10px;">GDB</a> <a href="/tags/GLib/" style="font-size: 12.5px;">GLib</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Laravel/" style="font-size: 10px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 12.5px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Socket/" style="font-size: 12.5px;">Socket</a> <a href="/tags/VMware-vSphere/" style="font-size: 17.5px;">VMware-vSphere</a> <a href="/tags/libxml/" style="font-size: 10px;">libxml</a> <a href="/tags/systemtap/" style="font-size: 12.5px;">systemtap</a> <a href="/tags/vddk/" style="font-size: 10px;">vddk</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97/" style="font-size: 10px;">驱动模块</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">BPF之巅学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/14/Nginx%E7%9A%84mirror%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的mirror模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/21/Nginx%E7%9A%84auth-basic%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的auth_basic模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/29/Nginx%E7%9A%84geoip%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/">Nginx的geoip模块详解</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/26/Nginx%E7%9A%84try-files%E6%A8%A1%E5%9D%97/">Nginx的try_files模块</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 weeweetan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
