@@ -26,7 +26,7 @@
 <meta property="og:description" content="第二章2.3 扩展版BPF  2.4 调用栈回溯  2.5 火焰图  2.6 事件源2.7 kprobes 内核探测点  2.8 uprobes 用户层探测点  2.9 跟踪点2.10 USDT2.11 动态USDT2.12 性能监控计数器  2.13 perf_events  第三章3.1 概论3.2 性能分析方法论3.2.1 业务负载画像 谁导致了这个负载(eg PID, process na">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-09T13:34:31.000Z">
-<meta property="article:modified_time" content="2026-05-23T05:14:41.012Z">
+<meta property="article:modified_time" content="2026-05-24T08:55:51.949Z">
 <meta property="article:author" content="weeweetan">
 <meta property="article:tag" content="BPF">
 <meta name="twitter:card" content="summary">
@@ -487,7 +487,9 @@
 </blockquote>
 <h5 id="4-11-BCC的内部实现"><a href="#4-11-BCC的内部实现" class="headerlink" title="4.11 BCC的内部实现"></a>4.11 BCC的内部实现</h5><blockquote>
 </blockquote>
-<h5 id="4-12-BCC的调试"><a href="#4-12-BCC的调试" class="headerlink" title="4.12 BCC的调试"></a>4.12 BCC的调试</h5><h6 id="4-12-1-printf-Debugging"><a href="#4-12-1-printf-Debugging" class="headerlink" title="4.12.1 printf() Debugging"></a>4.12.1 printf() Debugging</h6><h6 id="4-12-2-BCC-Debug-output"><a href="#4-12-2-BCC-Debug-output" class="headerlink" title="4.12.2 BCC Debug output"></a>4.12.2 BCC Debug output</h6><h6 id="4-12-3-BCC-Debug-Flag"><a href="#4-12-3-BCC-Debug-Flag" class="headerlink" title="4.12.3 BCC Debug Flag"></a>4.12.3 BCC Debug Flag</h6><h6 id="4-12-4-bpflist"><a href="#4-12-4-bpflist" class="headerlink" title="4.12.4 bpflist"></a>4.12.4 bpflist</h6><h6 id="4-12-5-bpftool"><a href="#4-12-5-bpftool" class="headerlink" title="4.12.5 bpftool"></a>4.12.5 bpftool</h6><h6 id="4-12-6-dmesg"><a href="#4-12-6-dmesg" class="headerlink" title="4.12.6 dmesg"></a>4.12.6 dmesg</h6><h6 id="4-12-7-Resetting-Events"><a href="#4-12-7-Resetting-Events" class="headerlink" title="4.12.7 Resetting Events"></a>4.12.7 Resetting Events</h6><h4 id="4-13-Summary"><a href="#4-13-Summary" class="headerlink" title="4.13 Summary"></a>4.13 Summary</h4><blockquote>
+<h5 id="4-12-BCC的调试"><a href="#4-12-BCC的调试" class="headerlink" title="4.12 BCC的调试"></a>4.12 BCC的调试</h5><h6 id="4-12-1-printf-Debugging"><a href="#4-12-1-printf-Debugging" class="headerlink" title="4.12.1 printf() Debugging"></a>4.12.1 printf() Debugging</h6><blockquote>
+</blockquote>
+<h6 id="4-12-2-BCC-Debug-output"><a href="#4-12-2-BCC-Debug-output" class="headerlink" title="4.12.2 BCC Debug output"></a>4.12.2 BCC Debug output</h6><h6 id="4-12-3-BCC-Debug-Flag"><a href="#4-12-3-BCC-Debug-Flag" class="headerlink" title="4.12.3 BCC Debug Flag"></a>4.12.3 BCC Debug Flag</h6><h6 id="4-12-4-bpflist"><a href="#4-12-4-bpflist" class="headerlink" title="4.12.4 bpflist"></a>4.12.4 bpflist</h6><h6 id="4-12-5-bpftool"><a href="#4-12-5-bpftool" class="headerlink" title="4.12.5 bpftool"></a>4.12.5 bpftool</h6><h6 id="4-12-6-dmesg"><a href="#4-12-6-dmesg" class="headerlink" title="4.12.6 dmesg"></a>4.12.6 dmesg</h6><h6 id="4-12-7-Resetting-Events"><a href="#4-12-7-Resetting-Events" class="headerlink" title="4.12.7 Resetting Events"></a>4.12.7 Resetting Events</h6><h4 id="4-13-Summary"><a href="#4-13-Summary" class="headerlink" title="4.13 Summary"></a>4.13 Summary</h4><blockquote>
 </blockquote>
 <h4 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h4><h5 id="5-1-bpftrace的组件"><a href="#5-1-bpftrace的组件" class="headerlink" title="5.1 bpftrace的组件"></a>5.1 bpftrace的组件</h5><blockquote>
 </blockquote>
