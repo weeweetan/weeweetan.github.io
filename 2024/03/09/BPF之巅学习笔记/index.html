@@ -26,7 +26,7 @@
 <meta property="og:description" content="第二章2.3 扩展版BPF  2.4 调用栈回溯  2.5 火焰图  2.6 事件源2.7 kprobes 内核探测点  2.8 uprobes 用户层探测点  2.9 跟踪点2.10 USDT2.11 动态USDT2.12 性能监控计数器  2.13 perf_events  第三章3.1 概论3.2 性能分析方法论3.2.1 业务负载画像 谁导致了这个负载(eg PID, process na">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-09T13:34:31.000Z">
-<meta property="article:modified_time" content="2026-10-16T13:52:45.387Z">
+<meta property="article:modified_time" content="2026-10-17T14:41:49.839Z">
 <meta property="article:author" content="weeweetan">
 <meta property="article:tag" content="BPF">
 <meta name="twitter:card" content="summary">
@@ -817,7 +817,9 @@
 </blockquote>
 <h6 id="9-3-2-biosnoop"><a href="#9-3-2-biosnoop" class="headerlink" title="9.3.2 biosnoop"></a>9.3.2 biosnoop</h6><blockquote>
 </blockquote>
-<h6 id="9-3-3-biotop"><a href="#9-3-3-biotop" class="headerlink" title="9.3.3 biotop"></a>9.3.3 biotop</h6><h6 id="9-3-4-bitesize"><a href="#9-3-4-bitesize" class="headerlink" title="9.3.4 bitesize"></a>9.3.4 bitesize</h6><h6 id="9-3-5-seeksize"><a href="#9-3-5-seeksize" class="headerlink" title="9.3.5 seeksize"></a>9.3.5 seeksize</h6><h6 id="9-3-6-biopattern"><a href="#9-3-6-biopattern" class="headerlink" title="9.3.6 biopattern"></a>9.3.6 biopattern</h6><h6 id="9-3-7-biostacks"><a href="#9-3-7-biostacks" class="headerlink" title="9.3.7 biostacks"></a>9.3.7 biostacks</h6><h6 id="9-3-8-bioerr"><a href="#9-3-8-bioerr" class="headerlink" title="9.3.8 bioerr"></a>9.3.8 bioerr</h6><h6 id="9-3-9-mdflush"><a href="#9-3-9-mdflush" class="headerlink" title="9.3.9 mdflush"></a>9.3.9 mdflush</h6><h6 id="9-3-10-iosched"><a href="#9-3-10-iosched" class="headerlink" title="9.3.10 iosched"></a>9.3.10 iosched</h6><h6 id="9-3-11-scsilatency"><a href="#9-3-11-scsilatency" class="headerlink" title="9.3.11 scsilatency"></a>9.3.11 scsilatency</h6><h6 id="9-3-12-scsiresult"><a href="#9-3-12-scsiresult" class="headerlink" title="9.3.12 scsiresult"></a>9.3.12 scsiresult</h6><h6 id="9-3-13-nvmelatency"><a href="#9-3-13-nvmelatency" class="headerlink" title="9.3.13 nvmelatency"></a>9.3.13 nvmelatency</h6><blockquote>
+<h6 id="9-3-3-biotop"><a href="#9-3-3-biotop" class="headerlink" title="9.3.3 biotop"></a>9.3.3 biotop</h6><blockquote>
+</blockquote>
+<h6 id="9-3-4-bitesize"><a href="#9-3-4-bitesize" class="headerlink" title="9.3.4 bitesize"></a>9.3.4 bitesize</h6><h6 id="9-3-5-seeksize"><a href="#9-3-5-seeksize" class="headerlink" title="9.3.5 seeksize"></a>9.3.5 seeksize</h6><h6 id="9-3-6-biopattern"><a href="#9-3-6-biopattern" class="headerlink" title="9.3.6 biopattern"></a>9.3.6 biopattern</h6><h6 id="9-3-7-biostacks"><a href="#9-3-7-biostacks" class="headerlink" title="9.3.7 biostacks"></a>9.3.7 biostacks</h6><h6 id="9-3-8-bioerr"><a href="#9-3-8-bioerr" class="headerlink" title="9.3.8 bioerr"></a>9.3.8 bioerr</h6><h6 id="9-3-9-mdflush"><a href="#9-3-9-mdflush" class="headerlink" title="9.3.9 mdflush"></a>9.3.9 mdflush</h6><h6 id="9-3-10-iosched"><a href="#9-3-10-iosched" class="headerlink" title="9.3.10 iosched"></a>9.3.10 iosched</h6><h6 id="9-3-11-scsilatency"><a href="#9-3-11-scsilatency" class="headerlink" title="9.3.11 scsilatency"></a>9.3.11 scsilatency</h6><h6 id="9-3-12-scsiresult"><a href="#9-3-12-scsiresult" class="headerlink" title="9.3.12 scsiresult"></a>9.3.12 scsiresult</h6><h6 id="9-3-13-nvmelatency"><a href="#9-3-13-nvmelatency" class="headerlink" title="9.3.13 nvmelatency"></a>9.3.13 nvmelatency</h6><blockquote>
 </blockquote>
 <h5 id="9-4-BPF单行程序"><a href="#9-4-BPF单行程序" class="headerlink" title="9.4 BPF单行程序"></a>9.4 BPF单行程序</h5><h4 id=""><a href="#" class="headerlink" title=""></a></h4><blockquote>
 </blockquote>
