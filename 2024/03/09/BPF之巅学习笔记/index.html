@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -17,16 +17,16 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>BPF之巅学习笔记 | Hexo</title>
-  <meta name="description" content="第二章2.3 扩展版BPF  2.4 调用栈回溯  2.5 火焰图  2.6 事件源2.7 kprobes 内核探测点  2.8 uprobes 用户层探测点  2.9 跟踪点2.10 USDT2.11 动态USDT2.12 性能监控计数器  2.13 perf_events  第三章3.1 概论3.2 性能分析方法论3.2.1 业务负载画像 谁导致了这个负载(eg PID, process na">
+  <title>BPF之巅学习笔记 | weeweetan&#39;s blog</title>
+  <meta name="description" content="围绕BPF机制、BCC与bpftrace，梳理CPU、内存、文件系统、磁盘、网络、容器和虚拟机的性能分析方法，结合Nginx延迟排障说明工具选择、指标含义与常见误区。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BPF之巅学习笔记">
 <meta property="og:url" content="https://weeweetan.github.io/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="weeweetan&#39;s blog">
-<meta property="og:description" content="第二章2.3 扩展版BPF  2.4 调用栈回溯  2.5 火焰图  2.6 事件源2.7 kprobes 内核探测点  2.8 uprobes 用户层探测点  2.9 跟踪点2.10 USDT2.11 动态USDT2.12 性能监控计数器  2.13 perf_events  第三章3.1 概论3.2 性能分析方法论3.2.1 业务负载画像 谁导致了这个负载(eg PID, process na">
+<meta property="og:description" content="围绕BPF机制、BCC与bpftrace，梳理CPU、内存、文件系统、磁盘、网络、容器和虚拟机的性能分析方法，结合Nginx延迟排障说明工具选择、指标含义与常见误区。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-09T13:34:31.000Z">
-<meta property="article:modified_time" content="2026-10-29T13:52:32.211Z">
+<meta property="article:modified_time" content="2026-10-30T13:37:11.000Z">
 <meta property="article:author" content="weeweetan">
 <meta property="article:tag" content="BPF">
 <meta name="twitter:card" content="summary">
@@ -42,6 +42,15 @@
 <link rel="stylesheet" href="/css/style.css">
 
   
+<link rel="stylesheet" href="/css/accessibility.css">
+
+  
+<link rel="stylesheet" href="/css/search.css">
+
+  
+<link rel="stylesheet" href="/css/reading.css">
+
+  
   
   
   
@@ -49,27 +58,28 @@
 
 
 <body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <a class="skip-link" href="#main-content">跳到正文</a>
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
       
       
       <div class="profile-block text-center">
-        <a id="avatar" href="https://github.com/cofess" target="_blank">
-          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        <a id="avatar" href="https://github.com/weeweetan" target="_blank" rel="noopener noreferrer">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200" alt="weeweetan">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
-        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+        <h2 id="name" class="hidden-xs hidden-sm">weeweetan</h2>
+        
+        
       </div>
       
       <div class="search" id="search-form-wrap">
 
     <form class="search-form sidebar-form">
         <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <input type="text" class="search-form-input form-control" placeholder="搜索" aria-label="搜索" />
             <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+                <button type="submit" class="search-form-submit btn btn-flat" aria-label="提交搜索" onclick="return false;"><i class="icon icon-search"></i></button>
             </span>
         </div>
     </form>
@@ -77,8 +87,8 @@
   <div class="ins-search-mask"></div>
   <div class="ins-search-container">
     <div class="ins-input-wrapper">
-      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
-      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." aria-label="搜索" x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="关闭搜索"><span aria-hidden="true">×</span></button>
     </div>
     <div class="ins-section-wrapper">
       <div class="ins-section-container"></div>
@@ -88,6 +98,7 @@
 
 
 </div>
+
       <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
@@ -96,7 +107,7 @@
       </button>
     </div>
     <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-      <ul class="nav navbar-nav main-nav ">
+      <ul class="nav navbar-nav main-nav menu-highlight">
         
         
         <li class="menu-item menu-item-home">
@@ -139,26 +150,6 @@
         </li>
         
         
-        <li class="menu-item menu-item-repository">
-          <a href="/repository">
-            
-            <i class="icon icon-project"></i>
-            
-            <span class="menu-title">项目</span>
-          </a>
-        </li>
-        
-        
-        <li class="menu-item menu-item-books">
-          <a href="/books">
-            
-            <i class="icon icon-book-fill"></i>
-            
-            <span class="menu-title">书单</span>
-          </a>
-        </li>
-        
-        
         <li class="menu-item menu-item-links">
           <a href="/links">
             
@@ -182,16 +173,10 @@
       
 	
     <ul class="social-links">
-    	
-        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+    
+        <li><a href="https://github.com/weeweetan" target="_blank" rel="noopener noreferrer" aria-label="Github" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
         
-        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
-        
-        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
-        
-        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
-        
-        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        <li><a href="/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="Rss" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
         
     </ul>
 
@@ -208,7 +193,7 @@
     <div class="widget-body">
         <div id="board">
             <div class="content">
-                <p>欢迎交流与分享经验!</p>
+                <p>记录 Nginx、Linux 与性能分析的学习笔记。</p>
             </div>
         </div>
     </div>
@@ -346,7 +331,23 @@
 
   
   
-<main class="main" role="main">
+
+  <div class="reading-toc-layer">
+    <div class="reading-toc-backdrop" data-reading-toc-close hidden aria-hidden="true"></div>
+    <aside class="sidebar sidebar-toc reading-toc" id="collapseToc" data-reading-toc
+      aria-label="文章目录" aria-hidden="false" itemscope itemtype="http://schema.org/WPSideBar">
+      <div class="slimContent">
+        <nav id="toc" class="article-toc" aria-label="文章章节">
+          <button class="reading-toc-close" type="button" data-reading-toc-close aria-label="关闭文章目录">×</button>
+          <h3 class="toc-title">文章目录</h3>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%85%E8%AF%BB%E5%AF%BC%E8%88%AA"><span class="toc-number">1.</span> <span class="toc-text">阅读导航</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-BPF%EF%BC%9A%E6%8A%8A%E8%A7%82%E5%AF%9F%E7%82%B9%E6%94%BE%E5%88%B0%E9%97%AE%E9%A2%98%E5%8F%91%E7%94%9F%E5%A4%84"><span class="toc-number">2.</span> <span class="toc-text">第二章 BPF：把观察点放到问题发生处</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E4%BA%8B%E4%BB%B6%E5%88%B0%E5%8F%AF%E8%AF%BB%E7%BB%93%E6%9E%9C"><span class="toc-number">2.1.</span> <span class="toc-text">从事件到可读结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E6%BA%90%E5%86%B3%E5%AE%9A%E8%83%BD%E7%9C%8B%E5%88%B0%E4%BB%80%E4%B9%88"><span class="toc-number">2.2.</span> <span class="toc-text">事件源决定能看到什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PMU%E3%80%81perf-events-%E4%B8%8E%E8%B0%83%E7%94%A8%E6%A0%88%E7%81%AB%E7%84%B0%E5%9B%BE"><span class="toc-number">2.3.</span> <span class="toc-text">PMU、perf_events 与调用栈火焰图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%85%88%E6%89%BE%E8%B5%84%E6%BA%90%EF%BC%8C%E5%86%8D%E8%BF%BD%E8%B0%83%E7%94%A8%E8%B7%AF%E5%BE%84"><span class="toc-number">3.</span> <span class="toc-text">第三章 先找资源，再追调用路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#USE%EF%BC%9A%E5%85%88%E6%8A%8A%E8%B5%84%E6%BA%90%E5%81%87%E8%AE%BE%E5%88%97%E5%85%A8"><span class="toc-number">3.1.</span> <span class="toc-text">USE：先把资源假设列全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-60-%E7%A7%92%EF%BC%9A%E7%94%A8%E4%BD%8E%E6%88%90%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BC%A9%E5%B0%8F%E8%8C%83%E5%9B%B4"><span class="toc-number">3.2.</span> <span class="toc-text">Linux 60 秒：用低成本数据缩小范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E5%88%9D%E7%AD%9B%E5%8F%98%E6%88%90%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.3.</span> <span class="toc-text">把初筛变成可验证的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-BCC%EF%BC%9A%E7%94%A8%E7%8E%B0%E6%88%90%E5%B7%A5%E5%85%B7%E6%8A%8A%E5%81%87%E8%AE%BE%E5%8F%98%E6%88%90%E8%A7%82%E6%B5%8B"><span class="toc-number">4.</span> <span class="toc-text">第四章 BCC：用现成工具把假设变成观测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E7%97%87%E7%8A%B6%E6%8C%91%E4%B8%93%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">4.1.</span> <span class="toc-text">按症状挑专用工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E4%B8%AA%E9%80%9A%E7%94%A8%E5%B7%A5%E5%85%B7%EF%BC%9A%E4%BB%8E%E8%AE%A1%E6%95%B0%E8%B5%B0%E5%88%B0%E7%BB%86%E8%8A%82"><span class="toc-number">4.2.</span> <span class="toc-text">四个通用工具：从计数走到细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BCC-%E6%9E%B6%E6%9E%84%E4%B8%8E%E2%80%9C%E6%B2%A1%E8%BE%93%E5%87%BA%E2%80%9D%E7%9A%84%E6%8E%92%E6%9F%A5%E9%A1%BA%E5%BA%8F"><span class="toc-number">4.3.</span> <span class="toc-text">BCC 架构与“没输出”的排查顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-bpftrace%EF%BC%9A%E6%8A%8A%E5%81%87%E8%AE%BE%E5%86%99%E6%88%90%E7%9F%AD%E6%8E%A2%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">第五章 bpftrace：把假设写成短探针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E5%8F%91%E7%8E%B0%E6%8E%A2%E9%92%88%EF%BC%8C%E5%86%8D%E8%AF%BB%E5%8F%82%E6%95%B0"><span class="toc-number">5.1.</span> <span class="toc-text">先发现探针，再读参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F%E3%80%81map-%E4%B8%8E%E8%81%9A%E5%90%88"><span class="toc-number">5.2.</span> <span class="toc-text">临时变量、map 与聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-TID-%E9%85%8D%E5%AF%B9%E5%85%A5%E5%8F%A3-%E8%BF%94%E5%9B%9E%E5%B9%B6%E6%B5%8B%E9%87%8F%E7%BB%8F%E8%BF%87%E6%97%B6%E9%97%B4"><span class="toc-number">5.3.</span> <span class="toc-text">用 TID 配对入口&#x2F;返回并测量经过时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-CPU%EF%BC%9A%E5%8C%BA%E5%88%86%E8%AE%A1%E7%AE%97%E3%80%81%E7%AD%89%E5%BE%85%E8%B0%83%E5%BA%A6%E4%B8%8E%E9%98%BB%E5%A1%9E"><span class="toc-number">6.</span> <span class="toc-text">第六章 CPU：区分计算、等待调度与阻塞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%8C%87%E6%A0%87%E4%B8%8E%E5%9F%BA%E7%BA%BF"><span class="toc-number">6.1.</span> <span class="toc-text">传统指标与基线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BCC-%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B"><span class="toc-number">6.2.</span> <span class="toc-text">BCC 工具选型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="toc-number">6.3.</span> <span class="toc-text">解释观测与常见误区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0-%E5%86%85%E5%AD%98%EF%BC%9A%E7%9C%8B%E5%8E%8B%E5%8A%9B%E5%92%8C%E8%B6%8B%E5%8A%BF%EF%BC%8C%E5%88%AB%E6%8A%8A%E7%BC%93%E5%AD%98%E5%BD%93%E6%B3%84%E6%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">第七章 内存：看压力和趋势，别把缓存当泄漏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%8C%87%E6%A0%87%E4%B8%8E%E5%9F%BA%E7%BA%BF-1"><span class="toc-number">7.1.</span> <span class="toc-text">传统指标与基线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BCC-%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B-1"><span class="toc-number">7.2.</span> <span class="toc-text">BCC 工具选型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA-1"><span class="toc-number">7.3.</span> <span class="toc-text">解释观测与常见误区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%9A%E4%BB%8E%E8%B7%AF%E5%BE%84%E6%93%8D%E4%BD%9C%E5%AE%9A%E4%BD%8D%E5%88%B0%E5%85%B7%E4%BD%93%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">8.</span> <span class="toc-text">第八章 文件系统：从路径操作定位到具体文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%8C%87%E6%A0%87%E4%B8%8E%E5%9F%BA%E7%BA%BF-2"><span class="toc-number">8.1.</span> <span class="toc-text">传统指标与基线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BCC-%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B-2"><span class="toc-number">8.2.</span> <span class="toc-text">BCC 工具选型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA-2"><span class="toc-number">8.3.</span> <span class="toc-text">解释观测与常见误区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E7%A3%81%E7%9B%98-I-O%EF%BC%9A%E5%B9%B3%E5%9D%87%E5%80%BC%E3%80%81%E5%B0%BE%E5%BB%B6%E8%BF%9F%E5%92%8C%E8%AE%BE%E5%A4%87%E5%B9%B6%E8%A1%8C%E5%BA%A6"><span class="toc-number">9.</span> <span class="toc-text">第九章 磁盘 I&#x2F;O：平均值、尾延迟和设备并行度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%8C%87%E6%A0%87%E4%B8%8E%E5%9F%BA%E7%BA%BF-3"><span class="toc-number">9.1.</span> <span class="toc-text">传统指标与基线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BCC-%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B-3"><span class="toc-number">9.2.</span> <span class="toc-text">BCC 工具选型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA-3"><span class="toc-number">9.3.</span> <span class="toc-text">解释观测与常见误区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0-%E7%BD%91%E7%BB%9C%EF%BC%9A%E5%88%86%E6%B8%85%E6%8F%A1%E6%89%8B%E3%80%81%E8%BF%9E%E6%8E%A5%E5%AF%BF%E5%91%BD%E5%92%8C-HTTP-%E8%AF%B7%E6%B1%82"><span class="toc-number">10.</span> <span class="toc-text">第十章 网络：分清握手、连接寿命和 HTTP 请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%8C%87%E6%A0%87%E4%B8%8E%E5%9F%BA%E7%BA%BF-4"><span class="toc-number">10.1.</span> <span class="toc-text">传统指标与基线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BCC-%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B-4"><span class="toc-number">10.2.</span> <span class="toc-text">BCC 工具选型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E8%A7%82%E6%B5%8B%E4%B8%8E%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA-4"><span class="toc-number">10.3.</span> <span class="toc-text">解释观测与常见误区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E5%AE%89%E5%85%A8%EF%BC%9A%E7%94%A8-BPF-%E7%9C%8B%E8%A7%81%E8%A1%8C%E4%B8%BA%EF%BC%8C%E4%B8%8D%E6%8A%8A%E8%A7%82%E6%B5%8B%E5%BD%93%E6%88%90%E9%98%B2%E6%8A%A4"><span class="toc-number">11.</span> <span class="toc-text">第十一章 安全：用 BPF 看见行为，不把观测当成防护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%EF%BC%9A%E6%8C%89%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%A0%88%E5%B7%A5%E5%85%B7"><span class="toc-number">12.</span> <span class="toc-text">第十二章 编程语言：按代码运行方式选择符号与栈工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0-%E5%BA%94%E7%94%A8%EF%BC%9A%E7%94%A8%E5%B7%A5%E5%85%B7%E5%88%86%E8%BE%A8-CPU%E3%80%81%E7%AD%89%E5%BE%85%E3%80%81%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%85%A2%E6%9F%A5%E8%AF%A2"><span class="toc-number">13.</span> <span class="toc-text">第十三章 应用：用工具分辨 CPU、等待、系统调用和数据库慢查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0-%E5%86%85%E6%A0%B8%EF%BC%9A%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%AE%9A%E4%BD%8D%E4%B8%AD%E6%96%AD%E3%80%81%E5%88%86%E9%85%8D%E4%B8%8E%E5%94%A4%E9%86%92%E8%B7%AF%E5%BE%84"><span class="toc-number">14.</span> <span class="toc-text">第十四章 内核：用事件工具定位中断、分配与唤醒路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0-%E5%AE%B9%E5%99%A8%EF%BC%9A%E6%8A%8A-PID-%E8%A7%86%E8%A7%92%E5%92%8C-CPU-%E5%B8%A6%E5%AE%BD-%E8%B0%83%E5%BA%A6%E7%AD%89%E5%BE%85%E5%88%86%E5%BC%80"><span class="toc-number">15.</span> <span class="toc-text">第十五章 容器：把 PID 视角和 CPU 带宽&#x2F;调度等待分开</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%85%AD%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%9A%E5%8C%BA%E5%88%AB-guest-steal-time-%E4%B8%8E-KVM-VM-exit"><span class="toc-number">16.</span> <span class="toc-text">第十六章 虚拟机：区别 guest steal time 与 KVM VM exit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0-%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%AE%9E%E6%88%98%E6%8E%92%E9%9A%9C%EF%BC%9A%E9%80%89%E5%AF%B9%E9%87%87%E9%9B%86%E5%BD%A2%E6%80%81%EF%BC%8C%E5%86%8D%E9%80%90%E5%B1%82%E8%AF%81%E4%BC%AA"><span class="toc-number">17.</span> <span class="toc-text">第十七章 其他工具与实战排障：选对采集形态，再逐层证伪</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E8%A1%A5%E5%85%85%EF%BC%9ABTF-%E4%B8%8E-CO-RE"><span class="toc-number">17.1.</span> <span class="toc-text">现代补充：BTF 与 CO-RE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E5%BC%80%E5%A7%8B%E5%AE%9E%E9%AA%8C%E5%89%8D%E7%9A%84%E6%A0%B8%E5%AF%B9%E4%B8%8E%E5%A4%8D%E7%9B%98%E6%A8%A1%E6%9D%BF"><span class="toc-number">18.</span> <span class="toc-text">附录：开始实验前的核对与复盘模板</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-%E5%85%88%E7%A1%AE%E8%AE%A4%E5%B7%A5%E5%85%B7%E5%AE%9E%E9%99%85%E8%83%BD%E7%9C%8B%E5%88%B0%E4%BB%80%E4%B9%88"><span class="toc-number">18.1.</span> <span class="toc-text">A. 先确认工具实际能看到什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-%E7%94%A8%E6%B5%8B%E9%87%8F%E5%AE%9A%E4%B9%89%E9%98%B2%E6%AD%A2%E8%AF%AF%E5%88%A4"><span class="toc-number">18.2.</span> <span class="toc-text">B. 用测量定义防止误判</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E4%B8%80%E4%BB%BD%E5%8F%AF%E4%BB%A5%E5%A4%8D%E5%88%B6%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95"><span class="toc-number">18.3.</span> <span class="toc-text">C. 一份可以复制的实验记录</span></a></li></ol></li></ol>
+        </nav>
+      </div>
+    </aside>
+  </div>
+
+
+<main id="main-content" class="main" role="main" tabindex="-1">
   <div class="content">
   <article id="post-BPF之巅学习笔记" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
@@ -382,805 +383,460 @@
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#comments" class="article-comment-link">评论</a></span>
+        
         
       </div>
     </div>
+    
+      <div class="reading-controls" data-reading-controls role="group" aria-label="阅读设置">
+        <button class="reading-control reading-mode-toggle" type="button" data-reading-mode-toggle aria-pressed="false">阅读模式</button>
+        <span class="reading-control-label">字号</span>
+        <button class="reading-control" type="button" data-reading-font="down" aria-label="缩小字号">A−</button>
+        <output class="reading-font-status" data-reading-font-status aria-live="polite"></output>
+        <button class="reading-control" type="button" data-reading-font="up" aria-label="增大字号">A+</button>
+        <button class="reading-control" type="button" data-reading-line-height aria-pressed="false">宽松行距</button>
+        <button class="reading-control" type="button" data-reading-width aria-pressed="false">加宽正文</button>
+      </div>
+    
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h3 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h3><h4 id="2-3-扩展版BPF"><a href="#2-3-扩展版BPF" class="headerlink" title="2.3 扩展版BPF"></a>2.3 扩展版BPF</h4><blockquote>
-</blockquote>
-<h4 id="2-4-调用栈回溯"><a href="#2-4-调用栈回溯" class="headerlink" title="2.4 调用栈回溯"></a>2.4 调用栈回溯</h4><blockquote>
-</blockquote>
-<h4 id="2-5-火焰图"><a href="#2-5-火焰图" class="headerlink" title="2.5 火焰图"></a>2.5 火焰图</h4><blockquote>
-</blockquote>
-<h4 id="2-6-事件源"><a href="#2-6-事件源" class="headerlink" title="2.6 事件源"></a>2.6 事件源</h4><h4 id="2-7-kprobes"><a href="#2-7-kprobes" class="headerlink" title="2.7 kprobes"></a>2.7 kprobes</h4><blockquote>
-<p>内核探测点</p>
-</blockquote>
-<h4 id="2-8-uprobes"><a href="#2-8-uprobes" class="headerlink" title="2.8 uprobes"></a>2.8 uprobes</h4><blockquote>
-<p>用户层探测点</p>
-</blockquote>
-<h4 id="2-9-跟踪点"><a href="#2-9-跟踪点" class="headerlink" title="2.9 跟踪点"></a>2.9 跟踪点</h4><h4 id="2-10-USDT"><a href="#2-10-USDT" class="headerlink" title="2.10 USDT"></a>2.10 USDT</h4><h4 id="2-11-动态USDT"><a href="#2-11-动态USDT" class="headerlink" title="2.11 动态USDT"></a>2.11 动态USDT</h4><h4 id="2-12-性能监控计数器"><a href="#2-12-性能监控计数器" class="headerlink" title="2.12 性能监控计数器"></a>2.12 性能监控计数器</h4><blockquote>
-</blockquote>
-<h4 id="2-13-perf-events"><a href="#2-13-perf-events" class="headerlink" title="2.13 perf_events"></a>2.13 perf_events</h4><blockquote>
-</blockquote>
-<h3 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h3><h4 id="3-1-概论"><a href="#3-1-概论" class="headerlink" title="3.1 概论"></a>3.1 概论</h4><h4 id="3-2-性能分析方法论"><a href="#3-2-性能分析方法论" class="headerlink" title="3.2 性能分析方法论"></a>3.2 性能分析方法论</h4><h5 id="3-2-1-业务负载画像"><a href="#3-2-1-业务负载画像" class="headerlink" title="3.2.1 业务负载画像"></a>3.2.1 业务负载画像</h5><blockquote>
-<p>谁导致了这个负载(eg PID, process name, UID, IP address)?<br>Why is the load called (code path, stack trace, flame graph)?<br>What is the load (IOPS, throughput, type)?<br>How is the load changing over time (per-interval summaries)?</p>
-</blockquote>
-<h5 id="3-2-2-下钻分析"><a href="#3-2-2-下钻分析" class="headerlink" title="3.2.2 下钻分析"></a>3.2.2 下钻分析</h5><blockquote>
-<p>Start examining the highest level.<br>Examine next-level details.</p>
-</blockquote>
-<h5 id="3-2-3-USE方法论"><a href="#3-2-3-USE方法论" class="headerlink" title="3.2.3 USE方法论"></a>3.2.3 USE方法论</h5><blockquote>
-<p>Utilization 使用率<br>Saturation 负载率<br>Errors 错误</p>
-</blockquote>
-<h5 id="3-2-4-检查清单法"><a href="#3-2-4-检查清单法" class="headerlink" title="3.2.4 检查清单法"></a>3.2.4 检查清单法</h5><blockquote>
-</blockquote>
-<h4 id="3-3-Linux-60s分析"><a href="#3-3-Linux-60s分析" class="headerlink" title="3.3 Linux 60s分析"></a>3.3 Linux 60s分析</h4><h5 id="3-3-1-uptime"><a href="#3-3-1-uptime" class="headerlink" title="3.3.1 uptime"></a>3.3.1 uptime</h5><h5 id="3-3-2-dmesg-tail"><a href="#3-3-2-dmesg-tail" class="headerlink" title="3.3.2 dmesg|tail"></a>3.3.2 dmesg|tail</h5><h5 id="3-3-3-vmstat-1"><a href="#3-3-3-vmstat-1" class="headerlink" title="3.3.3 vmstat 1"></a>3.3.3 vmstat 1</h5><h5 id="3-3-4-mpstat-P-ALL-1"><a href="#3-3-4-mpstat-P-ALL-1" class="headerlink" title="3.3.4 mpstat -P ALL 1"></a>3.3.4 mpstat -P ALL 1</h5><h5 id="3-3-5-pidstat-1"><a href="#3-3-5-pidstat-1" class="headerlink" title="3.3.5 pidstat 1"></a>3.3.5 pidstat 1</h5><h5 id="3-3-6-iostat-xz-1"><a href="#3-3-6-iostat-xz-1" class="headerlink" title="3.3.6 iostat -xz 1"></a>3.3.6 iostat -xz 1</h5><h5 id="3-3-7-free-m"><a href="#3-3-7-free-m" class="headerlink" title="3.3.7 free -m"></a>3.3.7 free -m</h5><h5 id="3-3-8-sar-n-DEV-1"><a href="#3-3-8-sar-n-DEV-1" class="headerlink" title="3.3.8 sar -n DEV 1"></a>3.3.8 sar -n DEV 1</h5><h5 id="3-3-9-sar-n-TCP-ETCP-1"><a href="#3-3-9-sar-n-TCP-ETCP-1" class="headerlink" title="3.3.9 sar -n TCP,ETCP 1"></a>3.3.9 sar -n TCP,ETCP 1</h5><h5 id="3-3-10-top"><a href="#3-3-10-top" class="headerlink" title="3.3.10 top"></a>3.3.10 top</h5><h4 id="3-4-BCC工具检查清单"><a href="#3-4-BCC工具检查清单" class="headerlink" title="3.4 BCC工具检查清单"></a>3.4 BCC工具检查清单</h4><h5 id="3-4-1-execsnoop"><a href="#3-4-1-execsnoop" class="headerlink" title="3.4.1 execsnoop"></a>3.4.1 execsnoop</h5><blockquote>
-<p>统计系统调用exec</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># execsnoop</span></span><br><span class="line">PCOMM PID RET ARGS</span><br><span class="line">supervise <span class="number">9660</span> <span class="number">0</span> ./run</span><br><span class="line">supervise <span class="number">9661</span> <span class="number">0</span> ./run</span><br><span class="line">mkdir <span class="number">9662</span> <span class="number">0</span> /bin/mkdir -p ./main</span><br><span class="line">run <span class="number">9663</span> <span class="number">0</span> ./run</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-2-opensnoop"><a href="#3-4-2-opensnoop" class="headerlink" title="3.4.2 opensnoop"></a>3.4.2 opensnoop</h5><blockquote>
-<p>统计系统调用open</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># opensnoop</span></span><br><span class="line">PID COMM FD ERR PATH</span><br><span class="line"><span class="number">1565</span> redis-server <span class="number">5</span> <span class="number">0</span> /proc/<span class="number">1565</span>/stat</span><br><span class="line"><span class="number">1603</span> snmpd <span class="number">9</span> <span class="number">0</span> /proc/net/dev</span><br><span class="line"><span class="number">1603</span> snmpd <span class="number">11</span> <span class="number">0</span> /proc/net/if_inet6</span><br><span class="line"><span class="number">1603</span> snmpd <span class="number">-1</span> <span class="number">2</span> /sys/<span class="class"><span class="keyword">class</span>/<span class="title">net</span>/<span class="title">eth0</span>/<span class="title">device</span>/<span class="title">vendor</span></span></span><br><span class="line"><span class="class">1603 <span class="title">snmpd</span> 11 0 /<span class="title">proc</span>/<span class="title">sys</span>/<span class="title">net</span>/<span class="title">ipv4</span>/<span class="title">neigh</span>/<span class="title">eth0</span>/<span class="title">retrans_time_ms</span></span></span><br><span class="line"><span class="class">1603 <span class="title">snmpd</span> 11 0 /<span class="title">proc</span>/<span class="title">sys</span>/<span class="title">net</span>/<span class="title">ipv6</span>/<span class="title">neigh</span>/<span class="title">eth0</span>/<span class="title">retrans_time</span></span></span><br></pre></td></tr></table></figure>
-<h5 id="3-4-3-ext4slower"><a href="#3-4-3-ext4slower" class="headerlink" title="3.4.3 ext4slower"></a>3.4.3 ext4slower</h5><blockquote>
-<p>统计ext4文件系统</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ext4slower</span><br><span class="line">Tracing ext4 operations slower than <span class="number">10</span> ms</span><br><span class="line">TIME COMM PID T BYTES OFF_KB <span class="title function_">LAT</span><span class="params">(ms)</span> FILENAME</span><br><span class="line">06:35:01 cron 16464 R 1249 0 16.05 common-auth</span><br><span class="line">06:35:01 cron 16463 R 1249 0 16.04 common-auth</span><br><span class="line">06:35:01 cron 16465 R 1249 0 16.03 common-auth</span><br><span class="line">06:35:01 cron 16465 R 4096 0 10.62 login.defs</span><br><span class="line">06:35:01 cron 16464 R 4096 0 10.61 login.defs</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-4-biolatency"><a href="#3-4-4-biolatency" class="headerlink" title="3.4.4 biolatency"></a>3.4.4 biolatency</h5><blockquote>
-<p>bio延迟直方图</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># biolatency -m</span></span><br><span class="line">Tracing block device I/O... Hit Ctrl-C to end.</span><br><span class="line">^C</span><br><span class="line">msecs : count distribution</span><br><span class="line"><span class="number">0</span> -&gt; <span class="number">1</span> : <span class="number">16335</span> |****************************************|</span><br><span class="line"><span class="number">2</span> -&gt; <span class="number">3</span> : <span class="number">2272</span> |***** |</span><br><span class="line"><span class="number">4</span> -&gt; <span class="number">7</span> : <span class="number">3603</span> |******** |</span><br><span class="line"><span class="number">8</span> -&gt; <span class="number">15</span> : <span class="number">4328</span> |********** |</span><br><span class="line"><span class="number">16</span> -&gt; <span class="number">31</span> : <span class="number">3379</span> |******** |</span><br><span class="line"><span class="number">32</span> -&gt; <span class="number">63</span> : <span class="number">5815</span> |************** |</span><br><span class="line"><span class="number">64</span> -&gt; <span class="number">127</span> : <span class="number">0</span> | |</span><br><span class="line"><span class="number">128</span> -&gt; <span class="number">255</span> : <span class="number">0</span> | |</span><br><span class="line"><span class="number">256</span> -&gt; <span class="number">511</span> : <span class="number">0</span> | |</span><br><span class="line"><span class="number">512</span> -&gt; <span class="number">1023</span> : <span class="number">1</span> | |</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-5-biosnoop"><a href="#3-4-5-biosnoop" class="headerlink" title="3.4.5 biosnoop"></a>3.4.5 biosnoop</h5><blockquote>
-<p>bio size直方图</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># biosnoop</span></span><br><span class="line">TIME(s) COMM PID DISK T SECTOR BYTES <span class="title function_">LAT</span><span class="params">(ms)</span></span><br><span class="line">0.000004001 supervise 1950 xvda1 W 13092560 4096 0.74</span><br><span class="line">0.000178002 supervise 1950 xvda1 W 13092432 4096 0.61</span><br><span class="line">0.001469001 supervise 1956 xvda1 W 13092440 4096 1.24</span><br><span class="line">0.001588002 supervise 1956 xvda1 W 13115128 4096 1.09</span><br><span class="line">1.022346001 supervise 1950 xvda1 W 13115272 4096 0.98</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-6-cachestat"><a href="#3-4-6-cachestat" class="headerlink" title="3.4.6 cachestat"></a>3.4.6 cachestat</h5><blockquote>
-<p>统计文件系统缓存</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># cachestat</span></span><br><span class="line">HITS MISSES DIRTIES HITRATIO BUFFERS_MB CACHED_MB</span><br><span class="line"><span class="number">53401</span> <span class="number">2755</span> <span class="number">20953</span> <span class="number">95.09</span>% <span class="number">14</span> <span class="number">90223</span></span><br><span class="line"><span class="number">49599</span> <span class="number">4098</span> <span class="number">21460</span> <span class="number">92.37</span>% <span class="number">14</span> <span class="number">90230</span></span><br><span class="line"><span class="number">16601</span> <span class="number">2689</span> <span class="number">61329</span> <span class="number">86.06</span>% <span class="number">14</span> <span class="number">90381</span></span><br><span class="line"><span class="number">15197</span> <span class="number">2477</span> <span class="number">58028</span> <span class="number">85.99</span>% <span class="number">14</span> <span class="number">90522</span></span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-7-tcpconnect"><a href="#3-4-7-tcpconnect" class="headerlink" title="3.4.7 tcpconnect"></a>3.4.7 tcpconnect</h5><blockquote>
-<p>统计系统调用connect</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># tcpconnect</span></span><br><span class="line">PID COMM IP SADDR DADDR DPORT</span><br><span class="line"><span class="number">1479</span> telnet <span class="number">4</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">23</span></span><br><span class="line"><span class="number">1469</span> curl <span class="number">4</span> <span class="number">10.201</span>.<span class="number">219.236</span> <span class="number">54.245</span>.<span class="number">105.25</span> <span class="number">80</span></span><br><span class="line"><span class="number">1469</span> curl <span class="number">4</span> <span class="number">10.201</span>.<span class="number">219.236</span> <span class="number">54.67</span>.<span class="number">101.145</span> <span class="number">80</span></span><br><span class="line"><span class="number">1991</span> telnet <span class="number">6</span> ::<span class="number">1</span> ::<span class="number">1</span> <span class="number">23</span></span><br><span class="line"><span class="number">2015</span> ssh <span class="number">6</span> fe80::<span class="number">2000</span>:bff:fe82:<span class="number">3</span>ac fe80::<span class="number">2000</span>:bff:fe82:<span class="number">3</span>ac <span class="number">22</span></span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-8-tcpaccept"><a href="#3-4-8-tcpaccept" class="headerlink" title="3.4.8 tcpaccept"></a>3.4.8 tcpaccept</h5><blockquote>
-<p>统计系统调用accept</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># tcpaccept</span></span><br><span class="line">PID COMM IP RADDR LADDR LPORT</span><br><span class="line"><span class="number">907</span> sshd <span class="number">4</span> <span class="number">192.168</span>.<span class="number">56.1</span> <span class="number">192.168</span>.<span class="number">56.102</span> <span class="number">22</span></span><br><span class="line"><span class="number">907</span> sshd <span class="number">4</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">22</span></span><br><span class="line"><span class="number">5389</span> perl <span class="number">6</span> <span class="number">1234</span>:ab12:<span class="number">2040</span>:<span class="number">5020</span>:<span class="number">2299</span>:<span class="number">0</span>:<span class="number">5</span>:<span class="number">0</span> <span class="number">1234</span>:ab12:<span class="number">2040</span>:<span class="number">5020</span>:<span class="number">2299</span>:<span class="number">0</span>:<span class="number">5</span>:<span class="number">0</span> <span class="number">7001</span></span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-9-tcpretrans"><a href="#3-4-9-tcpretrans" class="headerlink" title="3.4.9 tcpretrans"></a>3.4.9 tcpretrans</h5><blockquote>
-<p>tcp重传统计</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># tcpretrans</span></span><br><span class="line">TIME PID IP LADDR:LPORT T&gt; RADDR:RPORT STATE</span><br><span class="line"><span class="number">01</span>:<span class="number">55</span>:<span class="number">05</span> <span class="number">0</span> <span class="number">4</span> <span class="number">10.153</span>.<span class="number">223.157</span>:<span class="number">22</span> R&gt; <span class="number">69.53</span>.<span class="number">245.40</span>:<span class="number">34619</span> ESTABLISHED</span><br><span class="line"><span class="number">01</span>:<span class="number">55</span>:<span class="number">05</span> <span class="number">0</span> <span class="number">4</span> <span class="number">10.153</span>.<span class="number">223.157</span>:<span class="number">22</span> R&gt; <span class="number">69.53</span>.<span class="number">245.40</span>:<span class="number">34619</span> ESTABLISHED</span><br><span class="line"><span class="number">01</span>:<span class="number">55</span>:<span class="number">17</span> <span class="number">0</span> <span class="number">4</span> <span class="number">10.153</span>.<span class="number">223.157</span>:<span class="number">22</span> R&gt; <span class="number">69.53</span>.<span class="number">245.40</span>:<span class="number">22957</span> ESTABLISHED</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-10-runqlat"><a href="#3-4-10-runqlat" class="headerlink" title="3.4.10 runqlat"></a>3.4.10 runqlat</h5><blockquote>
-<p>cpu上运行队列统计</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># runqlat</span></span><br><span class="line">Tracing run <span class="built_in">queue</span> latency... Hit Ctrl-C to end.</span><br><span class="line">^C</span><br><span class="line">usecs : count distribution</span><br><span class="line"><span class="number">0</span> -&gt; <span class="number">1</span> : <span class="number">233</span> |*********** |</span><br><span class="line"><span class="number">2</span> -&gt; <span class="number">3</span> : <span class="number">742</span> |************************************ |</span><br><span class="line"><span class="number">4</span> -&gt; <span class="number">7</span> : <span class="number">203</span> |********** |</span><br><span class="line"><span class="number">8</span> -&gt; <span class="number">15</span> : <span class="number">173</span> |******** |</span><br><span class="line"><span class="number">16</span> -&gt; <span class="number">31</span> : <span class="number">24</span> |* |</span><br><span class="line"><span class="number">32</span> -&gt; <span class="number">63</span> : <span class="number">0</span> | |</span><br><span class="line"><span class="number">64</span> -&gt; <span class="number">127</span> : <span class="number">30</span> |* |</span><br><span class="line"><span class="number">128</span> -&gt; <span class="number">255</span> : <span class="number">6</span> | |</span><br><span class="line"><span class="number">256</span> -&gt; <span class="number">511</span> : <span class="number">3</span> | |</span><br><span class="line"><span class="number">512</span> -&gt; <span class="number">1023</span> : <span class="number">5</span> | |</span><br><span class="line"><span class="number">1024</span> -&gt; <span class="number">2047</span> : <span class="number">27</span> |* |</span><br><span class="line"><span class="number">2048</span> -&gt; <span class="number">4095</span> : <span class="number">30</span> |* |</span><br><span class="line"><span class="number">4096</span> -&gt; <span class="number">8191</span> : <span class="number">20</span> | |</span><br><span class="line"><span class="number">8192</span> -&gt; <span class="number">16383</span> : <span class="number">29</span> |* |</span><br><span class="line"><span class="number">16384</span> -&gt; <span class="number">32767</span> : <span class="number">809</span> |****************************************|</span><br><span class="line"><span class="number">32768</span> -&gt; <span class="number">65535</span> : <span class="number">64</span> |*** |</span><br></pre></td></tr></table></figure>
-<h5 id="3-4-11-profile"><a href="#3-4-11-profile" class="headerlink" title="3.4.11 profile"></a>3.4.11 profile</h5><blockquote>
-<p>采集CPU</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># profile</span></span><br><span class="line">Sampling at <span class="number">49</span> Hertz of all threads by user + kernel <span class="built_in">stack</span>... Hit Ctrl-C to end.</span><br><span class="line">^C</span><br><span class="line">[...]</span><br><span class="line">copy_user_enhanced_fast_string</span><br><span class="line">copy_user_enhanced_fast_string</span><br><span class="line">_copy_from_iter_full</span><br><span class="line">tcp_sendmsg_locked</span><br><span class="line">tcp_sendmsg</span><br><span class="line">inet_sendmsg</span><br><span class="line">sock_sendmsg</span><br><span class="line">sock_write_iter</span><br><span class="line">new_sync_write</span><br><span class="line">__vfs_write</span><br><span class="line">vfs_write</span><br><span class="line">SyS_write</span><br><span class="line">do_syscall_64</span><br><span class="line">entry_SYSCALL_64_after_hwframe</span><br><span class="line">[unknown]</span><br><span class="line">[unknown]</span><br><span class="line">- iperf (<span class="number">24092</span>)</span><br><span class="line"><span class="number">58</span></span><br></pre></td></tr></table></figure>
-<h4 id="第四章"><a href="#第四章" class="headerlink" title="第四章"></a>第四章</h4><h5 id="4-1-BCC的组件"><a href="#4-1-BCC的组件" class="headerlink" title="4.1 BCC的组件"></a>4.1 BCC的组件</h5><blockquote>
-</blockquote>
-<h5 id="4-2-BCC的特性"><a href="#4-2-BCC的特性" class="headerlink" title="4.2 BCC的特性"></a>4.2 BCC的特性</h5><blockquote>
-</blockquote>
-<h5 id="4-3-安装BCC"><a href="#4-3-安装BCC" class="headerlink" title="4.3 安装BCC"></a>4.3 安装BCC</h5><blockquote>
-</blockquote>
-<h5 id="4-4-BCC的工具"><a href="#4-4-BCC的工具" class="headerlink" title="4.4 BCC的工具"></a>4.4 BCC的工具</h5><blockquote>
-</blockquote>
-<h5 id="4-5-funccount"><a href="#4-5-funccount" class="headerlink" title="4.5 funccount"></a>4.5 funccount</h5><blockquote>
-<p>统计指定函数调用次数</p>
-</blockquote>
-<h5 id="4-6-stackcount"><a href="#4-6-stackcount" class="headerlink" title="4.6 stackcount"></a>4.6 stackcount</h5><blockquote>
-<p>统计栈调用次数</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<h5 id="4-7-trace"><a href="#4-7-trace" class="headerlink" title="4.7 trace"></a>4.7 trace</h5><blockquote>
-<p>用于跟踪和调试应用程序的执行过程</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<h5 id="4-8-argdist"><a href="#4-8-argdist" class="headerlink" title="4.8 argdist"></a>4.8 argdist</h5><blockquote>
-<p>函数参数分布统计</p>
-</blockquote>
-<h5 id="4-9-工具文档"><a href="#4-9-工具文档" class="headerlink" title="4.9 工具文档"></a>4.9 工具文档</h5><h6 id="4-9-1-Man-Page-opensnoop"><a href="#4-9-1-Man-Page-opensnoop" class="headerlink" title="4.9.1 Man Page: opensnoop"></a>4.9.1 Man Page: opensnoop</h6><blockquote>
-</blockquote>
-<h6 id="4-9-2-Examples-File-opensnoop"><a href="#4-9-2-Examples-File-opensnoop" class="headerlink" title="4.9.2 Examples File: opensnoop"></a>4.9.2 Examples File: opensnoop</h6><h5 id="4-10-开发BCC工具"><a href="#4-10-开发BCC工具" class="headerlink" title="4.10 开发BCC工具"></a>4.10 开发BCC工具</h5><blockquote>
-</blockquote>
-<h5 id="4-11-BCC的内部实现"><a href="#4-11-BCC的内部实现" class="headerlink" title="4.11 BCC的内部实现"></a>4.11 BCC的内部实现</h5><blockquote>
-</blockquote>
-<h5 id="4-12-BCC的调试"><a href="#4-12-BCC的调试" class="headerlink" title="4.12 BCC的调试"></a>4.12 BCC的调试</h5><h6 id="4-12-1-printf-Debugging"><a href="#4-12-1-printf-Debugging" class="headerlink" title="4.12.1 printf() Debugging"></a>4.12.1 printf() Debugging</h6><blockquote>
-</blockquote>
-<h6 id="4-12-2-BCC-Debug-output"><a href="#4-12-2-BCC-Debug-output" class="headerlink" title="4.12.2 BCC Debug output"></a>4.12.2 BCC Debug output</h6><blockquote>
-</blockquote>
-<h6 id="4-12-3-BCC-Debug-Flag"><a href="#4-12-3-BCC-Debug-Flag" class="headerlink" title="4.12.3 BCC Debug Flag"></a>4.12.3 BCC Debug Flag</h6><blockquote>
-</blockquote>
-<h6 id="4-12-4-bpflist"><a href="#4-12-4-bpflist" class="headerlink" title="4.12.4 bpflist"></a>4.12.4 bpflist</h6><blockquote>
-</blockquote>
-<h6 id="4-12-5-bpftool"><a href="#4-12-5-bpftool" class="headerlink" title="4.12.5 bpftool"></a>4.12.5 bpftool</h6><blockquote>
-</blockquote>
-<h6 id="4-12-6-dmesg"><a href="#4-12-6-dmesg" class="headerlink" title="4.12.6 dmesg"></a>4.12.6 dmesg</h6><blockquote>
-</blockquote>
-<h6 id="4-12-7-Resetting-Events"><a href="#4-12-7-Resetting-Events" class="headerlink" title="4.12.7 Resetting Events"></a>4.12.7 Resetting Events</h6><blockquote>
-</blockquote>
-<h4 id="4-13-Summary"><a href="#4-13-Summary" class="headerlink" title="4.13 Summary"></a>4.13 Summary</h4><blockquote>
-</blockquote>
-<h4 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h4><h5 id="5-1-bpftrace的组件"><a href="#5-1-bpftrace的组件" class="headerlink" title="5.1 bpftrace的组件"></a>5.1 bpftrace的组件</h5><blockquote>
-</blockquote>
-<h5 id="5-2-bpftrace的特性"><a href="#5-2-bpftrace的特性" class="headerlink" title="5.2 bpftrace的特性"></a>5.2 bpftrace的特性</h5><h6 id="5-2-1-bpftrace-Event-Sources"><a href="#5-2-1-bpftrace-Event-Sources" class="headerlink" title="5.2.1 bpftrace Event Sources"></a>5.2.1 bpftrace Event Sources</h6><blockquote>
-</blockquote>
-<h6 id="5-2-2-bpftrace-Actions"><a href="#5-2-2-bpftrace-Actions" class="headerlink" title="5.2.2 bpftrace Actions"></a>5.2.2 bpftrace Actions</h6><blockquote>
-</blockquote>
-<h6 id="5-2-3-bpftrace-General-Features"><a href="#5-2-3-bpftrace-General-Features" class="headerlink" title="5.2.3 bpftrace General Features"></a>5.2.3 bpftrace General Features</h6><blockquote>
-</blockquote>
-<h6 id="5-2-4-bpftrace-Compared-to-Other-Observability-Tools"><a href="#5-2-4-bpftrace-Compared-to-Other-Observability-Tools" class="headerlink" title="5.2.4 bpftrace Compared to Other Observability Tools"></a>5.2.4 bpftrace Compared to Other Observability Tools</h6><blockquote>
-</blockquote>
-<h5 id="5-3-bpftrace的安装"><a href="#5-3-bpftrace的安装" class="headerlink" title="5.3 bpftrace的安装"></a>5.3 bpftrace的安装</h5><h6 id="5-3-1-Kernel-Requirements"><a href="#5-3-1-Kernel-Requirements" class="headerlink" title="5.3.1 Kernel Requirements"></a>5.3.1 Kernel Requirements</h6><blockquote>
-</blockquote>
-<h6 id="5-3-2-Ubuntu"><a href="#5-3-2-Ubuntu" class="headerlink" title="5.3.2 Ubuntu"></a>5.3.2 Ubuntu</h6><blockquote>
-</blockquote>
-<h6 id="5-3-3-Fedora"><a href="#5-3-3-Fedora" class="headerlink" title="5.3.3 Fedora"></a>5.3.3 Fedora</h6><blockquote>
-</blockquote>
-<h6 id="5-3-4-Post-Build-Steps"><a href="#5-3-4-Post-Build-Steps" class="headerlink" title="5.3.4 Post-Build Steps"></a>5.3.4 Post-Build Steps</h6><blockquote>
-</blockquote>
-<h6 id="5-3-5-Other-Distributions"><a href="#5-3-5-Other-Distributions" class="headerlink" title="5.3.5 Other Distributions"></a>5.3.5 Other Distributions</h6><blockquote>
-</blockquote>
-<h5 id="5-4-bpftrace工具"><a href="#5-4-bpftrace工具" class="headerlink" title="5.4 bpftrace工具"></a>5.4 bpftrace工具</h5><h6 id="5-4-1-Highlighted-Tools"><a href="#5-4-1-Highlighted-Tools" class="headerlink" title="5.4.1 Highlighted Tools"></a>5.4.1 Highlighted Tools</h6><blockquote>
-</blockquote>
-<h6 id="5-4-2-Tool-Characteristics"><a href="#5-4-2-Tool-Characteristics" class="headerlink" title="5.4.2 Tool Characteristics"></a>5.4.2 Tool Characteristics</h6><h6 id="5-4-3-Tool-Execution"><a href="#5-4-3-Tool-Execution" class="headerlink" title="5.4.3 Tool Execution"></a>5.4.3 Tool Execution</h6><blockquote>
-</blockquote>
-<h5 id="5-5-bpftrace单行程序"><a href="#5-5-bpftrace单行程序" class="headerlink" title="5.5 bpftrace单行程序"></a>5.5 bpftrace单行程序</h5><blockquote>
-</blockquote>
-<h5 id="5-6-bpftrace的文档"><a href="#5-6-bpftrace的文档" class="headerlink" title="5.6 bpftrace的文档"></a>5.6 bpftrace的文档</h5><blockquote>
-</blockquote>
-<h5 id="5-7-bpftrace编程"><a href="#5-7-bpftrace编程" class="headerlink" title="5.7 bpftrace编程"></a>5.7 bpftrace编程</h5><h6 id="5-7-1-Usage"><a href="#5-7-1-Usage" class="headerlink" title="5.7.1 Usage"></a>5.7.1 Usage</h6><blockquote>
-</blockquote>
-<h6 id="5-7-2-Program-Structure"><a href="#5-7-2-Program-Structure" class="headerlink" title="5.7.2 Program Structure"></a>5.7.2 Program Structure</h6><blockquote>
-</blockquote>
-<h6 id="5-7-3-Comments"><a href="#5-7-3-Comments" class="headerlink" title="5.7.3 Comments"></a>5.7.3 Comments</h6><blockquote>
-</blockquote>
-<h6 id="5-7-4-Probe-Format"><a href="#5-7-4-Probe-Format" class="headerlink" title="5.7.4 Probe Format"></a>5.7.4 Probe Format</h6><blockquote>
-</blockquote>
-<h6 id="5-7-5-Probe-Wildcards"><a href="#5-7-5-Probe-Wildcards" class="headerlink" title="5.7.5 Probe Wildcards"></a>5.7.5 Probe Wildcards</h6><blockquote>
-</blockquote>
-<h6 id="5-7-6-Filters"><a href="#5-7-6-Filters" class="headerlink" title="5.7.6 Filters"></a>5.7.6 Filters</h6><blockquote>
-</blockquote>
-<h6 id="5-7-7-Actions"><a href="#5-7-7-Actions" class="headerlink" title="5.7.7 Actions"></a>5.7.7 Actions</h6><blockquote>
-</blockquote>
-<h6 id="5-7-8-Hello-World"><a href="#5-7-8-Hello-World" class="headerlink" title="5.7.8 Hello, World!"></a>5.7.8 Hello, World!</h6><blockquote>
-</blockquote>
-<h6 id="5-7-9-Functions"><a href="#5-7-9-Functions" class="headerlink" title="5.7.9 Functions"></a>5.7.9 Functions</h6><blockquote>
-</blockquote>
-<h6 id="5-7-10-Variables"><a href="#5-7-10-Variables" class="headerlink" title="5.7.10 Variables"></a>5.7.10 Variables</h6><blockquote>
-</blockquote>
-<h6 id="5-7-11-Map-Functions"><a href="#5-7-11-Map-Functions" class="headerlink" title="5.7.11 Map Functions"></a>5.7.11 Map Functions</h6><blockquote>
-</blockquote>
-<h6 id="5-7-12-Timing-vfs-read"><a href="#5-7-12-Timing-vfs-read" class="headerlink" title="5.7.12 Timing vfs_read()"></a>5.7.12 Timing vfs_read()</h6><blockquote>
-</blockquote>
-<h5 id="5-8-bpftrace的帮助信息"><a href="#5-8-bpftrace的帮助信息" class="headerlink" title="5.8 bpftrace的帮助信息"></a>5.8 bpftrace的帮助信息</h5><blockquote>
-</blockquote>
-<h5 id="5-9-bpftrace的探针类型"><a href="#5-9-bpftrace的探针类型" class="headerlink" title="5.9 bpftrace的探针类型"></a>5.9 bpftrace的探针类型</h5><blockquote>
-</blockquote>
-<h6 id="5-9-1-tracepoint"><a href="#5-9-1-tracepoint" class="headerlink" title="5.9.1 tracepoint"></a>5.9.1 tracepoint</h6><blockquote>
-</blockquote>
-<h6 id="5-9-2-usdt"><a href="#5-9-2-usdt" class="headerlink" title="5.9.2 usdt"></a>5.9.2 usdt</h6><blockquote>
-</blockquote>
-<h6 id="5-9-3-kprobe-and-kretprobe"><a href="#5-9-3-kprobe-and-kretprobe" class="headerlink" title="5.9.3 kprobe and kretprobe"></a>5.9.3 kprobe and kretprobe</h6><blockquote>
-</blockquote>
-<h6 id="5-9-4-uprobe-and-uretprobe"><a href="#5-9-4-uprobe-and-uretprobe" class="headerlink" title="5.9.4 uprobe and uretprobe"></a>5.9.4 uprobe and uretprobe</h6><blockquote>
-</blockquote>
-<h6 id="5-9-5-software-and-hardware"><a href="#5-9-5-software-and-hardware" class="headerlink" title="5.9.5 software and hardware"></a>5.9.5 software and hardware</h6><blockquote>
-</blockquote>
-<h6 id="5-9-6-profile-and-interval"><a href="#5-9-6-profile-and-interval" class="headerlink" title="5.9.6 profile and interval"></a>5.9.6 profile and interval</h6><blockquote>
-</blockquote>
-<h5 id="5-10-bpftrace的控制流"><a href="#5-10-bpftrace的控制流" class="headerlink" title="5.10 bpftrace的控制流"></a>5.10 bpftrace的控制流</h5><h6 id="5-10-1-Filter"><a href="#5-10-1-Filter" class="headerlink" title="5.10.1 Filter"></a>5.10.1 Filter</h6><blockquote>
-</blockquote>
-<h6 id="5-10-2-Ternary-Operators"><a href="#5-10-2-Ternary-Operators" class="headerlink" title="5.10.2 Ternary Operators"></a>5.10.2 Ternary Operators</h6><blockquote>
-</blockquote>
-<h6 id="5-10-3-If-Statements"><a href="#5-10-3-If-Statements" class="headerlink" title="5.10.3 If Statements"></a>5.10.3 If Statements</h6><blockquote>
-</blockquote>
-<h6 id="5-10-4-Unrolled-Loops"><a href="#5-10-4-Unrolled-Loops" class="headerlink" title="5.10.4 Unrolled Loops"></a>5.10.4 Unrolled Loops</h6><blockquote>
-</blockquote>
-<h6 id="5-13-3-str"><a href="#5-13-3-str" class="headerlink" title="5.13.3 str()"></a>5.13.3 str()</h6><blockquote>
-</blockquote>
-<h5 id="5-11-bpftrace的运算符"><a href="#5-11-bpftrace的运算符" class="headerlink" title="5.11 bpftrace的运算符"></a>5.11 bpftrace的运算符</h5><blockquote>
-</blockquote>
-<h5 id="5-12-bpftrace的变量"><a href="#5-12-bpftrace的变量" class="headerlink" title="5.12 bpftrace的变量"></a>5.12 bpftrace的变量</h5><h6 id="5-12-1-Built-in-Variables"><a href="#5-12-1-Built-in-Variables" class="headerlink" title="5.12.1 Built-in Variables"></a>5.12.1 Built-in Variables</h6><blockquote>
-</blockquote>
-<h6 id="5-12-2-Built-ins-pid-comm-and-uid"><a href="#5-12-2-Built-ins-pid-comm-and-uid" class="headerlink" title="5.12.2 Built-ins: pid, comm, and uid"></a>5.12.2 Built-ins: pid, comm, and uid</h6><blockquote>
-</blockquote>
-<h6 id="5-12-3-Built-ins-kstack-and-ustack"><a href="#5-12-3-Built-ins-kstack-and-ustack" class="headerlink" title="5.12.3 Built-ins: kstack and ustack"></a>5.12.3 Built-ins: kstack and ustack</h6><blockquote>
-</blockquote>
-<h6 id="5-12-4-Built-ins-Positional-Parameters"><a href="#5-12-4-Built-ins-Positional-Parameters" class="headerlink" title="5.12.4 Built-ins: Positional Parameters"></a>5.12.4 Built-ins: Positional Parameters</h6><blockquote>
-</blockquote>
-<h6 id="5-12-5-Scratch"><a href="#5-12-5-Scratch" class="headerlink" title="5.12.5 Scratch"></a>5.12.5 Scratch</h6><blockquote>
-</blockquote>
-<h6 id="5-12-6-Maps"><a href="#5-12-6-Maps" class="headerlink" title="5.12.6 Maps"></a>5.12.6 Maps</h6><blockquote>
-</blockquote>
-<h5 id="5-13-bpftrace的函数"><a href="#5-13-bpftrace的函数" class="headerlink" title="5.13 bpftrace的函数"></a>5.13 bpftrace的函数</h5><h6 id="5-13-1-printf"><a href="#5-13-1-printf" class="headerlink" title="5.13.1 printf()"></a>5.13.1 printf()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-2-join"><a href="#5-13-2-join" class="headerlink" title="5.13.2 join()"></a>5.13.2 join()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-3-str-1"><a href="#5-13-3-str-1" class="headerlink" title="5.13.3 str()"></a>5.13.3 str()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-4-kstack-and-ustack"><a href="#5-13-4-kstack-and-ustack" class="headerlink" title="5.13.4 kstack() and ustack()"></a>5.13.4 kstack() and ustack()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-5-ksym-and-usym"><a href="#5-13-5-ksym-and-usym" class="headerlink" title="5.13.5 ksym() and usym()"></a>5.13.5 ksym() and usym()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-6-kaddr-and-uaddr"><a href="#5-13-6-kaddr-and-uaddr" class="headerlink" title="5.13.6 kaddr() and uaddr()"></a>5.13.6 kaddr() and uaddr()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-7-system"><a href="#5-13-7-system" class="headerlink" title="5.13.7 system()"></a>5.13.7 system()</h6><blockquote>
-</blockquote>
-<h6 id="5-13-8-exit"><a href="#5-13-8-exit" class="headerlink" title="5.13.8 exit()"></a>5.13.8 exit()</h6><blockquote>
-</blockquote>
-<h5 id="5-14-bpftrace映射表的操作函数"><a href="#5-14-bpftrace映射表的操作函数" class="headerlink" title="5.14 bpftrace映射表的操作函数"></a>5.14 bpftrace映射表的操作函数</h5><h6 id="5-14-1-count"><a href="#5-14-1-count" class="headerlink" title="5.14.1 count()"></a>5.14.1 count()</h6><blockquote>
-</blockquote>
-<h6 id="5-14-2-sum-avg-min-and-max"><a href="#5-14-2-sum-avg-min-and-max" class="headerlink" title="5.14.2 sum(), avg(), min(), and max()"></a>5.14.2 sum(), avg(), min(), and max()</h6><blockquote>
-</blockquote>
-<h6 id="5-14-3-hist"><a href="#5-14-3-hist" class="headerlink" title="5.14.3 hist()"></a>5.14.3 hist()</h6><blockquote>
-</blockquote>
-<h6 id="5-14-4-lhist"><a href="#5-14-4-lhist" class="headerlink" title="5.14.4 lhist()"></a>5.14.4 lhist()</h6><blockquote>
-</blockquote>
-<h6 id="5-14-5-delete"><a href="#5-14-5-delete" class="headerlink" title="5.14.5 delete()"></a>5.14.5 delete()</h6><blockquote>
-</blockquote>
-<h6 id="5-14-6-clear-and-zero"><a href="#5-14-6-clear-and-zero" class="headerlink" title="5.14.6 clear() and zero()"></a>5.14.6 clear() and zero()</h6><h6 id="5-14-7-print"><a href="#5-14-7-print" class="headerlink" title="5.14.7 print()"></a>5.14.7 print()</h6><blockquote>
-</blockquote>
-<h5 id="5-15-bpftrace的下一步工作"><a href="#5-15-bpftrace的下一步工作" class="headerlink" title="5.15 bpftrace的下一步工作"></a>5.15 bpftrace的下一步工作</h5><blockquote>
-</blockquote>
-<h6 id="5-15-1-Explicit-Address-Modes"><a href="#5-15-1-Explicit-Address-Modes" class="headerlink" title="5.15.1 Explicit Address Modes"></a>5.15.1 Explicit Address Modes</h6><blockquote>
-</blockquote>
-<h6 id="5-15-2-Other-Additions"><a href="#5-15-2-Other-Additions" class="headerlink" title="5.15.2 Other Additions"></a>5.15.2 Other Additions</h6><blockquote>
-</blockquote>
-<h6 id="5-15-3-ply"><a href="#5-15-3-ply" class="headerlink" title="5.15.3 ply"></a>5.15.3 ply</h6><blockquote>
-</blockquote>
-<h5 id="5-16-bpftrace的内部运作"><a href="#5-16-bpftrace的内部运作" class="headerlink" title="5.16 bpftrace的内部运作"></a>5.16 bpftrace的内部运作</h5><blockquote>
-</blockquote>
-<h5 id="5-17-bpftrace的调试"><a href="#5-17-bpftrace的调试" class="headerlink" title="5.17 bpftrace的调试"></a>5.17 bpftrace的调试</h5><blockquote>
-</blockquote>
-<h6 id="5-17-1-printf-Debugging"><a href="#5-17-1-printf-Debugging" class="headerlink" title="5.17.1 printf() Debugging"></a>5.17.1 printf() Debugging</h6><blockquote>
-</blockquote>
-<h6 id="5-17-2-Debug-Mode"><a href="#5-17-2-Debug-Mode" class="headerlink" title="5.17.2 Debug Mode"></a>5.17.2 Debug Mode</h6><blockquote>
-</blockquote>
-<h6 id="5-17-3-Verbose-Mode"><a href="#5-17-3-Verbose-Mode" class="headerlink" title="5.17.3 Verbose Mode"></a>5.17.3 Verbose Mode</h6><blockquote>
-</blockquote>
-<h5 id="5-18-Summary"><a href="#5-18-Summary" class="headerlink" title="5.18 Summary"></a>5.18 Summary</h5><h4 id="第六章-CPU"><a href="#第六章-CPU" class="headerlink" title="第六章 CPU"></a>第六章 CPU</h4><h5 id="6-1-背景知识"><a href="#6-1-背景知识" class="headerlink" title="6.1 背景知识"></a>6.1 背景知识</h5><h6 id="6-1-1-CPU-Fundamentals"><a href="#6-1-1-CPU-Fundamentals" class="headerlink" title="6.1.1 CPU Fundamentals"></a>6.1.1 CPU Fundamentals</h6><blockquote>
-</blockquote>
-<h6 id="6-1-2-BPF-Capabilities"><a href="#6-1-2-BPF-Capabilities" class="headerlink" title="6.1.2 BPF Capabilities"></a>6.1.2 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="6-1-3-Strategy"><a href="#6-1-3-Strategy" class="headerlink" title="6.1.3 Strategy"></a>6.1.3 Strategy</h6><blockquote>
-</blockquote>
-<h5 id="6-2-传统工具"><a href="#6-2-传统工具" class="headerlink" title="6.2 传统工具"></a>6.2 传统工具</h5><h6 id="6-2-1-Kernel-Statistics"><a href="#6-2-1-Kernel-Statistics" class="headerlink" title="6.2.1 Kernel Statistics"></a>6.2.1 Kernel Statistics</h6><blockquote>
-</blockquote>
-<h6 id="6-2-2-Hardware-Statistics"><a href="#6-2-2-Hardware-Statistics" class="headerlink" title="6.2.2 Hardware Statistics"></a>6.2.2 Hardware Statistics</h6><blockquote>
-</blockquote>
-<h6 id="6-2-3-Hardware-Sampling"><a href="#6-2-3-Hardware-Sampling" class="headerlink" title="6.2.3 Hardware Sampling"></a>6.2.3 Hardware Sampling</h6><blockquote>
-</blockquote>
-<h6 id="6-2-4-Timed-Sampling"><a href="#6-2-4-Timed-Sampling" class="headerlink" title="6.2.4 Timed Sampling"></a>6.2.4 Timed Sampling</h6><blockquote>
-</blockquote>
-<h6 id="6-2-5-Event-Statistics-and-Tracing"><a href="#6-2-5-Event-Statistics-and-Tracing" class="headerlink" title="6.2.5 Event Statistics and Tracing"></a>6.2.5 Event Statistics and Tracing</h6><blockquote>
-</blockquote>
-<h5 id="6-3-BPF工具"><a href="#6-3-BPF工具" class="headerlink" title="6.3 BPF工具"></a>6.3 BPF工具</h5><h6 id="6-3-1-execsnoop"><a href="#6-3-1-execsnoop" class="headerlink" title="6.3.1 execsnoop"></a>6.3.1 execsnoop</h6><blockquote>
-</blockquote>
-<h6 id="6-3-2-exitsnoop"><a href="#6-3-2-exitsnoop" class="headerlink" title="6.3.2 exitsnoop"></a>6.3.2 exitsnoop</h6><blockquote>
-</blockquote>
-<h6 id="6-3-3-runqlat"><a href="#6-3-3-runqlat" class="headerlink" title="6.3.3 runqlat"></a>6.3.3 runqlat</h6><blockquote>
-</blockquote>
-<h6 id="6-3-4-runqlen"><a href="#6-3-4-runqlen" class="headerlink" title="6.3.4 runqlen"></a>6.3.4 runqlen</h6><blockquote>
-</blockquote>
-<h6 id="6-3-5-runqslower"><a href="#6-3-5-runqslower" class="headerlink" title="6.3.5 runqslower"></a>6.3.5 runqslower</h6><blockquote>
-</blockquote>
-<h6 id="6-3-6-cpudist"><a href="#6-3-6-cpudist" class="headerlink" title="6.3.6 cpudist"></a>6.3.6 cpudist</h6><blockquote>
-</blockquote>
-<h6 id="6-3-7-cpufreq"><a href="#6-3-7-cpufreq" class="headerlink" title="6.3.7 cpufreq"></a>6.3.7 cpufreq</h6><blockquote>
-</blockquote>
-<h6 id="6-3-8-profile"><a href="#6-3-8-profile" class="headerlink" title="6.3.8 profile"></a>6.3.8 profile</h6><blockquote>
-</blockquote>
-<h6 id="6-3-9-offcputime"><a href="#6-3-9-offcputime" class="headerlink" title="6.3.9 offcputime"></a>6.3.9 offcputime</h6><blockquote>
-</blockquote>
-<h6 id="6-3-10-syscount"><a href="#6-3-10-syscount" class="headerlink" title="6.3.10 syscount"></a>6.3.10 syscount</h6><blockquote>
-</blockquote>
-<h6 id="6-3-11-argdist-and-trace"><a href="#6-3-11-argdist-and-trace" class="headerlink" title="6.3.11 argdist and trace"></a>6.3.11 argdist and trace</h6><blockquote>
-</blockquote>
-<h6 id="6-3-12-funccount"><a href="#6-3-12-funccount" class="headerlink" title="6.3.12 funccount"></a>6.3.12 funccount</h6><blockquote>
-</blockquote>
-<h6 id="6-3-13-softirqs"><a href="#6-3-13-softirqs" class="headerlink" title="6.3.13 softirqs"></a>6.3.13 softirqs</h6><blockquote>
-</blockquote>
-<h6 id="6-3-14-hardirqs"><a href="#6-3-14-hardirqs" class="headerlink" title="6.3.14 hardirqs"></a>6.3.14 hardirqs</h6><blockquote>
-</blockquote>
-<h6 id="6-3-15-smpcalls"><a href="#6-3-15-smpcalls" class="headerlink" title="6.3.15 smpcalls"></a>6.3.15 smpcalls</h6><blockquote>
-</blockquote>
-<h6 id="6-3-16-llcstat"><a href="#6-3-16-llcstat" class="headerlink" title="6.3.16 llcstat"></a>6.3.16 llcstat</h6><blockquote>
-</blockquote>
-<h6 id="6-3-17-Other-Tools"><a href="#6-3-17-Other-Tools" class="headerlink" title="6.3.17 Other Tools"></a>6.3.17 Other Tools</h6><blockquote>
-</blockquote>
-<h5 id="6-4-BPF单行程序"><a href="#6-4-BPF单行程序" class="headerlink" title="6.4 BPF单行程序"></a>6.4 BPF单行程序</h5><h6 id="6-4-1-BCC"><a href="#6-4-1-BCC" class="headerlink" title="6.4.1 BCC"></a>6.4.1 BCC</h6><blockquote>
-</blockquote>
-<h6 id="6-4-2-bpftrace"><a href="#6-4-2-bpftrace" class="headerlink" title="6.4.2 bpftrace"></a>6.4.2 bpftrace</h6><blockquote>
-</blockquote>
-<h4 id="第七章-内存"><a href="#第七章-内存" class="headerlink" title="第七章 内存"></a>第七章 内存</h4><h5 id="7-1-背景知识"><a href="#7-1-背景知识" class="headerlink" title="7.1 背景知识"></a>7.1 背景知识</h5><h6 id="7-1-1-Memory-Fundamentals"><a href="#7-1-1-Memory-Fundamentals" class="headerlink" title="7.1.1 Memory Fundamentals"></a>7.1.1 Memory Fundamentals</h6><blockquote>
-</blockquote>
-<h6 id="7-1-2-BPF-Capabilities"><a href="#7-1-2-BPF-Capabilities" class="headerlink" title="7.1.2 BPF Capabilities"></a>7.1.2 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="7-1-3-Strategy"><a href="#7-1-3-Strategy" class="headerlink" title="7.1.3 Strategy"></a>7.1.3 Strategy</h6><blockquote>
-</blockquote>
-<h5 id="7-2-传统工具"><a href="#7-2-传统工具" class="headerlink" title="7.2 传统工具"></a>7.2 传统工具</h5><h6 id="7-2-1-Kernel-Log"><a href="#7-2-1-Kernel-Log" class="headerlink" title="7.2.1 Kernel Log"></a>7.2.1 Kernel Log</h6><blockquote>
-</blockquote>
-<h6 id="7-2-2-Kernel-Statistics"><a href="#7-2-2-Kernel-Statistics" class="headerlink" title="7.2.2 Kernel Statistics"></a>7.2.2 Kernel Statistics</h6><blockquote>
-</blockquote>
-<h6 id="7-2-3-Hardware-Statistics-and-Sampling"><a href="#7-2-3-Hardware-Statistics-and-Sampling" class="headerlink" title="7.2.3 Hardware Statistics and Sampling"></a>7.2.3 Hardware Statistics and Sampling</h6><blockquote>
-</blockquote>
-<h5 id="7-3-BPF工具"><a href="#7-3-BPF工具" class="headerlink" title="7.3 BPF工具"></a>7.3 BPF工具</h5><h6 id="7-3-1-oomkill"><a href="#7-3-1-oomkill" class="headerlink" title="7.3.1 oomkill"></a>7.3.1 oomkill</h6><blockquote>
-</blockquote>
-<h6 id="7-3-2-memleak"><a href="#7-3-2-memleak" class="headerlink" title="7.3.2 memleak"></a>7.3.2 memleak</h6><blockquote>
-</blockquote>
-<h6 id="7-3-3-mmapsnoop"><a href="#7-3-3-mmapsnoop" class="headerlink" title="7.3.3 mmapsnoop"></a>7.3.3 mmapsnoop</h6><blockquote>
-</blockquote>
-<h6 id="7-3-4-brkstack"><a href="#7-3-4-brkstack" class="headerlink" title="7.3.4 brkstack"></a>7.3.4 brkstack</h6><blockquote>
-</blockquote>
-<h6 id="7-3-5-shmsnoop"><a href="#7-3-5-shmsnoop" class="headerlink" title="7.3.5 shmsnoop"></a>7.3.5 shmsnoop</h6><blockquote>
-</blockquote>
-<h6 id="7-3-6-faults"><a href="#7-3-6-faults" class="headerlink" title="7.3.6 faults"></a>7.3.6 faults</h6><blockquote>
-</blockquote>
-<h6 id="7-3-7-ffaults"><a href="#7-3-7-ffaults" class="headerlink" title="7.3.7 ffaults"></a>7.3.7 ffaults</h6><blockquote>
-</blockquote>
-<h6 id="7-3-8-vmscan"><a href="#7-3-8-vmscan" class="headerlink" title="7.3.8 vmscan"></a>7.3.8 vmscan</h6><blockquote>
-</blockquote>
-<h6 id="7-3-9-drsnoop"><a href="#7-3-9-drsnoop" class="headerlink" title="7.3.9 drsnoop"></a>7.3.9 drsnoop</h6><blockquote>
-</blockquote>
-<h6 id="7-3-10-swapin"><a href="#7-3-10-swapin" class="headerlink" title="7.3.10 swapin"></a>7.3.10 swapin</h6><blockquote>
-</blockquote>
-<h6 id="7-3-11-hfaults"><a href="#7-3-11-hfaults" class="headerlink" title="7.3.11 hfaults"></a>7.3.11 hfaults</h6><blockquote>
-</blockquote>
-<h6 id="7-3-12-Other-Tools"><a href="#7-3-12-Other-Tools" class="headerlink" title="7.3.12 Other Tools"></a>7.3.12 Other Tools</h6><blockquote>
-</blockquote>
-<h5 id="7-4-BPF单行程序"><a href="#7-4-BPF单行程序" class="headerlink" title="7.4 BPF单行程序"></a>7.4 BPF单行程序</h5><h6 id="7-4-1-BCC"><a href="#7-4-1-BCC" class="headerlink" title="7.4.1 BCC"></a>7.4.1 BCC</h6><blockquote>
-</blockquote>
-<h6 id="7-4-2-bpftrace"><a href="#7-4-2-bpftrace" class="headerlink" title="7.4.2 bpftrace"></a>7.4.2 bpftrace</h6><blockquote>
-</blockquote>
-<h5 id="7-5-Optional-Exercises"><a href="#7-5-Optional-Exercises" class="headerlink" title="7.5 Optional Exercises"></a>7.5 Optional Exercises</h5><h5 id="7-6-Summary"><a href="#7-6-Summary" class="headerlink" title="7.6 Summary"></a>7.6 Summary</h5><h4 id="第八章-文件系统"><a href="#第八章-文件系统" class="headerlink" title="第八章 文件系统"></a>第八章 文件系统</h4><h5 id="8-1-背景知识"><a href="#8-1-背景知识" class="headerlink" title="8.1 背景知识"></a>8.1 背景知识</h5><h6 id="8-1-1-File-Systems-Fundamentals"><a href="#8-1-1-File-Systems-Fundamentals" class="headerlink" title="8.1.1 File Systems Fundamentals"></a>8.1.1 File Systems Fundamentals</h6><h6 id="8-1-2-BPF-Capabilities"><a href="#8-1-2-BPF-Capabilities" class="headerlink" title="8.1.2 BPF Capabilities"></a>8.1.2 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="8-1-3-Strategy"><a href="#8-1-3-Strategy" class="headerlink" title="8.1.3 Strategy"></a>8.1.3 Strategy</h6><blockquote>
-</blockquote>
-<h5 id="8-2-传统工具"><a href="#8-2-传统工具" class="headerlink" title="8.2 传统工具"></a>8.2 传统工具</h5><h6 id="8-2-1-df"><a href="#8-2-1-df" class="headerlink" title="8.2.1 df"></a>8.2.1 df</h6><blockquote>
-</blockquote>
-<h6 id="8-2-2-mount"><a href="#8-2-2-mount" class="headerlink" title="8.2.2 mount"></a>8.2.2 mount</h6><blockquote>
-</blockquote>
-<h6 id="8-2-3-strace"><a href="#8-2-3-strace" class="headerlink" title="8.2.3 strace"></a>8.2.3 strace</h6><blockquote>
-</blockquote>
-<h6 id="8-2-4-perf"><a href="#8-2-4-perf" class="headerlink" title="8.2.4 perf"></a>8.2.4 perf</h6><blockquote>
-</blockquote>
-<h6 id="8-2-5-fatrace"><a href="#8-2-5-fatrace" class="headerlink" title="8.2.5 fatrace"></a>8.2.5 fatrace</h6><blockquote>
-</blockquote>
-<h5 id="8-3-BPF工具"><a href="#8-3-BPF工具" class="headerlink" title="8.3 BPF工具"></a>8.3 BPF工具</h5><h6 id="8-3-1-opensnoop"><a href="#8-3-1-opensnoop" class="headerlink" title="8.3.1 opensnoop"></a>8.3.1 opensnoop</h6><blockquote>
-</blockquote>
-<h6 id="8-3-2-statsnoop"><a href="#8-3-2-statsnoop" class="headerlink" title="8.3.2 statsnoop"></a>8.3.2 statsnoop</h6><blockquote>
-</blockquote>
-<h6 id="8-3-3-syncsnoop"><a href="#8-3-3-syncsnoop" class="headerlink" title="8.3.3 syncsnoop"></a>8.3.3 syncsnoop</h6><blockquote>
-</blockquote>
-<h6 id="8-3-4-mmapfiles"><a href="#8-3-4-mmapfiles" class="headerlink" title="8.3.4 mmapfiles"></a>8.3.4 mmapfiles</h6><blockquote>
-</blockquote>
-<h6 id="8-3-5-scread"><a href="#8-3-5-scread" class="headerlink" title="8.3.5 scread"></a>8.3.5 scread</h6><blockquote>
-</blockquote>
-<h6 id="8-3-6-fmapfaul"><a href="#8-3-6-fmapfaul" class="headerlink" title="8.3.6 fmapfaul"></a>8.3.6 fmapfaul</h6><blockquote>
-</blockquote>
-<h6 id="8-3-7-filelife"><a href="#8-3-7-filelife" class="headerlink" title="8.3.7 filelife"></a>8.3.7 filelife</h6><blockquote>
-</blockquote>
-<h6 id="8-3-8-vfssta"><a href="#8-3-8-vfssta" class="headerlink" title="8.3.8 vfssta"></a>8.3.8 vfssta</h6><blockquote>
-</blockquote>
-<h6 id="8-3-8-vfssta-1"><a href="#8-3-8-vfssta-1" class="headerlink" title="8.3.8 vfssta"></a>8.3.8 vfssta</h6><blockquote>
-</blockquote>
-<h6 id="8-3-9-vfscount"><a href="#8-3-9-vfscount" class="headerlink" title="8.3.9 vfscount"></a>8.3.9 vfscount</h6><blockquote>
-</blockquote>
-<h6 id="8-3-10-vfssiz"><a href="#8-3-10-vfssiz" class="headerlink" title="8.3.10 vfssiz"></a>8.3.10 vfssiz</h6><blockquote>
-</blockquote>
-<h6 id="8-3-11-fsrwsta"><a href="#8-3-11-fsrwsta" class="headerlink" title="8.3.11 fsrwsta"></a>8.3.11 fsrwsta</h6><blockquote>
-</blockquote>
-<h6 id="8-3-12-fileslower"><a href="#8-3-12-fileslower" class="headerlink" title="8.3.12 fileslower"></a>8.3.12 fileslower</h6><blockquote>
-</blockquote>
-<h6 id="8-3-13-filetop"><a href="#8-3-13-filetop" class="headerlink" title="8.3.13 filetop"></a>8.3.13 filetop</h6><blockquote>
-</blockquote>
-<h6 id="8-3-14-writesync"><a href="#8-3-14-writesync" class="headerlink" title="8.3.14 writesync"></a>8.3.14 writesync</h6><blockquote>
-</blockquote>
-<h6 id="8-3-15-filetype"><a href="#8-3-15-filetype" class="headerlink" title="8.3.15 filetype"></a>8.3.15 filetype</h6><blockquote>
-</blockquote>
-<h6 id="8-3-16-cachestat"><a href="#8-3-16-cachestat" class="headerlink" title="8.3.16 cachestat"></a>8.3.16 cachestat</h6><blockquote>
-</blockquote>
-<h6 id="8-3-17-writeback"><a href="#8-3-17-writeback" class="headerlink" title="8.3.17 writeback"></a>8.3.17 writeback</h6><blockquote>
-</blockquote>
-<h6 id="8-3-18-dcstat"><a href="#8-3-18-dcstat" class="headerlink" title="8.3.18 dcstat"></a>8.3.18 dcstat</h6><blockquote>
-</blockquote>
-<h6 id="8-3-19-dcsnoop"><a href="#8-3-19-dcsnoop" class="headerlink" title="8.3.19 dcsnoop"></a>8.3.19 dcsnoop</h6><blockquote>
-</blockquote>
-<h6 id="8-3-20-mountsnoop"><a href="#8-3-20-mountsnoop" class="headerlink" title="8.3.20 mountsnoop"></a>8.3.20 mountsnoop</h6><blockquote>
-</blockquote>
-<h6 id="8-3-21-xfsslower"><a href="#8-3-21-xfsslower" class="headerlink" title="8.3.21 xfsslower"></a>8.3.21 xfsslower</h6><blockquote>
-</blockquote>
-<h6 id="8-3-22-xfsdist"><a href="#8-3-22-xfsdist" class="headerlink" title="8.3.22 xfsdist"></a>8.3.22 xfsdist</h6><blockquote>
-</blockquote>
-<h6 id="8-3-23-ext4dist"><a href="#8-3-23-ext4dist" class="headerlink" title="8.3.23 ext4dist"></a>8.3.23 ext4dist</h6><blockquote>
-</blockquote>
-<h6 id="8-3-24-icstat"><a href="#8-3-24-icstat" class="headerlink" title="8.3.24 icstat"></a>8.3.24 icstat</h6><blockquote>
-</blockquote>
-<h6 id="8-3-25-bufgrow"><a href="#8-3-25-bufgrow" class="headerlink" title="8.3.25 bufgrow"></a>8.3.25 bufgrow</h6><blockquote>
-</blockquote>
-<h6 id="8-3-26-readahead"><a href="#8-3-26-readahead" class="headerlink" title="8.3.26 readahead"></a>8.3.26 readahead</h6><blockquote>
-</blockquote>
-<h6 id="8-3-27-Other-Tools"><a href="#8-3-27-Other-Tools" class="headerlink" title="8.3.27 Other Tools"></a>8.3.27 Other Tools</h6><blockquote>
-</blockquote>
-<h5 id="8-4-BPF单行程序"><a href="#8-4-BPF单行程序" class="headerlink" title="8.4 BPF单行程序"></a>8.4 BPF单行程序</h5><blockquote>
-</blockquote>
-<h4 id="第九章-磁盘io"><a href="#第九章-磁盘io" class="headerlink" title="第九章 磁盘io"></a>第九章 磁盘io</h4><blockquote>
-</blockquote>
-<h5 id="9-1-背景知识"><a href="#9-1-背景知识" class="headerlink" title="9.1 背景知识"></a>9.1 背景知识</h5><blockquote>
-</blockquote>
-<h5 id="9-2-传统工具"><a href="#9-2-传统工具" class="headerlink" title="9.2 传统工具"></a>9.2 传统工具</h5><blockquote>
-</blockquote>
-<h5 id="9-3-BPF工具"><a href="#9-3-BPF工具" class="headerlink" title="9.3 BPF工具"></a>9.3 BPF工具</h5><h6 id="9-3-1-biolatency"><a href="#9-3-1-biolatency" class="headerlink" title="9.3.1 biolatency"></a>9.3.1 biolatency</h6><blockquote>
-</blockquote>
-<h6 id="9-3-2-biosnoop"><a href="#9-3-2-biosnoop" class="headerlink" title="9.3.2 biosnoop"></a>9.3.2 biosnoop</h6><blockquote>
-</blockquote>
-<h6 id="9-3-3-biotop"><a href="#9-3-3-biotop" class="headerlink" title="9.3.3 biotop"></a>9.3.3 biotop</h6><blockquote>
-</blockquote>
-<h6 id="9-3-4-bitesize"><a href="#9-3-4-bitesize" class="headerlink" title="9.3.4 bitesize"></a>9.3.4 bitesize</h6><blockquote>
-</blockquote>
-<h6 id="9-3-5-seeksize"><a href="#9-3-5-seeksize" class="headerlink" title="9.3.5 seeksize"></a>9.3.5 seeksize</h6><blockquote>
-</blockquote>
-<h6 id="9-3-6-biopattern"><a href="#9-3-6-biopattern" class="headerlink" title="9.3.6 biopattern"></a>9.3.6 biopattern</h6><blockquote>
-</blockquote>
-<h6 id="9-3-7-biostacks"><a href="#9-3-7-biostacks" class="headerlink" title="9.3.7 biostacks"></a>9.3.7 biostacks</h6><blockquote>
-</blockquote>
-<h6 id="9-3-8-bioerr"><a href="#9-3-8-bioerr" class="headerlink" title="9.3.8 bioerr"></a>9.3.8 bioerr</h6><blockquote>
-</blockquote>
-<h6 id="9-3-9-mdflush"><a href="#9-3-9-mdflush" class="headerlink" title="9.3.9 mdflush"></a>9.3.9 mdflush</h6><blockquote>
-</blockquote>
-<h6 id="9-3-10-iosched"><a href="#9-3-10-iosched" class="headerlink" title="9.3.10 iosched"></a>9.3.10 iosched</h6><blockquote>
-</blockquote>
-<h6 id="9-3-11-scsilatency"><a href="#9-3-11-scsilatency" class="headerlink" title="9.3.11 scsilatency"></a>9.3.11 scsilatency</h6><blockquote>
-</blockquote>
-<h6 id="9-3-12-scsiresult"><a href="#9-3-12-scsiresult" class="headerlink" title="9.3.12 scsiresult"></a>9.3.12 scsiresult</h6><blockquote>
-</blockquote>
-<h6 id="9-3-13-nvmelatency"><a href="#9-3-13-nvmelatency" class="headerlink" title="9.3.13 nvmelatency"></a>9.3.13 nvmelatency</h6><blockquote>
-</blockquote>
-<h5 id="9-4-BPF单行程序"><a href="#9-4-BPF单行程序" class="headerlink" title="9.4 BPF单行程序"></a>9.4 BPF单行程序</h5><h4 id=""><a href="#" class="headerlink" title=""></a></h4><blockquote>
-</blockquote>
-<h4 id="第十章-网络"><a href="#第十章-网络" class="headerlink" title="第十章 网络"></a>第十章 网络</h4><h5 id="10-1-背景知识"><a href="#10-1-背景知识" class="headerlink" title="10.1 背景知识"></a>10.1 背景知识</h5><blockquote>
-</blockquote>
-<h5 id="10-2-传统工具"><a href="#10-2-传统工具" class="headerlink" title="10.2 传统工具"></a>10.2 传统工具</h5><blockquote>
-</blockquote>
-<h5 id="10-3-BPF工具"><a href="#10-3-BPF工具" class="headerlink" title="10.3 BPF工具"></a>10.3 BPF工具</h5><h6 id="10-3-1-sockstat"><a href="#10-3-1-sockstat" class="headerlink" title="10.3.1 sockstat"></a>10.3.1 sockstat</h6><blockquote>
-</blockquote>
-<h6 id="10-3-2-sofamily"><a href="#10-3-2-sofamily" class="headerlink" title="10.3.2 sofamily"></a>10.3.2 sofamily</h6><blockquote>
-</blockquote>
-<h6 id="10-3-3-soprotocol"><a href="#10-3-3-soprotocol" class="headerlink" title="10.3.3 soprotocol"></a>10.3.3 soprotocol</h6><blockquote>
-</blockquote>
-<h6 id="10-3-4-soconnect"><a href="#10-3-4-soconnect" class="headerlink" title="10.3.4 soconnect"></a>10.3.4 soconnect</h6><h6 id="10-3-5-soaccept"><a href="#10-3-5-soaccept" class="headerlink" title="10.3.5 soaccept"></a>10.3.5 soaccept</h6><h6 id="10-3-6-socketio"><a href="#10-3-6-socketio" class="headerlink" title="10.3.6 socketio"></a>10.3.6 socketio</h6><h6 id="10-3-7-socksize"><a href="#10-3-7-socksize" class="headerlink" title="10.3.7 socksize"></a>10.3.7 socksize</h6><h6 id="10-3-8-sormem"><a href="#10-3-8-sormem" class="headerlink" title="10.3.8 sormem"></a>10.3.8 sormem</h6><h6 id="10-3-9-soconnlat"><a href="#10-3-9-soconnlat" class="headerlink" title="10.3.9 soconnlat"></a>10.3.9 soconnlat</h6><h6 id="10-3-10-so1stbyte"><a href="#10-3-10-so1stbyte" class="headerlink" title="10.3.10 so1stbyte"></a>10.3.10 so1stbyte</h6><h6 id="10-3-11-tcpconnect"><a href="#10-3-11-tcpconnect" class="headerlink" title="10.3.11 tcpconnect"></a>10.3.11 tcpconnect</h6><h6 id="10-3-12-tcpaccept"><a href="#10-3-12-tcpaccept" class="headerlink" title="10.3.12 tcpaccept"></a>10.3.12 tcpaccept</h6><h6 id="10-3-13-tcplife"><a href="#10-3-13-tcplife" class="headerlink" title="10.3.13 tcplife"></a>10.3.13 tcplife</h6><h6 id="10-3-14-tcptop"><a href="#10-3-14-tcptop" class="headerlink" title="10.3.14 tcptop"></a>10.3.14 tcptop</h6><h6 id="10-3-15-tcpsnoop"><a href="#10-3-15-tcpsnoop" class="headerlink" title="10.3.15 tcpsnoop"></a>10.3.15 tcpsnoop</h6><h6 id="10-3-16-tcpretrans"><a href="#10-3-16-tcpretrans" class="headerlink" title="10.3.16 tcpretrans"></a>10.3.16 tcpretrans</h6><h6 id="10-3-17-tcpsynbl"><a href="#10-3-17-tcpsynbl" class="headerlink" title="10.3.17 tcpsynbl"></a>10.3.17 tcpsynbl</h6><h6 id="10-3-18-tcpwin"><a href="#10-3-18-tcpwin" class="headerlink" title="10.3.18 tcpwin"></a>10.3.18 tcpwin</h6><h6 id="10-3-19-tcpnagle"><a href="#10-3-19-tcpnagle" class="headerlink" title="10.3.19 tcpnagle"></a>10.3.19 tcpnagle</h6><h6 id="10-3-20-udpconnect"><a href="#10-3-20-udpconnect" class="headerlink" title="10.3.20 udpconnect"></a>10.3.20 udpconnect</h6><h6 id="10-3-21-gethostlatency"><a href="#10-3-21-gethostlatency" class="headerlink" title="10.3.21 gethostlatency"></a>10.3.21 gethostlatency</h6><h6 id="10-3-22-ipecn"><a href="#10-3-22-ipecn" class="headerlink" title="10.3.22 ipecn"></a>10.3.22 ipecn</h6><h6 id="10-3-23-superping"><a href="#10-3-23-superping" class="headerlink" title="10.3.23 superping"></a>10.3.23 superping</h6><h6 id="10-3-24-qdisc-fq"><a href="#10-3-24-qdisc-fq" class="headerlink" title="10.3.24 qdisc-fq"></a>10.3.24 qdisc-fq</h6><h6 id="10-3-25-qdisc-cbq-qdisc-cbs-qdisc-codel-qdisc-fq-codel-qdisc-red-and-qdisc-tbf"><a href="#10-3-25-qdisc-cbq-qdisc-cbs-qdisc-codel-qdisc-fq-codel-qdisc-red-and-qdisc-tbf" class="headerlink" title="10.3.25 qdisc-cbq, qdisc-cbs, qdisc-codel, qdisc-fq_codel, qdisc-red, and qdisc-tbf"></a>10.3.25 qdisc-cbq, qdisc-cbs, qdisc-codel, qdisc-fq_codel, qdisc-red, and qdisc-tbf</h6><h6 id="10-3-26-netsize"><a href="#10-3-26-netsize" class="headerlink" title="10.3.26 netsize"></a>10.3.26 netsize</h6><h6 id="10-3-27-nettxlat"><a href="#10-3-27-nettxlat" class="headerlink" title="10.3.27 nettxlat"></a>10.3.27 nettxlat</h6><h6 id="10-3-28-skbdrop"><a href="#10-3-28-skbdrop" class="headerlink" title="10.3.28 skbdrop"></a>10.3.28 skbdrop</h6><h6 id="10-3-29-skblife"><a href="#10-3-29-skblife" class="headerlink" title="10.3.29 skblife"></a>10.3.29 skblife</h6><h6 id="10-3-30-ieee80211scan"><a href="#10-3-30-ieee80211scan" class="headerlink" title="10.3.30 ieee80211scan"></a>10.3.30 ieee80211scan</h6><blockquote>
-</blockquote>
-<h6 id="10-3-31-Other-Tools"><a href="#10-3-31-Other-Tools" class="headerlink" title="10.3.31 Other Tools"></a>10.3.31 Other Tools</h6><blockquote>
-</blockquote>
-<blockquote>
-</blockquote>
-<h5 id="10-4-BPF单行程序"><a href="#10-4-BPF单行程序" class="headerlink" title="10.4 BPF单行程序"></a>10.4 BPF单行程序</h5><h6 id="10-4-1-BCC"><a href="#10-4-1-BCC" class="headerlink" title="10.4.1 BCC"></a>10.4.1 BCC</h6><h6 id="10-4-2-bpftrace"><a href="#10-4-2-bpftrace" class="headerlink" title="10.4.2 bpftrace"></a>10.4.2 bpftrace</h6><blockquote>
-</blockquote>
-<h6 id="10-4-3-BPF-One-Liners-Examples"><a href="#10-4-3-BPF-One-Liners-Examples" class="headerlink" title="10.4.3 BPF One-Liners Examples"></a>10.4.3 BPF One-Liners Examples</h6><blockquote>
-</blockquote>
-<h4 id="第十一章-安全"><a href="#第十一章-安全" class="headerlink" title="第十一章 安全"></a>第十一章 安全</h4><h5 id="11-1-背景知识"><a href="#11-1-背景知识" class="headerlink" title="11.1 背景知识"></a>11.1 背景知识</h5><h6 id="11-1-1-BPF-Capabilities"><a href="#11-1-1-BPF-Capabilities" class="headerlink" title="11.1.1 BPF Capabilities"></a>11.1.1 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="11-1-2-Unprivileged-BPF-Users"><a href="#11-1-2-Unprivileged-BPF-Users" class="headerlink" title="11.1.2 Unprivileged BPF Users"></a>11.1.2 Unprivileged BPF Users</h6><blockquote>
-</blockquote>
-<h6 id="11-1-3-Configuring-BPF-Security"><a href="#11-1-3-Configuring-BPF-Security" class="headerlink" title="11.1.3 Configuring BPF Security"></a>11.1.3 Configuring BPF Security</h6><blockquote>
-</blockquote>
-<h6 id="11-1-4-Strategy"><a href="#11-1-4-Strategy" class="headerlink" title="11.1.4 Strategy"></a>11.1.4 Strategy</h6><blockquote>
-</blockquote>
-<blockquote>
-</blockquote>
-<h5 id="11-2-BPF工具"><a href="#11-2-BPF工具" class="headerlink" title="11.2 BPF工具"></a>11.2 BPF工具</h5><h6 id="11-2-1-execsnoop"><a href="#11-2-1-execsnoop" class="headerlink" title="11.2.1 execsnoop"></a>11.2.1 execsnoop</h6><blockquote>
-</blockquote>
-<h6 id="11-2-2-elfsnoop"><a href="#11-2-2-elfsnoop" class="headerlink" title="11.2.2 elfsnoop"></a>11.2.2 elfsnoop</h6><blockquote>
-</blockquote>
-<h6 id="11-2-3-modsnoop"><a href="#11-2-3-modsnoop" class="headerlink" title="11.2.3 modsnoop"></a>11.2.3 modsnoop</h6><blockquote>
-</blockquote>
-<h6 id="11-2-4-bashreadline"><a href="#11-2-4-bashreadline" class="headerlink" title="11.2.4 bashreadline"></a>11.2.4 bashreadline</h6><blockquote>
-</blockquote>
-<h6 id="11-2-5-shellsnoop"><a href="#11-2-5-shellsnoop" class="headerlink" title="11.2.5 shellsnoop"></a>11.2.5 shellsnoop</h6><blockquote>
-</blockquote>
-<h6 id="11-2-6-ttysnoop"><a href="#11-2-6-ttysnoop" class="headerlink" title="11.2.6 ttysnoop"></a>11.2.6 ttysnoop</h6><blockquote>
-</blockquote>
-<h6 id="11-2-7-opensnoop"><a href="#11-2-7-opensnoop" class="headerlink" title="11.2.7 opensnoop"></a>11.2.7 opensnoop</h6><blockquote>
-</blockquote>
-<h6 id="11-2-8-eperm"><a href="#11-2-8-eperm" class="headerlink" title="11.2.8 eperm"></a>11.2.8 eperm</h6><blockquote>
-</blockquote>
-<h6 id="11-2-9-tcpconnect-and-tcpaccept"><a href="#11-2-9-tcpconnect-and-tcpaccept" class="headerlink" title="11.2.9 tcpconnect and tcpaccept"></a>11.2.9 tcpconnect and tcpaccept</h6><blockquote>
-</blockquote>
-<h6 id="11-2-10-tcpreset"><a href="#11-2-10-tcpreset" class="headerlink" title="11.2.10 tcpreset"></a>11.2.10 tcpreset</h6><blockquote>
-</blockquote>
-<h6 id="11-2-11-capable"><a href="#11-2-11-capable" class="headerlink" title="11.2.11 capable"></a>11.2.11 capable</h6><blockquote>
-</blockquote>
-<h6 id="11-2-12-setuids"><a href="#11-2-12-setuids" class="headerlink" title="11.2.12 setuids"></a>11.2.12 setuids</h6><blockquote>
-</blockquote>
-<h5 id="11-3-BPF单行程序"><a href="#11-3-BPF单行程序" class="headerlink" title="11.3 BPF单行程序"></a>11.3 BPF单行程序</h5><h5 id="11-3-1-BCC"><a href="#11-3-1-BCC" class="headerlink" title="11.3.1 BCC"></a>11.3.1 BCC</h5><blockquote>
-</blockquote>
-<h5 id="11-3-2-bpftrace"><a href="#11-3-2-bpftrace" class="headerlink" title="11.3.2 bpftrace"></a>11.3.2 bpftrace</h5><blockquote>
-</blockquote>
-<h5 id="11-3-3-BPF-One-Liners-Examples"><a href="#11-3-3-BPF-One-Liners-Examples" class="headerlink" title="11.3.3 BPF One-Liners Examples"></a>11.3.3 BPF One-Liners Examples</h5><blockquote>
-</blockquote>
-<h4 id="第十二章-编程语言"><a href="#第十二章-编程语言" class="headerlink" title="第十二章 编程语言"></a>第十二章 编程语言</h4><blockquote>
-</blockquote>
-<h5 id="12-1-背景知识"><a href="#12-1-背景知识" class="headerlink" title="12.1 背景知识"></a>12.1 背景知识</h5><h6 id="12-1-1-Compiled"><a href="#12-1-1-Compiled" class="headerlink" title="12.1.1 Compiled"></a>12.1.1 Compiled</h6><blockquote>
-</blockquote>
-<h6 id="12-1-2-JIT-Compiled"><a href="#12-1-2-JIT-Compiled" class="headerlink" title="12.1.2 JIT Compiled"></a>12.1.2 JIT Compiled</h6><blockquote>
-</blockquote>
-<h6 id="12-1-3-Interpreted"><a href="#12-1-3-Interpreted" class="headerlink" title="12.1.3 Interpreted"></a>12.1.3 Interpreted</h6><blockquote>
-</blockquote>
-<h6 id="12-1-4-BPF-Capabilities"><a href="#12-1-4-BPF-Capabilities" class="headerlink" title="12.1.4 BPF Capabilities"></a>12.1.4 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="12-1-5-Strategy"><a href="#12-1-5-Strategy" class="headerlink" title="12.1.5 Strategy"></a>12.1.5 Strategy</h6><blockquote>
-</blockquote>
-<h6 id="12-1-6-BPF-Tools"><a href="#12-1-6-BPF-Tools" class="headerlink" title="12.1.6 BPF Tools"></a>12.1.6 BPF Tools</h6><blockquote>
-</blockquote>
-<h6 id="-1"><a href="#-1" class="headerlink" title=""></a></h6><blockquote>
-</blockquote>
-<h5 id="12-2-C"><a href="#12-2-C" class="headerlink" title="12.2 C"></a>12.2 C</h5><h6 id="12-2-1-C-Function-Symbols"><a href="#12-2-1-C-Function-Symbols" class="headerlink" title="12.2.1 C Function Symbols"></a>12.2.1 C Function Symbols</h6><blockquote>
-</blockquote>
-<h6 id="12-2-2-C-Stack-Traces"><a href="#12-2-2-C-Stack-Traces" class="headerlink" title="12.2.2 C Stack Traces"></a>12.2.2 C Stack Traces</h6><blockquote>
-</blockquote>
-<h6 id="12-2-3-C-Function-Tracing"><a href="#12-2-3-C-Function-Tracing" class="headerlink" title="12.2.3 C Function Tracing"></a>12.2.3 C Function Tracing</h6><blockquote>
-</blockquote>
-<h6 id="12-2-4-C-Function-Offset-Tracing"><a href="#12-2-4-C-Function-Offset-Tracing" class="headerlink" title="12.2.4 C Function Offset Tracing"></a>12.2.4 C Function Offset Tracing</h6><blockquote>
-</blockquote>
-<h6 id="12-2-5-C-USDT"><a href="#12-2-5-C-USDT" class="headerlink" title="12.2.5 C USDT"></a>12.2.5 C USDT</h6><blockquote>
-</blockquote>
-<h6 id="12-2-6-C-One-Liners"><a href="#12-2-6-C-One-Liners" class="headerlink" title="12.2.6 C One-Liners"></a>12.2.6 C One-Liners</h6><blockquote>
-</blockquote>
-<h5 id="12-3-Java"><a href="#12-3-Java" class="headerlink" title="12.3 Java"></a>12.3 Java</h5><blockquote>
-</blockquote>
-<h6 id="12-3-1-libjvm-Tracing"><a href="#12-3-1-libjvm-Tracing" class="headerlink" title="12.3.1 libjvm Tracing"></a>12.3.1 libjvm Tracing</h6><blockquote>
-</blockquote>
-<h6 id="12-3-2-jnistacks"><a href="#12-3-2-jnistacks" class="headerlink" title="12.3.2 jnistacks"></a>12.3.2 jnistacks</h6><blockquote>
-</blockquote>
-<h6 id="12-3-3-Java-Thread-Names"><a href="#12-3-3-Java-Thread-Names" class="headerlink" title="12.3.3 Java Thread Names"></a>12.3.3 Java Thread Names</h6><blockquote>
-</blockquote>
-<h6 id="12-3-4-Java-Method-Symbols"><a href="#12-3-4-Java-Method-Symbols" class="headerlink" title="12.3.4 Java Method Symbols"></a>12.3.4 Java Method Symbols</h6><blockquote>
-</blockquote>
-<h6 id="12-3-5-Java-Stack-Traces"><a href="#12-3-5-Java-Stack-Traces" class="headerlink" title="12.3.5 Java Stack Traces"></a>12.3.5 Java Stack Traces</h6><blockquote>
-</blockquote>
-<h6 id="12-3-6-Java-USDT-Probes"><a href="#12-3-6-Java-USDT-Probes" class="headerlink" title="12.3.6 Java USDT Probes"></a>12.3.6 Java USDT Probes</h6><blockquote>
-</blockquote>
-<h6 id="12-3-7-profile"><a href="#12-3-7-profile" class="headerlink" title="12.3.7 profile"></a>12.3.7 profile</h6><blockquote>
-</blockquote>
-<h6 id="12-3-8-offcputime"><a href="#12-3-8-offcputime" class="headerlink" title="12.3.8 offcputime"></a>12.3.8 offcputime</h6><blockquote>
-</blockquote>
-<h6 id="12-3-9-stackcount"><a href="#12-3-9-stackcount" class="headerlink" title="12.3.9 stackcount"></a>12.3.9 stackcount</h6><blockquote>
-</blockquote>
-<h6 id="12-3-10-javastat"><a href="#12-3-10-javastat" class="headerlink" title="12.3.10 javastat"></a>12.3.10 javastat</h6><blockquote>
-</blockquote>
-<h6 id="12-3-11-javathreads"><a href="#12-3-11-javathreads" class="headerlink" title="12.3.11 javathreads"></a>12.3.11 javathreads</h6><blockquote>
-</blockquote>
-<h6 id="12-3-12-javacalls"><a href="#12-3-12-javacalls" class="headerlink" title="12.3.12 javacalls"></a>12.3.12 javacalls</h6><blockquote>
-</blockquote>
-<h6 id="12-3-13-javaflow"><a href="#12-3-13-javaflow" class="headerlink" title="12.3.13 javaflow"></a>12.3.13 javaflow</h6><blockquote>
-</blockquote>
-<h6 id="12-3-14-javagc"><a href="#12-3-14-javagc" class="headerlink" title="12.3.14 javagc"></a>12.3.14 javagc</h6><blockquote>
-</blockquote>
-<h6 id="12-3-15-javaobjnew"><a href="#12-3-15-javaobjnew" class="headerlink" title="12.3.15 javaobjnew"></a>12.3.15 javaobjnew</h6><blockquote>
-</blockquote>
-<h6 id="12-3-16-Java-One-Liners"><a href="#12-3-16-Java-One-Liners" class="headerlink" title="12.3.16 Java One-Liners"></a>12.3.16 Java One-Liners</h6><blockquote>
-</blockquote>
-<h5 id="12-4-bash-shell"><a href="#12-4-bash-shell" class="headerlink" title="12.4 bash shell"></a>12.4 bash shell</h5><h5 id="12-4-1-Function-Counts"><a href="#12-4-1-Function-Counts" class="headerlink" title="12.4.1 Function Counts"></a>12.4.1 Function Counts</h5><blockquote>
-</blockquote>
-<h5 id="12-4-2-Function-Argument-Tracing-bashfunc-bt"><a href="#12-4-2-Function-Argument-Tracing-bashfunc-bt" class="headerlink" title="12.4.2 Function Argument Tracing (bashfunc.bt)"></a>12.4.2 Function Argument Tracing (bashfunc.bt)</h5><blockquote>
-</blockquote>
-<h5 id="12-4-3-Function-Latency-bashfunclat-bt"><a href="#12-4-3-Function-Latency-bashfunclat-bt" class="headerlink" title="12.4.3 Function Latency (bashfunclat.bt)"></a>12.4.3 Function Latency (bashfunclat.bt)</h5><blockquote>
-</blockquote>
-<h5 id="12-4-4-bin-bash"><a href="#12-4-4-bin-bash" class="headerlink" title="12.4.4 &#x2F;bin&#x2F;bash"></a>12.4.4 &#x2F;bin&#x2F;bash</h5><blockquote>
-</blockquote>
-<h5 id="12-4-5-bin-bash-USDT"><a href="#12-4-5-bin-bash-USDT" class="headerlink" title="12.4.5 &#x2F;bin&#x2F;bash USDT"></a>12.4.5 &#x2F;bin&#x2F;bash USDT</h5><blockquote>
-</blockquote>
-<h5 id="12-4-6-bash-One-Liners"><a href="#12-4-6-bash-One-Liners" class="headerlink" title="12.4.6 bash One-Liners"></a>12.4.6 bash One-Liners</h5><blockquote>
-</blockquote>
-<h5 id="12-5-其他语言"><a href="#12-5-其他语言" class="headerlink" title="12.5 其他语言"></a>12.5 其他语言</h5><h6 id="12-5-1-JavaScript-Node-js"><a href="#12-5-1-JavaScript-Node-js" class="headerlink" title="12.5.1 JavaScript (Node.js)"></a>12.5.1 JavaScript (Node.js)</h6><blockquote>
-</blockquote>
-<h6 id="12-5-2-C"><a href="#12-5-2-C" class="headerlink" title="12.5.2 C++"></a>12.5.2 C++</h6><blockquote>
-</blockquote>
-<h6 id="12-5-3-Golang"><a href="#12-5-3-Golang" class="headerlink" title="12.5.3 Golang"></a>12.5.3 Golang</h6><blockquote>
-</blockquote>
-<h5 id="12-6-Summary"><a href="#12-6-Summary" class="headerlink" title="12.6 Summary"></a>12.6 Summary</h5><blockquote>
-</blockquote>
-<h4 id="第十三章-应用程序"><a href="#第十三章-应用程序" class="headerlink" title="第十三章 应用程序"></a>第十三章 应用程序</h4><h5 id="13-1-背景知识"><a href="#13-1-背景知识" class="headerlink" title="13.1 背景知识"></a>13.1 背景知识</h5><h6 id="13-1-1-Application-Fundamentals"><a href="#13-1-1-Application-Fundamentals" class="headerlink" title="13.1.1 Application Fundamentals"></a>13.1.1 Application Fundamentals</h6><blockquote>
-</blockquote>
-<h6 id="13-1-2-Application-Example-MySQL-Server"><a href="#13-1-2-Application-Example-MySQL-Server" class="headerlink" title="13.1.2 Application Example: MySQL Server"></a>13.1.2 Application Example: MySQL Server</h6><blockquote>
-</blockquote>
-<h6 id="13-1-3-BPF-Capabilities"><a href="#13-1-3-BPF-Capabilities" class="headerlink" title="13.1.3 BPF Capabilities"></a>13.1.3 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="13-1-4-Strategy"><a href="#13-1-4-Strategy" class="headerlink" title="13.1.4 Strategy"></a>13.1.4 Strategy</h6><blockquote>
-</blockquote>
-<h5 id="13-2-BPF工具"><a href="#13-2-BPF工具" class="headerlink" title="13.2 BPF工具"></a>13.2 BPF工具</h5><h6 id="13-2-1-execsnoop"><a href="#13-2-1-execsnoop" class="headerlink" title="13.2.1 execsnoop"></a>13.2.1 execsnoop</h6><blockquote>
-</blockquote>
-<h6 id="13-2-2-threadsnoop"><a href="#13-2-2-threadsnoop" class="headerlink" title="13.2.2 threadsnoop"></a>13.2.2 threadsnoop</h6><blockquote>
-</blockquote>
-<h6 id="13-2-3-profile"><a href="#13-2-3-profile" class="headerlink" title="13.2.3 profile"></a>13.2.3 profile</h6><blockquote>
-</blockquote>
-<h6 id="13-2-4-threaded"><a href="#13-2-4-threaded" class="headerlink" title="13.2.4 threaded"></a>13.2.4 threaded</h6><blockquote>
-</blockquote>
-<h6 id="13-2-5-offcputime"><a href="#13-2-5-offcputime" class="headerlink" title="13.2.5 offcputime"></a>13.2.5 offcputime</h6><blockquote>
-</blockquote>
-<h6 id="13-2-6-offcpuhist"><a href="#13-2-6-offcpuhist" class="headerlink" title="13.2.6 offcpuhist"></a>13.2.6 offcpuhist</h6><blockquote>
-</blockquote>
-<h6 id="13-2-7-syscount"><a href="#13-2-7-syscount" class="headerlink" title="13.2.7 syscount"></a>13.2.7 syscount</h6><blockquote>
-</blockquote>
-<h6 id="13-2-8-ioprofile"><a href="#13-2-8-ioprofile" class="headerlink" title="13.2.8 ioprofile"></a>13.2.8 ioprofile</h6><blockquote>
-</blockquote>
-<h6 id="13-2-9-libc-Frame-Pointers"><a href="#13-2-9-libc-Frame-Pointers" class="headerlink" title="13.2.9 libc Frame Pointers"></a>13.2.9 libc Frame Pointers</h6><blockquote>
-</blockquote>
-<h6 id="13-2-10-mysqld-qslower"><a href="#13-2-10-mysqld-qslower" class="headerlink" title="13.2.10 mysqld_qslower"></a>13.2.10 mysqld_qslower</h6><blockquote>
-</blockquote>
-<h6 id="13-2-11-mysqld-clat"><a href="#13-2-11-mysqld-clat" class="headerlink" title="13.2.11 mysqld_clat"></a>13.2.11 mysqld_clat</h6><blockquote>
-</blockquote>
-<h6 id="13-2-12-signals"><a href="#13-2-12-signals" class="headerlink" title="13.2.12 signals"></a>13.2.12 signals</h6><blockquote>
-</blockquote>
-<h6 id="13-2-13-killsnoop"><a href="#13-2-13-killsnoop" class="headerlink" title="13.2.13 killsnoop"></a>13.2.13 killsnoop</h6><blockquote>
-</blockquote>
-<h6 id="13-2-14-pmlock-and-pmheld"><a href="#13-2-14-pmlock-and-pmheld" class="headerlink" title="13.2.14 pmlock and pmheld"></a>13.2.14 pmlock and pmheld</h6><blockquote>
-</blockquote>
-<h6 id="13-2-15-naptime"><a href="#13-2-15-naptime" class="headerlink" title="13.2.15 naptime"></a>13.2.15 naptime</h6><blockquote>
-</blockquote>
-<h6 id="13-2-16-Other-Tools"><a href="#13-2-16-Other-Tools" class="headerlink" title="13.2.16 Other Tools"></a>13.2.16 Other Tools</h6><blockquote>
-</blockquote>
-<h5 id="13-3-单行程序"><a href="#13-3-单行程序" class="headerlink" title="13.3 单行程序"></a>13.3 单行程序</h5><h6 id="13-3-1-BCC"><a href="#13-3-1-BCC" class="headerlink" title="13.3.1 BCC"></a>13.3.1 BCC</h6><blockquote>
-</blockquote>
-<h6 id="13-3-2-bpftrace"><a href="#13-3-2-bpftrace" class="headerlink" title="13.3.2 bpftrace"></a>13.3.2 bpftrace</h6><blockquote>
-</blockquote>
-<h5 id="13-4-BPF单行程序示例"><a href="#13-4-BPF单行程序示例" class="headerlink" title="13.4 BPF单行程序示例"></a>13.4 BPF单行程序示例</h5><blockquote>
-</blockquote>
-<h4 id="第十四章-内核"><a href="#第十四章-内核" class="headerlink" title="第十四章 内核"></a>第十四章 内核</h4><blockquote>
-</blockquote>
-<h5 id="14-1-背景知识"><a href="#14-1-背景知识" class="headerlink" title="14.1 背景知识"></a>14.1 背景知识</h5><h6 id="14-1-1-Kernel-Fundamentals"><a href="#14-1-1-Kernel-Fundamentals" class="headerlink" title="14.1.1 Kernel Fundamentals"></a>14.1.1 Kernel Fundamentals</h6><blockquote>
-</blockquote>
-<h6 id="14-1-2-BPF-Capabilities"><a href="#14-1-2-BPF-Capabilities" class="headerlink" title="14.1.2 BPF Capabilities"></a>14.1.2 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h5 id="14-2-分析策略"><a href="#14-2-分析策略" class="headerlink" title="14.2 分析策略"></a>14.2 分析策略</h5><blockquote>
-</blockquote>
-<h5 id="14-3-传统工具"><a href="#14-3-传统工具" class="headerlink" title="14.3 传统工具"></a>14.3 传统工具</h5><h6 id="14-3-1-Ftrace"><a href="#14-3-1-Ftrace" class="headerlink" title="14.3.1 Ftrace"></a>14.3.1 Ftrace</h6><blockquote>
-</blockquote>
-<h6 id="14-3-2-perf-sched"><a href="#14-3-2-perf-sched" class="headerlink" title="14.3.2 perf sched"></a>14.3.2 perf sched</h6><blockquote>
-</blockquote>
-<h6 id="14-3-3-slabtop"><a href="#14-3-3-slabtop" class="headerlink" title="14.3.3 slabtop"></a>14.3.3 slabtop</h6><blockquote>
-</blockquote>
-<h6 id="14-3-4-Other-Tools"><a href="#14-3-4-Other-Tools" class="headerlink" title="14.3.4 Other Tools"></a>14.3.4 Other Tools</h6><blockquote>
-</blockquote>
-<h5 id="14-4-BPF工具"><a href="#14-4-BPF工具" class="headerlink" title="14.4 BPF工具"></a>14.4 BPF工具</h5><h6 id="14-4-1-loads"><a href="#14-4-1-loads" class="headerlink" title="14.4.1 loads"></a>14.4.1 loads</h6><blockquote>
-</blockquote>
-<h6 id="14-4-2-offcputime"><a href="#14-4-2-offcputime" class="headerlink" title="14.4.2 offcputime"></a>14.4.2 offcputime</h6><blockquote>
-</blockquote>
-<h6 id="14-4-3-wakeuptime"><a href="#14-4-3-wakeuptime" class="headerlink" title="14.4.3 wakeuptime"></a>14.4.3 wakeuptime</h6><blockquote>
-</blockquote>
-<h6 id="14-4-4-offwaketime"><a href="#14-4-4-offwaketime" class="headerlink" title="14.4.4 offwaketime"></a>14.4.4 offwaketime</h6><blockquote>
-</blockquote>
-<h6 id="14-4-5-mlock-and-mheld"><a href="#14-4-5-mlock-and-mheld" class="headerlink" title="14.4.5 mlock and mheld"></a>14.4.5 mlock and mheld</h6><blockquote>
-</blockquote>
-<h6 id="14-4-6-Spin-Locks"><a href="#14-4-6-Spin-Locks" class="headerlink" title="14.4.6 Spin Locks"></a>14.4.6 Spin Locks</h6><blockquote>
-</blockquote>
-<h6 id="14-4-7-kmem"><a href="#14-4-7-kmem" class="headerlink" title="14.4.7 kmem"></a>14.4.7 kmem</h6><blockquote>
-</blockquote>
-<h6 id="14-4-8-kpages"><a href="#14-4-8-kpages" class="headerlink" title="14.4.8 kpages"></a>14.4.8 kpages</h6><blockquote>
-</blockquote>
-<h6 id="14-4-9-memleak"><a href="#14-4-9-memleak" class="headerlink" title="14.4.9 memleak"></a>14.4.9 memleak</h6><blockquote>
-</blockquote>
-<h6 id="14-4-10-slabratetop"><a href="#14-4-10-slabratetop" class="headerlink" title="14.4.10 slabratetop"></a>14.4.10 slabratetop</h6><blockquote>
-</blockquote>
-<h6 id="14-4-11-numamove"><a href="#14-4-11-numamove" class="headerlink" title="14.4.11 numamove"></a>14.4.11 numamove</h6><blockquote>
-</blockquote>
-<h6 id="14-4-12-workq"><a href="#14-4-12-workq" class="headerlink" title="14.4.12 workq"></a>14.4.12 workq</h6><blockquote>
-</blockquote>
-<h6 id="14-4-13-Tasklets"><a href="#14-4-13-Tasklets" class="headerlink" title="14.4.13 Tasklets"></a>14.4.13 Tasklets</h6><blockquote>
-</blockquote>
-<h6 id="14-4-14-Other-Tools"><a href="#14-4-14-Other-Tools" class="headerlink" title="14.4.14 Other Tools"></a>14.4.14 Other Tools</h6><blockquote>
-</blockquote>
-<h5 id="14-5-BPF单行程序"><a href="#14-5-BPF单行程序" class="headerlink" title="14.5 BPF单行程序"></a>14.5 BPF单行程序</h5><h6 id="14-5-1-BCC"><a href="#14-5-1-BCC" class="headerlink" title="14.5.1 BCC"></a>14.5.1 BCC</h6><h6 id="14-5-2-bpftrace"><a href="#14-5-2-bpftrace" class="headerlink" title="14.5.2 bpftrace"></a>14.5.2 bpftrace</h6><blockquote>
-</blockquote>
-<h5 id="14-6-BPF单行程序示例"><a href="#14-6-BPF单行程序示例" class="headerlink" title="14.6 BPF单行程序示例"></a>14.6 BPF单行程序示例</h5><h6 id="14-6-1-Counting-System-Calls-by-Syscall-Function"><a href="#14-6-1-Counting-System-Calls-by-Syscall-Function" class="headerlink" title="14.6.1 Counting System Calls by Syscall Function"></a>14.6.1 Counting System Calls by Syscall Function</h6><h6 id="14-6-2-Counting-hrtimer-Starts-by-Kernel-Function"><a href="#14-6-2-Counting-hrtimer-Starts-by-Kernel-Function" class="headerlink" title="14.6.2 Counting hrtimer Starts by Kernel Function"></a>14.6.2 Counting hrtimer Starts by Kernel Function</h6><blockquote>
-</blockquote>
-<h5 id="14-7-Challenges"><a href="#14-7-Challenges" class="headerlink" title="14.7 Challenges"></a>14.7 Challenges</h5><h5 id="14-8-Summary"><a href="#14-8-Summary" class="headerlink" title="14.8 Summary"></a>14.8 Summary</h5><blockquote>
-</blockquote>
-<h4 id="第十五章-容器"><a href="#第十五章-容器" class="headerlink" title="第十五章 容器"></a>第十五章 容器</h4><blockquote>
-</blockquote>
-<h5 id="15-1-背景知识"><a href="#15-1-背景知识" class="headerlink" title="15.1 背景知识"></a>15.1 背景知识</h5><h6 id="15-1-1-BPF-Capabilities"><a href="#15-1-1-BPF-Capabilities" class="headerlink" title="15.1.1 BPF Capabilities"></a>15.1.1 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="15-1-2-Challenges"><a href="#15-1-2-Challenges" class="headerlink" title="15.1.2 Challenges"></a>15.1.2 Challenges</h6><blockquote>
-</blockquote>
-<h6 id="15-1-3-Strategy"><a href="#15-1-3-Strategy" class="headerlink" title="15.1.3 Strategy"></a>15.1.3 Strategy</h6><blockquote>
-</blockquote>
-<h5 id="15-2-传统工具"><a href="#15-2-传统工具" class="headerlink" title="15.2 传统工具"></a>15.2 传统工具</h5><h6 id="15-2-1-From-the-Host"><a href="#15-2-1-From-the-Host" class="headerlink" title="15.2.1 From the Host"></a>15.2.1 From the Host</h6><blockquote>
-</blockquote>
-<h6 id="15-2-2-From-the-Container"><a href="#15-2-2-From-the-Container" class="headerlink" title="15.2.2 From the Container"></a>15.2.2 From the Container</h6><blockquote>
-</blockquote>
-<h6 id="15-2-3-systemd-cgtop"><a href="#15-2-3-systemd-cgtop" class="headerlink" title="15.2.3 systemd-cgtop"></a>15.2.3 systemd-cgtop</h6><blockquote>
-</blockquote>
-<h6 id="15-2-4-kubectl-top"><a href="#15-2-4-kubectl-top" class="headerlink" title="15.2.4 kubectl top"></a>15.2.4 kubectl top</h6><blockquote>
-</blockquote>
-<h6 id="15-2-5-docker-stats"><a href="#15-2-5-docker-stats" class="headerlink" title="15.2.5 docker stats"></a>15.2.5 docker stats</h6><blockquote>
-</blockquote>
-<h6 id="15-2-6-sys-fs-cgroups"><a href="#15-2-6-sys-fs-cgroups" class="headerlink" title="15.2.6 &#x2F;sys&#x2F;fs&#x2F;cgroups"></a>15.2.6 &#x2F;sys&#x2F;fs&#x2F;cgroups</h6><blockquote>
-</blockquote>
-<h6 id="15-2-7-perf"><a href="#15-2-7-perf" class="headerlink" title="15.2.7 perf"></a>15.2.7 perf</h6><blockquote>
-</blockquote>
-<h5 id="15-3-BPF工具"><a href="#15-3-BPF工具" class="headerlink" title="15.3 BPF工具"></a>15.3 BPF工具</h5><h6 id="15-3-1-runqlat"><a href="#15-3-1-runqlat" class="headerlink" title="15.3.1 runqlat"></a>15.3.1 runqlat</h6><blockquote>
-</blockquote>
-<h6 id="15-3-2-pidnss"><a href="#15-3-2-pidnss" class="headerlink" title="15.3.2 pidnss"></a>15.3.2 pidnss</h6><blockquote>
-</blockquote>
-<h6 id="15-3-3-blkthrot"><a href="#15-3-3-blkthrot" class="headerlink" title="15.3.3 blkthrot"></a>15.3.3 blkthrot</h6><blockquote>
-</blockquote>
-<h6 id="15-3-4-overlayfs"><a href="#15-3-4-overlayfs" class="headerlink" title="15.3.4 overlayfs"></a>15.3.4 overlayfs</h6><blockquote>
-</blockquote>
-<h5 id="15-4-BPF单行程序"><a href="#15-4-BPF单行程序" class="headerlink" title="15.4 BPF单行程序"></a>15.4 BPF单行程序</h5><blockquote>
-</blockquote>
-<h5 id="15-5-可选练习"><a href="#15-5-可选练习" class="headerlink" title="15.5 可选练习"></a>15.5 可选练习</h5><blockquote>
-</blockquote>
-<h4 id="第十六章-虚拟机管理器"><a href="#第十六章-虚拟机管理器" class="headerlink" title="第十六章 虚拟机管理器"></a>第十六章 虚拟机管理器</h4><blockquote>
-</blockquote>
-<h5 id="16-1-背景知识"><a href="#16-1-背景知识" class="headerlink" title="16.1 背景知识"></a>16.1 背景知识</h5><h6 id="16-1-1-BPF-Capabilities"><a href="#16-1-1-BPF-Capabilities" class="headerlink" title="16.1.1 BPF Capabilities"></a>16.1.1 BPF Capabilities</h6><blockquote>
-</blockquote>
-<h6 id="16-1-2-Suggested-Strategies"><a href="#16-1-2-Suggested-Strategies" class="headerlink" title="16.1.2 Suggested Strategies"></a>16.1.2 Suggested Strategies</h6><blockquote>
-</blockquote>
-<h5 id="16-2-传统工具"><a href="#16-2-传统工具" class="headerlink" title="16.2 传统工具"></a>16.2 传统工具</h5><blockquote>
-</blockquote>
-<h5 id="16-3-访客系统的BPF工具"><a href="#16-3-访客系统的BPF工具" class="headerlink" title="16.3 访客系统的BPF工具"></a>16.3 访客系统的BPF工具</h5><h6 id="16-3-1-Xen-Hypercalls"><a href="#16-3-1-Xen-Hypercalls" class="headerlink" title="16.3.1 Xen Hypercalls"></a>16.3.1 Xen Hypercalls</h6><blockquote>
-</blockquote>
-<h6 id="16-3-2-xenhyper"><a href="#16-3-2-xenhyper" class="headerlink" title="16.3.2 xenhyper"></a>16.3.2 xenhyper</h6><blockquote>
-</blockquote>
-<h6 id="16-3-3-Xen-Callbacks"><a href="#16-3-3-Xen-Callbacks" class="headerlink" title="16.3.3 Xen Callbacks"></a>16.3.3 Xen Callbacks</h6><blockquote>
-</blockquote>
-<h6 id="16-3-4-cpustolen"><a href="#16-3-4-cpustolen" class="headerlink" title="16.3.4 cpustolen"></a>16.3.4 cpustolen</h6><blockquote>
-</blockquote>
-<h6 id="16-3-5-HVM-Exit-Tracing"><a href="#16-3-5-HVM-Exit-Tracing" class="headerlink" title="16.3.5 HVM Exit Tracing"></a>16.3.5 HVM Exit Tracing</h6><blockquote>
-</blockquote>
-<h5 id="16-4-宿主机的BPF工具"><a href="#16-4-宿主机的BPF工具" class="headerlink" title="16.4 宿主机的BPF工具"></a>16.4 宿主机的BPF工具</h5><h6 id="16-4-1-kvmexits"><a href="#16-4-1-kvmexits" class="headerlink" title="16.4.1 kvmexits"></a>16.4.1 kvmexits</h6><blockquote>
-</blockquote>
-<h6 id="16-4-2-Future-Work"><a href="#16-4-2-Future-Work" class="headerlink" title="16.4.2 Future Work"></a>16.4.2 Future Work</h6><blockquote>
-</blockquote>
-<h4 id="第十七章-其他BPF性能工具"><a href="#第十七章-其他BPF性能工具" class="headerlink" title="第十七章 其他BPF性能工具"></a>第十七章 其他BPF性能工具</h4><h5 id="17-1-Vector-and-Performance-Co-Pilot-PCP"><a href="#17-1-Vector-and-Performance-Co-Pilot-PCP" class="headerlink" title="17.1 Vector and Performance Co-Pilot (PCP)"></a>17.1 Vector and Performance Co-Pilot (PCP)</h5><h6 id="17-1-1-Visualizations"><a href="#17-1-1-Visualizations" class="headerlink" title="17.1.1 Visualizations"></a>17.1.1 Visualizations</h6><blockquote>
-</blockquote>
-<h6 id="17-1-2-Visualization-Heat-Maps"><a href="#17-1-2-Visualization-Heat-Maps" class="headerlink" title="17.1.2 Visualization: Heat Maps"></a>17.1.2 Visualization: Heat Maps</h6><blockquote>
-</blockquote>
-<h6 id="17-1-3-Visualization-Tabular-Data"><a href="#17-1-3-Visualization-Tabular-Data" class="headerlink" title="17.1.3 Visualization: Tabular Data"></a>17.1.3 Visualization: Tabular Data</h6><blockquote>
-</blockquote>
-<h6 id="17-1-4-BCC-Provided-Metrics"><a href="#17-1-4-BCC-Provided-Metrics" class="headerlink" title="17.1.4 BCC Provided Metrics"></a>17.1.4 BCC Provided Metrics</h6><blockquote>
-</blockquote>
-<h6 id="17-1-5-Internals"><a href="#17-1-5-Internals" class="headerlink" title="17.1.5 Internals"></a>17.1.5 Internals</h6><blockquote>
-</blockquote>
-<h6 id="17-1-6-Installing-PCP-and-Vector"><a href="#17-1-6-Installing-PCP-and-Vector" class="headerlink" title="17.1.6 Installing PCP and Vector"></a>17.1.6 Installing PCP and Vector</h6><blockquote>
-</blockquote>
-<h6 id="17-1-7-Connecting-and-Viewing-Data"><a href="#17-1-7-Connecting-and-Viewing-Data" class="headerlink" title="17.1.7 Connecting and Viewing Data"></a>17.1.7 Connecting and Viewing Data</h6><blockquote>
-</blockquote>
-<h6 id="17-1-8-Configuring-the-BCC-PMDA"><a href="#17-1-8-Configuring-the-BCC-PMDA" class="headerlink" title="17.1.8 Configuring the BCC PMDA"></a>17.1.8 Configuring the BCC PMDA</h6><blockquote>
-</blockquote>
-<h6 id="17-1-9-Future-Work"><a href="#17-1-9-Future-Work" class="headerlink" title="17.1.9 Future Work"></a>17.1.9 Future Work</h6><blockquote>
-</blockquote>
-<h6 id="17-1-10-Further-Reading"><a href="#17-1-10-Further-Reading" class="headerlink" title="17.1.10 Further Reading"></a>17.1.10 Further Reading</h6><blockquote>
-</blockquote>
-<h5 id="17-2-Grafana-and-Performance-Co-Pilot-PCP"><a href="#17-2-Grafana-and-Performance-Co-Pilot-PCP" class="headerlink" title="17.2 Grafana and Performance Co-Pilot (PCP)"></a>17.2 Grafana and Performance Co-Pilot (PCP)</h5><h6 id="17-2-1-Installation-and-Configuration"><a href="#17-2-1-Installation-and-Configuration" class="headerlink" title="17.2.1 Installation and Configuration"></a>17.2.1 Installation and Configuration</h6><blockquote>
-</blockquote>
-<h6 id="17-2-2-Connecting-and-Viewing-Data"><a href="#17-2-2-Connecting-and-Viewing-Data" class="headerlink" title="17.2.2 Connecting and Viewing Data"></a>17.2.2 Connecting and Viewing Data</h6><blockquote>
-</blockquote>
-<h6 id="17-2-3-Future-Work"><a href="#17-2-3-Future-Work" class="headerlink" title="17.2.3 Future Work"></a>17.2.3 Future Work</h6><blockquote>
-</blockquote>
-<h6 id="17-2-4-Further-Reading"><a href="#17-2-4-Further-Reading" class="headerlink" title="17.2.4 Further Reading"></a>17.2.4 Further Reading</h6><blockquote>
-</blockquote>
-<h5 id="17-3-Cloudflare-eBPF-Prometheus-Exporter-with-Grafana"><a href="#17-3-Cloudflare-eBPF-Prometheus-Exporter-with-Grafana" class="headerlink" title="17.3 Cloudflare eBPF Prometheus Exporter (with Grafana)"></a>17.3 Cloudflare eBPF Prometheus Exporter (with Grafana)</h5><h6 id="17-3-1-Build-and-Run-the-ebpf-Exporter"><a href="#17-3-1-Build-and-Run-the-ebpf-Exporter" class="headerlink" title="17.3.1 Build and Run the ebpf Exporter"></a>17.3.1 Build and Run the ebpf Exporter</h6><blockquote>
-</blockquote>
-<h6 id="17-3-2-Configure-Prometheus-to-Monitor-the-ebpf-exporter-Instance"><a href="#17-3-2-Configure-Prometheus-to-Monitor-the-ebpf-exporter-Instance" class="headerlink" title="17.3.2 Configure Prometheus to Monitor the ebpf_exporter Instance"></a>17.3.2 Configure Prometheus to Monitor the ebpf_exporter Instance</h6><blockquote>
-</blockquote>
-<h6 id="17-3-3-Set-Up-a-Query-in-Grafana"><a href="#17-3-3-Set-Up-a-Query-in-Grafana" class="headerlink" title="17.3.3 Set Up a Query in Grafana"></a>17.3.3 Set Up a Query in Grafana</h6><blockquote>
-</blockquote>
-<h6 id="17-3-4-Further-Reading"><a href="#17-3-4-Further-Reading" class="headerlink" title="17.3.4 Further Reading"></a>17.3.4 Further Reading</h6><blockquote>
-</blockquote>
-<h5 id="17-4-kubectl-trace"><a href="#17-4-kubectl-trace" class="headerlink" title="17.4 kubectl-trace"></a>17.4 kubectl-trace</h5><h6 id="17-4-1-Tracing-Nodes"><a href="#17-4-1-Tracing-Nodes" class="headerlink" title="17.4.1 Tracing Nodes"></a>17.4.1 Tracing Nodes</h6><blockquote>
-</blockquote>
-<h6 id="17-4-2-Tracing-Pods-and-Containers"><a href="#17-4-2-Tracing-Pods-and-Containers" class="headerlink" title="17.4.2 Tracing Pods and Containers"></a>17.4.2 Tracing Pods and Containers</h6><blockquote>
-</blockquote>
-<h6 id="17-4-3-Further-Reading"><a href="#17-4-3-Further-Reading" class="headerlink" title="17.4.3 Further Reading"></a>17.4.3 Further Reading</h6><blockquote>
-</blockquote>
-<h5 id="17-5-Other-Tools"><a href="#17-5-Other-Tools" class="headerlink" title="17.5 Other Tools"></a>17.5 Other Tools</h5><blockquote>
-</blockquote>
-<h5 id="17-6-Summary"><a href="#17-6-Summary" class="headerlink" title="17.6 Summary"></a>17.6 Summary</h5><blockquote>
-</blockquote>
+        <p>这篇笔记沿用《BPF之巅》第 2–17 章的学习顺序，把原来的章节提纲整理成可以反复查阅的排障笔记。重点是把三个问题连起来：<strong>现在怀疑什么、在哪一层观测、拿到数据后能下什么结论</strong>。工具名字只是入口，测量范围和结果解释更值得记住。</p>
+<p>例如，看到请求变慢，先分清线程是在 CPU 上执行、已经就绪却排队，还是阻塞在某个资源上。三种情况都可能让用户等待，但需要采集的证据完全不同。</p>
+<p>本文是结合官方文档重新整理的学习总结，文中的诊断流程是分析示例，并非实际生产事故记录。原书工具、发行版打包的工具，以及当前上游工具可能存在名称和参数差异；新增的 BTF、CO-RE 等说明单独标为补充，不混作原书当时的结论。书籍目录、勘误和配套代码入口见<a href="https://www.brendangregg.com/bpf-performance-tools-book.html">作者的图书页面</a>。</p>
+<span id="more"></span>
+
+<h2 id="阅读导航"><a href="#阅读导航" class="headerlink" title="阅读导航"></a>阅读导航</h2><ul>
+<li><a href="#chapter-2">第二章：BPF、事件源与调用栈</a></li>
+<li><a href="#chapter-3">第三章：性能分析方法与工具入口</a></li>
+<li><a href="#chapter-4">第四章：BCC</a></li>
+<li><a href="#chapter-5">第五章：bpftrace</a></li>
+<li><a href="#chapter-6">第六章：CPU</a></li>
+<li><a href="#chapter-7">第七章：内存</a></li>
+<li><a href="#chapter-8">第八章：文件系统</a></li>
+<li><a href="#chapter-9">第九章：磁盘 I&#x2F;O</a></li>
+<li><a href="#chapter-10">第十章：网络</a></li>
+<li><a href="#chapter-11">第十一章：安全观测</a></li>
+<li><a href="#chapter-12">第十二章：编程语言</a></li>
+<li><a href="#chapter-13">第十三章：应用程序</a></li>
+<li><a href="#chapter-14">第十四章：内核</a></li>
+<li><a href="#chapter-15">第十五章：容器</a></li>
+<li><a href="#chapter-16">第十六章：虚拟机管理器</a></li>
+<li><a href="#chapter-17">第十七章：持续观测与工具工程化</a></li>
+<li><a href="#appendix">附录：开始实验前的核对与复盘模板</a></li>
+</ul>
+<p><a id="chapter-2"></a><br><a id="第二章"></a></p>
+<h2 id="第二章-BPF：把观察点放到问题发生处"><a href="#第二章-BPF：把观察点放到问题发生处" class="headerlink" title="第二章 BPF：把观察点放到问题发生处"></a>第二章 BPF：把观察点放到问题发生处</h2><h3 id="从事件到可读结果"><a href="#从事件到可读结果" class="headerlink" title="从事件到可读结果"></a>从事件到可读结果</h3><p>BPF（现在通常称 eBPF）不是某一条命令，而是一条把小程序挂到事件上的执行路径。用户态工具准备程序与挂载点，通过 <code>bpf()</code> 创建程序和 map；内核 verifier 检查程序能否安全访问上下文、栈和 map，再由解释器执行或 JIT 成机器码。程序触发后可在内核中更新 map，或把事件送回用户态。实用的分界是：内核侧做过滤、计数和分布聚合，用户态负责配置与读取结果。若每个高频事件都格式化、打印一行，开销和输出量本身就可能扰动现场。能通过编译也不代表能加载：verifier 必须证明边界、类型和控制流安全。<a href="https://docs.kernel.org/userspace-api/ebpf/syscall.html">BPF 系统调用与程序加载</a>、<a href="https://docs.kernel.org/bpf/verifier.html">verifier 原理</a>、<a href="https://docs.kernel.org/bpf/maps.html">map 的共享存储作用</a></p>
+<h3 id="事件源决定能看到什么"><a href="#事件源决定能看到什么" class="headerlink" title="事件源决定能看到什么"></a>事件源决定能看到什么</h3><table>
+<thead>
+<tr>
+<th>事件源</th>
+<th>适合观察</th>
+<th>现场核对点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tracepoint</code></td>
+<td>内核预先声明的系统调用、调度、块 I&#x2F;O 等事件</td>
+<td>事件名、字段和当前内核的 <code>format</code> 文件。语义通常比私有函数实现清楚。</td>
+</tr>
+<tr>
+<td><code>kprobe</code> &#x2F; <code>kretprobe</code></td>
+<td>内核函数入口和返回，适合追某条内部调用路径</td>
+<td>函数可能被改名、内联或配置裁掉；参数解释还受架构和内核版本影响。</td>
+</tr>
+<tr>
+<td><code>uprobe</code> &#x2F; <code>uretprobe</code></td>
+<td>用户态程序或库函数</td>
+<td>二进制、符号、偏移和 PID；程序升级也可能改变符号。</td>
+</tr>
+<tr>
+<td>USDT</td>
+<td>应用主动发布的静态跟踪点</td>
+<td>目标应用是否编入该探针及其参数定义。</td>
+</tr>
+<tr>
+<td><code>profile</code>、<code>hardware</code></td>
+<td>定时栈抽样或处理器事件</td>
+<td>采样率、符号可用性、处理器对事件的支持。</td>
+</tr>
+</tbody></table>
+<p>对同一个故障，入口也影响结论：追 <code>read()</code> 系统调用测得的是线程在调用中的经过时间，追块 I&#x2F;O 才能观察设备请求；二者不能互相替代。从接口维护性看，tracepoint 通常比动态函数探针稳定一些，因为事件名和参数由事件定义描述，较少依赖被探测函数的内部实现；但它们<strong>并非稳定 ABI</strong>。内核 BPF 设计问答明确指出 tracepoint 仍绑定内核内部实现，升级后也可能改变；因此要以本机 tracefs 的事件与字段为准。动态 kprobe 对函数名和参数的依赖更直接，适合窄范围调查，长期脚本则要额外维护。<a href="https://docs.kernel.org/trace/tracepoints.html">内核 tracepoint 机制</a>、<a href="https://docs.kernel.org/bpf/bpf_design_QA.html">BPF 设计问答：tracepoint 并非稳定 ABI</a>、<a href="https://docs.kernel.org/trace/kprobetrace.html">kprobe 事件跟踪</a></p>
+<h3 id="PMU、perf-events-与调用栈火焰图"><a href="#PMU、perf-events-与调用栈火焰图" class="headerlink" title="PMU、perf_events 与调用栈火焰图"></a>PMU、perf_events 与调用栈火焰图</h3><p>Linux <code>perf</code> 使用 perf_events 接口统一读取软件事件、tracepoint 事件和硬件性能监控单元（PMU）计数器。PMU 能数 CPU cycles、instructions、cache references&#x2F;misses、branch misses 等事件；<code>perf stat</code> 常用于短窗口验证“忙在算指令还是停在缓存&#x2F;分支”。通用事件名称是跨处理器的抽象，具体支持和含义仍依 CPU 型号与内核 PMU 驱动；更底层的 raw event 往往是厂商相关。硬件计数器数量有限，事件太多时可能复用计数器，比较前要看 perf 给出的运行比例和测量窗口，不能把低比例采样当精确全量。PMU 计数告诉我们发生了多少类硬件事件，不会单独说明是哪条调用路径导致它。<a href="https://www.man7.org/linux/man-pages/man2/perf_event_open.2.html"><code>perf_event_open(2)</code> 的事件类型和计数&#x2F;采样模型</a>、<a href="https://docs.kernel.org/admin-guide/perf-security.html">内核 perf_events 权限与硬件计数说明</a></p>
+<p>调用栈火焰图补上路径维度：定时采样收集栈，把相同栈折叠后画成 SVG。每个横向方框的宽度代表样本数，纵向代表栈深；为了合并路径，横轴会排序，<strong>不是时间轴</strong>。宽框说明该路径在样本中常见，可能是调用频繁，也可能是单次执行较贵，图本身不能区分二者。它适合找 CPU 时间集中在哪些调用路径；若要找线程在锁、磁盘或网络上等待，应看 off-CPU 或阻塞时间证据。定位宽路径后，再用 PMU、延迟分布或代码分析验证原因。<a href="https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html">CPU 火焰图采样流程</a>、<a href="https://www.brendangregg.com/flamegraphs.html">火焰图横轴与栈层说明</a></p>
+<p><a id="chapter-3"></a><br><a id="第三章"></a></p>
+<h2 id="第三章-先找资源，再追调用路径"><a href="#第三章-先找资源，再追调用路径" class="headerlink" title="第三章 先找资源，再追调用路径"></a>第三章 先找资源，再追调用路径</h2><h3 id="USE：先把资源假设列全"><a href="#USE：先把资源假设列全" class="headerlink" title="USE：先把资源假设列全"></a>USE：先把资源假设列全</h3><p>排障先界定症状和时间范围：响应时间、吞吐量还是错误率变差？全机还是单进程？然后对每类资源检查 USE：利用率（资源忙了多久或用了多少）、<strong>饱和度</strong>（需求未能及时被服务，常表现为队列或等待）和错误。Saturation 在此译作“饱和度”，不要与利用率混为一谈。CPU 高利用率表示算力忙，运行队列与调度等待更能说明有需求排队；磁盘忙碌率高也不能独自证明用户请求慢是设备队列造成。记录报障对应的时间窗，短峰值可能被长周期平均值遮住；先找异常资源，再用事件或栈回答具体是哪类工作造成异常。<a href="https://www.brendangregg.com/usemethod.html">USE 方法的定义与步骤</a>、<a href="https://www.brendangregg.com/USEmethod/use-linux.html">Linux USE 检查清单</a></p>
+<h3 id="Linux-60-秒：用低成本数据缩小范围"><a href="#Linux-60-秒：用低成本数据缩小范围" class="headerlink" title="Linux 60 秒：用低成本数据缩小范围"></a>Linux 60 秒：用低成本数据缩小范围</h3><p>“Linux 60 秒”是初筛工具箱，不表示每条命令都要运行满 60 秒，也不能靠一个数字定根因。先看全局，再依据异常选择细查工具：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>先看什么、它能提示什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>uptime</code></td>
+<td>负载平均值与运行时间。负载包含可运行任务和不可中断等待，不等于 CPU 百分比。</td>
+</tr>
+<tr>
+<td><code>dmesg -T | tail</code></td>
+<td>最近内核告警，如设备重置、文件系统异常或 OOM 痕迹；时间显示方式因系统而异。</td>
+</tr>
+<tr>
+<td><code>vmstat 1</code></td>
+<td><code>r</code> 可运行队列、<code>b</code> 不可中断任务、换入换出与 CPU 概况；跳过首行累计值，看后续采样。</td>
+</tr>
+<tr>
+<td><code>mpstat -P ALL 1</code></td>
+<td>逐 CPU 利用率，识别单核热点或负载不均。</td>
+</tr>
+<tr>
+<td><code>pidstat 1</code></td>
+<td>按进程看资源；本机 <code>pidstat -d/-r/-w</code> 可分别选 I&#x2F;O、内存、上下文切换字段。</td>
+</tr>
+<tr>
+<td><code>iostat -xz 1</code></td>
+<td>逐设备看吞吐、队列、等待和 <code>%util</code>。<code>await</code> 是每笔 I&#x2F;O 的平均等待&#x2F;服务时间，不是尾延迟；NVMe 等并行设备也不能只凭 <code>%util</code> 判断饱和。</td>
+</tr>
+<tr>
+<td><code>free -m</code></td>
+<td>看 <code>available</code>，不要只看 <code>free</code>；可回收缓存不等于内存紧张。</td>
+</tr>
+<tr>
+<td><code>sar -n DEV 1</code></td>
+<td>网卡收发速率，结合链路速率、丢弃计数解释。</td>
+</tr>
+<tr>
+<td><code>sar -n TCP,ETCP 1</code></td>
+<td>TCP 连接与异常计数；重传上升是线索，还要核对主机、链路和时间窗。</td>
+</tr>
+<tr>
+<td><code>top</code></td>
+<td>当前显眼的 CPU 或内存进程；瞬时快照会漏掉短命任务。</td>
+</tr>
+</tbody></table>
+<p><code>iostat await</code> 是统计窗口内完成请求的均值，不能从均值推断 P95&#x2F;P99 尾部；若少量慢请求决定用户体验，应采集延迟直方图或分位数，并把设备请求和应用调用关联起来。<a href="https://www.man7.org/linux/man-pages/man1/iostat.1.html"><code>iostat</code> 字段定义</a>、<a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial.md#0-before-bcc">BCC 教程：Linux 基础检查清单</a></p>
+<h3 id="把初筛变成可验证的问题"><a href="#把初筛变成可验证的问题" class="headerlink" title="把初筛变成可验证的问题"></a>把初筛变成可验证的问题</h3><p>初筛是排除方向、选下一步观测点。CPU 总体不高但某核长期满载，就看逐核数据和目标线程；内存 <code>available</code> 充足且没有持续回收，就暂缓把慢请求归因于内存；平均 I&#x2F;O 延迟正常但怀疑少数请求拖慢尾部，就改用延迟分布，不把 <code>await</code> 当百分位。随后逐个资源补齐利用率、饱和度与错误，再用事件、栈或延迟回答“哪个操作、哪条路径”。一次只改一个假设，保留开始&#x2F;结束时间与命令参数，避免把不同窗口的数据拼成一个故事。</p>
+<p><a id="chapter-4"></a><br><a id="第四章"></a></p>
+<h2 id="第四章-BCC：用现成工具把假设变成观测"><a href="#第四章-BCC：用现成工具把假设变成观测" class="headerlink" title="第四章 BCC：用现成工具把假设变成观测"></a>第四章 BCC：用现成工具把假设变成观测</h2><h3 id="按症状挑专用工具"><a href="#按症状挑专用工具" class="headerlink" title="按症状挑专用工具"></a>按症状挑专用工具</h3><p>BCC 覆盖进程、文件、块 I&#x2F;O、网络、调度和 CPU 栈。进程频繁启动看 <code>execsnoop</code>；文件打开看 <code>opensnoop</code>；文件系统慢操作看对应的 <code>ext4slower</code> 等工具；页缓存命中看 <code>cachestat</code>；块设备延迟分布看 <code>biolatency</code>；运行队列延迟看 <code>runqlat</code>；CPU 栈热点看 <code>profile</code>。逐事件输出能还原顺序和归属，高频时却会增加输出与消费成本，应先加过滤、缩短窗口或改为聚合。<a href="https://github.com/iovisor/bcc#contents">BCC README 工具分类</a>、<a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial.md#1-general-performance">BCC 性能分析教程</a></p>
+<p>两个块 I&#x2F;O 工具很容易混淆：<code>biosnoop</code> 逐笔展示进程、设备、方向、扇区、字节数和延迟，适合看单笔请求；它不是大小直方图。<code>bitesize</code> 按请求字节数聚合直方图，<code>biolatency</code> 聚合延迟分布，分别回答“请求尺寸如何分布”和“操作耗时如何分布”。单笔明细和总体分布是不同视角。<a href="https://github.com/iovisor/bcc/blob/master/tools/biosnoop.py"><code>biosnoop</code> 源码与列定义</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/bitesize.py"><code>bitesize</code> 大小直方图</a>、<a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial.md#14-biolatency">BCC 教程中的 <code>biolatency</code> 与 <code>biosnoop</code></a></p>
+<p><code>tcpconnect</code> 也要按实现理解：BCC 工具挂在 <code>tcp_v4_connect</code>、<code>tcp_v6_connect</code> 内核函数入口&#x2F;返回附近，观察 TCP 主动连接路径；它不是所有 <code>connect()</code> 系统调用的审计器，UDP socket 的 <code>connect()</code> 不会因此走进这两个 TCP 函数。当前源码的返回探针遇到 <code>ret != 0</code> 会清理暂存数据并提前返回，不打印后续事件，所以不能把它当成失败连接的完整记录。查主动连接目标可用 <code>tcpconnect</code>，被动接入用 <code>tcpaccept</code>，重传线索用 <code>tcpretrans</code>；仍须按本机安装版本确认覆盖范围。<a href="https://github.com/iovisor/bcc/blob/master/tools/tcpconnect.py"><code>tcpconnect</code> 挂载和返回处理</a>、<a href="https://github.com/iovisor/bcc#network-and-sockets-tools">BCC 网络工具列表</a></p>
+<h3 id="四个通用工具：从计数走到细节"><a href="#四个通用工具：从计数走到细节" class="headerlink" title="四个通用工具：从计数走到细节"></a>四个通用工具：从计数走到细节</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>主要用途</th>
+<th>适合回答的问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>funccount</code></td>
+<td>按函数、tracepoint 或匹配模式计数</td>
+<td>哪个函数&#x2F;事件触发得特别频繁？</td>
+</tr>
+<tr>
+<td><code>stackcount</code></td>
+<td>按事件累计调用栈，可限制 PID、CPU 或用户&#x2F;内核栈</td>
+<td>同一函数是由哪些调用路径触发？</td>
+</tr>
+<tr>
+<td><code>trace</code></td>
+<td>按格式打印函数参数或返回值，可加过滤</td>
+<td>一次调用具体带了什么参数、返回了什么？</td>
+</tr>
+<tr>
+<td><code>argdist</code></td>
+<td>将函数参数或返回值聚合为频数&#x2F;直方图</td>
+<td>参数值或返回值集中在哪些范围？</td>
+</tr>
+</tbody></table>
+<p>排查时可以先 <code>funccount</code> 确认热点是否存在，再用 <code>stackcount</code> 找调用方；若需要少量样本中的字段明细，用 PID 过滤后的 <code>trace</code>；参数分布则用 <code>argdist</code>。这些工具仍依赖可挂载探针与正确字段，过滤太宽或逐行输出过多会让工具成为负载的一部分。<a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial.md#2-observability-with-generic-tools">BCC 通用工具教程</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/stackcount.py"><code>stackcount</code> 的过滤与栈选项</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/trace.py"><code>trace</code> 的参数&#x2F;返回值观测</a>、<a href="https://github.com/iovisor/bcc#contents">BCC 工具列表中的 <code>argdist</code> 与 <code>funccount</code></a></p>
+<h3 id="BCC-架构与“没输出”的排查顺序"><a href="#BCC-架构与“没输出”的排查顺序" class="headerlink" title="BCC 架构与“没输出”的排查顺序"></a>BCC 架构与“没输出”的排查顺序</h3><p>典型 Python BCC 工具把参数解析、探针挂载和展示放在用户态，同时以内嵌或独立 C 描述 BPF 程序。<code>BPF(text=...)</code> 将程序交给 BCC&#x2F;LLVM 编译并加载；Python 随后读取 map 聚合结果，或通过 perf buffer 消费事件。排障可按阶段检查：依赖&#x2F;头文件是否齐；编译是否成功；verifier 是否接受；探针是否存在且挂载权限足够；目标事件是否实际发生；过滤 PID、设备和方向是否设错；用户态消费是否跟得上。没有输出时，先确认目标动作正在发生，再逐项撤掉过滤条件；编译或加载失败则看 BCC debug 与 verifier 信息。高频场景优先在内核聚合或节流，避免依赖全局 <code>trace_pipe</code> 打印承担大量数据。<a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md">BCC Python 开发教程</a>、<a href="https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md">BCC API 与 debug 参考</a></p>
+<p><a id="chapter-5"></a><br><a id="第五章"></a></p>
+<h2 id="第五章-bpftrace：把假设写成短探针"><a href="#第五章-bpftrace：把假设写成短探针" class="headerlink" title="第五章 bpftrace：把假设写成短探针"></a>第五章 bpftrace：把假设写成短探针</h2><h3 id="先发现探针，再读参数"><a href="#先发现探针，再读参数" class="headerlink" title="先发现探针，再读参数"></a>先发现探针，再读参数</h3><p>以下例子以 bpftrace 0.24 稳定版的语法为参照。探针名和字段由本机内核、架构、配置及工具构建决定，执行前先列出候选项：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> bpftrace -l <span class="string">&#x27;tracepoint:syscalls:sys_enter_openat&#x27;</span></span><br><span class="line"><span class="built_in">sudo</span> bpftrace -lv <span class="string">&#x27;tracepoint:syscalls:sys_enter_openat&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>-l</code> 列探针名，<code>-lv</code> 展开支持的参数。查不到时用通配符逐步缩小，并检查 <code>/sys/kernel/tracing/events/.../format</code>；不要把某台机器的输出当成通用清单。tracepoint 有事件定义字段；kprobe 的 <code>argN</code> 与函数、架构和内核实现相关。下面保留常见的旧式 <code>args-&gt;字段</code> 写法；0.24 文档的例子主要用 <code>args.字段</code>，字段访问以本机文档和 <code>-lv</code> 为准。<a href="https://bpftrace.org/docs/release_024/cli">bpftrace 0.24 命令行和探针枚举</a>、<a href="https://bpftrace.org/docs/release_024/language#arguments">0.24 参数与 <code>args</code> 字段说明</a></p>
+<h3 id="临时变量、map-与聚合"><a href="#临时变量、map-与聚合" class="headerlink" title="临时变量、map 与聚合"></a>临时变量、map 与聚合</h3><p><code>$name</code> 是当前探针动作里的临时变量；<code>@name</code> 是 map，可跨事件保存状态或累计结果。<code>count()</code> 统计事件数，<code>hist()</code> 将数值放入对数桶，适合看频率与长尾形状；它们不会保留事件先后次序。先做聚合通常比逐条 <code>printf</code> 更便于识别模式。例子以 <code>sys_enter_read</code> 上的 <code>count</code> 字段表示用户请求的读取长度，并按进程名统计入口次数。先用 <code>-lv</code> 检查 <code>tracepoint:syscalls:sys_enter_read</code> 的 <code>count</code> 字段；它表示读取请求长度，并非磁盘实际 I&#x2F;O：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">&#123;</span><br><span class="line">  printf(&quot;每 10 秒输出一次；Ctrl-C 结束\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tracepoint:syscalls:sys_enter_read</span><br><span class="line">&#123;</span><br><span class="line">  @read_calls[comm] = count();</span><br><span class="line">  @requested_bytes = hist(args-&gt;count);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interval:s:10</span><br><span class="line">&#123;</span><br><span class="line">  print(@read_calls);</span><br><span class="line">  clear(@read_calls);</span><br><span class="line">  print(@requested_bytes);</span><br><span class="line">  clear(@requested_bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上例是交互式观察脚本；<code>print</code> 和 <code>clear</code> 是异步操作，读数与清理并非原子窗口切换，不宜用于精确计费。同名进程会在 <code>comm</code> 这个键下合并；字符串键的数量也应受控。读取请求长度的分布不等于实际返回字节数，更不等于块设备 I&#x2F;O 大小。需要确认字段定义时回到 tracepoint 格式文件。<a href="https://bpftrace.org/docs/release_024/stdlib#clear">bpftrace 0.24 的 map 清理与聚合函数</a>、<a href="https://bpftrace.org/docs/release_024/stdlib">0.24 <code>count()</code> 与 <code>hist()</code> 参考</a></p>
+<h3 id="用-TID-配对入口-返回并测量经过时间"><a href="#用-TID-配对入口-返回并测量经过时间" class="headerlink" title="用 TID 配对入口&#x2F;返回并测量经过时间"></a>用 TID 配对入口&#x2F;返回并测量经过时间</h3><p>入口和返回通常要用 <code>tid</code> 做键暂存起始时间，再在返回时取差并删除临时项。<code>pid</code> 是进程 ID，同一进程里的线程共享它；<code>tid</code> 才能区分每个执行线程。以下脚本仅统计指定进程的 <code>read</code> 系统调用经过时间，单位为微秒；它包括该线程在系统调用期间经历的等待，<strong>不是磁盘设备服务时间</strong>。脚本运行 10 秒后结束；<code>END</code> 清理未配对的开始时间，bpftrace 自动打印仍非空的延迟直方图。也可以提前按 Ctrl-C 结束。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">&#123;</span><br><span class="line">  printf(&quot;Tracing read latency for PID %d\n&quot;, $1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tracepoint:syscalls:sys_enter_read</span><br><span class="line">/pid == $1/</span><br><span class="line">&#123;</span><br><span class="line">  @read_start[tid] = nsecs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tracepoint:syscalls:sys_exit_read</span><br><span class="line">/pid == $1 &amp;&amp; @read_start[tid]/</span><br><span class="line">&#123;</span><br><span class="line">  @read_us = hist((nsecs - @read_start[tid]) / 1000);</span><br><span class="line">  delete(@read_start[tid]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interval:s:10</span><br><span class="line">&#123;</span><br><span class="line">  exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">END</span><br><span class="line">&#123;</span><br><span class="line">  clear(@read_start);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存为 <code>read-latency.bt</code>，将 <code>2468</code> 换成目标进程的 PID：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> bpftrace read-latency.bt 2468</span><br></pre></td></tr></table></figure>
+
+<p>示例沿用旧式 <code>delete(@map[key])</code>，0.24 标准库仍列出该写法但标为弃用；新脚本可按对应版本改为 <code>delete(@read_start, tid)</code>。<code>BEGIN</code>&#x2F;<code>END</code>、位置参数 <code>$1</code> 与默认退出时打印 map 可在 0.24 文档中核对。若返回事件没配上入口，临时项会留到退出清理；PID 过滤把采集范围收窄，但无法代替对异常路径和探针字段的核实。<a href="https://bpftrace.org/docs/release_024/stdlib#delete">bpftrace 0.24 线程 map 与 <code>delete</code> 语法</a>、<a href="https://bpftrace.org/docs/release_024/language#beginend">0.24 <code>BEGIN</code>&#x2F;<code>END</code>、位置参数和退出时 map 输出</a>、<a href="https://bpftrace.org/docs/release_024/cli">0.24 命令行：程序退出时打印非空 map</a></p>
+<p>另一类问题是“进程 CPU 时间花在哪些调用栈”。<code>profile</code> 定时抽样比逐函数计时更适合先找热点；下面只统计目标 PID 的用户栈样本，停止后得到的是样本分布，不是每次调用的精确耗时：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> bpftrace -e <span class="string">&#x27;profile:hz:99 /pid == $1/ &#123; @[ustack] = count(); &#125;&#x27;</span> 2468</span><br></pre></td></tr></table></figure>
+
+<p>要找内核路径可改采 <code>kstack</code>；扩大到全系统前先评估采样频率、符号信息和输出成本。上述例子依赖本机支持相应 <code>profile</code> 探针与用户栈回溯能力。<a href="https://bpftrace.org/docs/release_024/language#profile">bpftrace 0.24 <code>profile</code> 探针</a>、<a href="https://bpftrace.org/one-liners">bpftrace 单行脚本示例</a></p>
+<p>运行短脚本前，记下 <code>bpftrace --version</code>，用 <code>-l</code>&#x2F;<code>-lv</code> 查探针，必要时读 tracefs 的 <code>format</code>；从短窗口、小范围开始，确认输出字段语义再扩大。Verifier 报错时缩小程序，检查指针类型和访问边界。版本间 <code>args</code> 字段写法和 map API 有变化：本章以 0.24 稳定文档为参照，并在 <code>delete</code> 示例注明旧写法；其他主机以本机帮助和稳定版文档为准。需要复杂参数处理、持续用户态逻辑或定制输出时，再考虑用 BCC。<a href="https://bpftrace.org/docs/release_024/language">bpftrace 0.24 语言参考</a>、<a href="https://docs.kernel.org/bpf/verifier.html">verifier 对安全访问的检查</a></p>
+<p><a id="chapter-6"></a><br><a id="第六章-CPU"></a></p>
+<h2 id="第六章-CPU：区分计算、等待调度与阻塞"><a href="#第六章-CPU：区分计算、等待调度与阻塞" class="headerlink" title="第六章 CPU：区分计算、等待调度与阻塞"></a>第六章 CPU：区分计算、等待调度与阻塞</h2><p>CPU 时间记账通常包含用户态、内核态、硬&#x2F;软中断、空闲、I&#x2F;O wait 和虚拟机 steal 等类别。利用率高说明 CPU 忙，不直接说明业务慢；利用率低也不能排除调度延迟。任务只有处于可运行状态、正在等 CPU 时才在 run queue（运行队列）里。已经睡眠、等待磁盘、锁、网络或定时器的任务不在 run queue 上。因而 run queue 延迟是“变为 runnable 后，到真正获得 CPU”的时间；off-CPU 则描述任务没有运行的时间，里面可能是有意休眠、锁等待、I&#x2F;O 阻塞，也可能包含唤醒后等待调度。二者不能混称为 CPU 等待。</p>
+<h3 id="传统指标与基线"><a href="#传统指标与基线" class="headerlink" title="传统指标与基线"></a>传统指标与基线</h3><p>先看负载与逐 CPU 状态，避免只看整机平均数掩盖单核打满：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line"><span class="built_in">uptime</span></span><br><span class="line">vmstat 1</span><br><span class="line">mpstat -P ALL 1</span><br><span class="line">pidstat -u -p <span class="variable">$PID</span> 1</span><br><span class="line"><span class="built_in">cat</span> /proc/pressure/cpu</span><br></pre></td></tr></table></figure>
+
+<h3 id="BCC-工具选型"><a href="#BCC-工具选型" class="headerlink" title="BCC 工具选型"></a>BCC 工具选型</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>测什么，何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>runqlat</td>
+<td>统计 runnable 到拿到 CPU 的等待分布；定位可运行线程的调度延迟。</td>
+</tr>
+<tr>
+<td>profile</td>
+<td>定时采样运行中线程的调用栈；回答 CPU 时间花在哪些函数。</td>
+</tr>
+<tr>
+<td>offcputime</td>
+<td>按离开 CPU 时的栈聚合 off-CPU 时间；可能混有阻塞与调度等待，需进一步区分。</td>
+</tr>
+</tbody></table>
+<p>BCC 的 <code>runqlat</code> 将 runnable 到被调度运行的延迟按直方区间统计；先用毫秒单位观察多个短窗口，再按 PID 收窄：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/runqlat -m 1 5</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/runqlat -p <span class="variable">$PID</span> -m 1 5</span><br></pre></td></tr></table></figure>
+
+<h3 id="解释观测与常见误区"><a href="#解释观测与常见误区" class="headerlink" title="解释观测与常见误区"></a>解释观测与常见误区</h3><p>如果延迟尾部持续变长，同时 CPU 忙、运行队列偏长，才有较强证据指向 CPU 竞争。单次高桶可能来自短暂抖动；直方图是事件分布，不是请求延迟的 p99。用 <code>profile</code> 找正在消耗 CPU 的栈，用 <code>offcputime</code> 找离开 CPU 时的阻塞栈，彼此互补：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/profile -p <span class="variable">$PID</span> 10</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/offcputime -K -p <span class="variable">$PID</span> 10</span><br></pre></td></tr></table></figure>
+
+<p>off-CPU 栈出现 <code>io_schedule</code> 可提示块 I&#x2F;O 等待，出现 futex 或锁相关栈可提示同步等待；需要再与 I&#x2F;O、锁和应用时间线交叉验证。高 load average 不等于 CPU 满载：不可中断睡眠的 D 状态任务也会抬高 load。反过来，runqlat 高但总 CPU 尚未满，可能是 CPU 亲和性、容器配额、优先级或局部热点，而非全机资源不足。<code>%iowait</code> 是 CPU 空闲且有未完成磁盘请求时的时间比例，不是“进程被磁盘卡住的时间”，也不能指出哪项请求变慢。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/tools/runqlat_example.txt">BCC runqlat 用法与示例</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/profile.py">BCC profile 采样器</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/offcputime_example.txt">BCC offcputime 示例</a>、<a href="https://docs.kernel.org/accounting/psi.html">Linux PSI</a>、<a href="https://docs.kernel.org/scheduler/sched-design-CFS.html">Linux 调度器说明</a>。</p>
+<p><a id="chapter-7"></a><br><a id="第七章-内存"></a></p>
+<h2 id="第七章-内存：看压力和趋势，别把缓存当泄漏"><a href="#第七章-内存：看压力和趋势，别把缓存当泄漏" class="headerlink" title="第七章 内存：看压力和趋势，别把缓存当泄漏"></a>第七章 内存：看压力和趋势，别把缓存当泄漏</h2><p>虚拟地址空间、RSS、页缓存和进程实际可回收内存不是同一个数字。RSS 是进程映射的驻留页，文件数据读入后也会占页缓存；内核通常能在压力下回收部分缓存。应观察可用内存、匿名页、缓存、swap 和回收活动的变化，并留意 cgroup 的限制。单独看到 <code>free</code> 的空闲列很低，不能推出内存不足。内核文档也提醒 <code>/proc/meminfo</code> 多个字段存在重叠，简单相加可能不等于总内存。</p>
+<h3 id="传统指标与基线-1"><a href="#传统指标与基线-1" class="headerlink" title="传统指标与基线"></a>传统指标与基线</h3><p>先采样系统与进程基线：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line">free -h</span><br><span class="line">vmstat 1</span><br><span class="line">grep -E <span class="string">&#x27;VmRSS|VmSwap|VmSize&#x27;</span> /proc/<span class="variable">$PID</span>/status</span><br><span class="line">pidstat -r -p <span class="variable">$PID</span> 1</span><br><span class="line"><span class="built_in">cat</span> /proc/meminfo</span><br><span class="line"><span class="built_in">cat</span> /proc/pressure/memory</span><br></pre></td></tr></table></figure>
+
+<p>在容器中还要查看该进程所在 cgroup 的 <code>memory.current</code>、<code>memory.max</code>、<code>memory.events</code> 和 <code>memory.pressure</code>，因为宿主机剩余内存充足并不代表容器没有触顶。若缺页或回收增加与延迟同步，可进一步检查具体进程及工作集。</p>
+<h3 id="BCC-工具选型-1"><a href="#BCC-工具选型-1" class="headerlink" title="BCC 工具选型"></a>BCC 工具选型</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>测什么，何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>drsnoop</td>
+<td>逐事件记录进程进入直接内存回收的耗时；核实分配线程是否被同步回收拖慢。</td>
+</tr>
+<tr>
+<td>oomkill</td>
+<td>记录内核 OOM killer 选择的受害进程；事后还原是谁触发、谁被杀，不是内存预测器。</td>
+</tr>
+<tr>
+<td>memleak</td>
+<td>跟踪受支持分配器尚未释放对象的调用栈；检查持续增长的可疑分配点。</td>
+</tr>
+</tbody></table>
+<p>可用直接回收和 OOM 追踪器确认压力是否已到分配路径：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line"><span class="built_in">sudo</span> drsnoop -p <span class="variable">$PID</span> -d 10</span><br><span class="line"><span class="built_in">sudo</span> oomkill</span><br></pre></td></tr></table></figure>
+
+<p><code>drsnoop</code> 只显示实际发生的直接回收事件；没有事件不代表内存没有风险，<code>oomkill</code> 则是 OOM 发生时的事后事件。</p>
+<p>BCC <code>cachestat</code> 每个窗口统计页缓存相关内核函数事件，可用于观察命中、未命中、脏化和缓存规模是否随负载发生变化：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/cachestat 1 5</span><br></pre></td></tr></table></figure>
+
+<h3 id="解释观测与常见误区-1"><a href="#解释观测与常见误区-1" class="headerlink" title="解释观测与常见误区"></a>解释观测与常见误区</h3><p>它不是对每次用户态文件读取做逐笔归因的精确命中率计数器。工具以多个内核事件推导 HITS、MISSES 和比率；预读、内核版本上的函数实现差异、不同访问路径都可能影响估算。因此用它判断“趋势和相对变化”，不能把工具输出的命中比例等同于整个应用的缓存命中率，也不能据此认定磁盘没有压力。</p>
+<p>要追查分配栈，可对单个进程采集尚未配对释放的分配：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/memleak -p <span class="variable">$PID</span> 5 3</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/memleak -p <span class="variable">$PID</span> -o 30000 5 3</span><br></pre></td></tr></table></figure>
+
+<p>第二条只保留年龄超过 30 秒的分配，有助过滤短命对象。memleak 主要跟踪其支持的分配器入口及相应 free；使用自定义分配器、直接 mmap 或其他内存来源时，覆盖范围可能不足。采样时仍未释放的对象不等于泄漏：缓存、连接池和正常生命周期内存都可能长时间存活。应在相同负载下多次观察，确认同一调用栈的未释放字节数持续单调增长，再结合 RSS、cgroup 计数和代码生命周期判断。高频分配时 memleak 本身会增加开销，必要时降低采样率并缩短目标范围。</p>
+<p>memory PSI 可与 major fault、swap in&#x2F;out 和工作集变化对齐。缺页并不都要读盘：minor fault 通常通过已有内存页建立映射；major fault 才意味着需要等待后备存储。若 MemAvailable 下降并伴随 cgroup memory.events 中 high&#x2F;oom 增长，应定位触限的容器；若只是 Cached 偏高而压力指标平稳，不宜为“释放缓存”而盲目清理页缓存。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/libbpf-tools/drsnoop.c">BCC drsnoop 直接回收追踪器</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/oomkill.py">BCC oomkill 工具</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/cachestat.py">BCC cachestat 源码与计数逻辑</a>、<a href="https://github.com/iovisor/bcc/blob/master/man/man8/memleak.8">BCC memleak 手册</a>、<a href="https://docs.kernel.org/filesystems/proc.html">Linux &#x2F;proc 文档</a>、<a href="https://docs.kernel.org/next/mm/page_cache.html">Linux 页缓存说明</a>、<a href="https://docs.kernel.org/accounting/psi.html">Linux PSI</a>。</p>
+<p><a id="chapter-8"></a><br><a id="第八章-文件系统"></a></p>
+<h2 id="第八章-文件系统：从路径操作定位到具体文件系统"><a href="#第八章-文件系统：从路径操作定位到具体文件系统" class="headerlink" title="第八章 文件系统：从路径操作定位到具体文件系统"></a>第八章 文件系统：从路径操作定位到具体文件系统</h2><p>一次 <code>open/read/write/fsync</code> 要经过系统调用、VFS、具体文件系统与页缓存；只有最终需要块设备访问时才会落到磁盘。NFS 等网络文件系统还包含 RPC 和远端等待。因此“慢文件操作”不自动意味着本地盘慢；命中缓存的读也可能耗时，慢点还可能在元数据锁、目录查找、挂载点或远端服务。</p>
+<h3 id="传统指标与基线-2"><a href="#传统指标与基线-2" class="headerlink" title="传统指标与基线"></a>传统指标与基线</h3><p>先确认目标路径挂在哪种文件系统，分清空间不足、inode 耗尽和设备延迟：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">findmnt -T /path/to/file</span><br><span class="line"><span class="built_in">df</span> -hT /path/to/file</span><br><span class="line"><span class="built_in">df</span> -ih /path/to/file</span><br></pre></td></tr></table></figure>
+
+<h3 id="BCC-工具选型-2"><a href="#BCC-工具选型-2" class="headerlink" title="BCC 工具选型"></a>BCC 工具选型</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>测什么，何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fileslower</td>
+<td>测 VFS 层慢的同步文件 read&#x2F;write，适合跨文件系统按 PID 找慢文件；不覆盖异步 I&#x2F;O、目录和许多其他操作。</td>
+</tr>
+<tr>
+<td>filetop</td>
+<td>按窗口汇总进程和文件的读写调用与请求字节，找热点文件；计数包括缓存访问，不代表物理盘流量。</td>
+</tr>
+<tr>
+<td>ext4slower</td>
+<td>只跟踪 ext4 的常见 read&#x2F;write&#x2F;open&#x2F;fsync 并给出慢操作；确认路径确在 ext4 后使用。</td>
+</tr>
+<tr>
+<td>cachestat</td>
+<td>观察系统级页缓存事件和近似命中变化，用于辅助解释文件读取为何未必下沉到磁盘。</td>
+</tr>
+</tbody></table>
+<p>选与实际文件系统对应的 BCC 工具：ext4 用 <code>ext4slower</code>，XFS 用 <code>xfsslower</code>，NFS 用 <code>nfsslower</code>。例如只看某进程在 ext4 上超过 5 毫秒的常见操作：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PID=1234  <span class="comment"># 替换为目标进程 PID</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/ext4slower -p <span class="variable">$PID</span> 5</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/fileslower -p <span class="variable">$PID</span> 5</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/filetop -p <span class="variable">$PID</span> 1 5</span><br></pre></td></tr></table></figure>
+
+<h3 id="解释观测与常见误区-2"><a href="#解释观测与常见误区-2" class="headerlink" title="解释观测与常见误区"></a>解释观测与常见误区</h3><p>输出将慢操作关联到进程、操作类型、文件名和耗时；未输出只表示在当前探针、阈值和观测窗口内没有捕获符合条件的操作，不证明文件系统完全无延迟。工具直接探测文件系统操作，缓存访问也可能计入；高吞吐目录或频繁读写时，即使阈值过滤输出，探针仍会接触大量操作，应短时、按 PID 调查。若 Nginx 的慢请求集中于静态文件，先由访问日志确认文件路径，再用文件系统工具定位；随后才用块层工具验证是否真的有对应磁盘 I&#x2F;O。若挂载为 NFS，则以 <code>nfsslower</code> 和 NFS&#x2F;RPC 指标为主，不能把本机块设备的空闲误判成文件访问健康。</p>
+<p>若 ext4slower 报慢而同期 biolatency 平稳，再检查目录元数据、文件系统锁、fsync、回收与缓存冷热；NFS 路径还要比较 RPC 超时和服务端指标。需要确认是否频繁 open，可用 BCC opensnoop 观察系统调用，但它只记录打开事件及结果，不量出完整 read&#x2F;write 延迟，也不能替代对应文件系统的 slower 工具。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/tools/fileslower.py">BCC fileslower 源码及测量边界</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/filetop_example.txt">BCC filetop 示例</a>、<a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial.md">BCC 文件系统与磁盘排查教程</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/ext4slower.py">ext4slower 源码及参数</a>、<a href="https://github.com/iovisor/bcc/blob/master/README.md">BCC 支持的文件系统工具列表</a>。</p>
+<p><a id="chapter-9"></a><br><a id="第九章-磁盘io"></a></p>
+<h2 id="第九章-磁盘-I-O：平均值、尾延迟和设备并行度"><a href="#第九章-磁盘-I-O：平均值、尾延迟和设备并行度" class="headerlink" title="第九章 磁盘 I&#x2F;O：平均值、尾延迟和设备并行度"></a>第九章 磁盘 I&#x2F;O：平均值、尾延迟和设备并行度</h2><p>块层跟踪的是文件系统提交到设备的请求，而不是应用的 read&#x2F;write 调用。页缓存命中可能根本不产生块请求；块请求又可能承载回写或合并后的多个文件操作。要把文件、块设备与业务延迟放在同一条路径上理解。</p>
+<h3 id="传统指标与基线-3"><a href="#传统指标与基线-3" class="headerlink" title="传统指标与基线"></a>传统指标与基线</h3><p>先用 <code>iostat -xz 1 6</code> 连续取样。没有 <code>-y</code> 时，第一份报告是自启动以来的平均，后续报告才覆盖采样间隔；分析瞬时抖动时忽略首份，或使用 <code>iostat -y -xz 1 6</code>（先确认本机 sysstat 版本支持）。重点看读写吞吐、每秒请求数、<code>aqu-sz</code>、<code>await</code> 及 <code>%util</code>。sysstat 的 <code>await</code> 是已发出 I&#x2F;O 请求从排队到完成的平均时延，包含排队等待和设备处理时间；它不等于设备纯 service time，也不是请求的 p95 或 p99。要结合队列深度、请求大小和读写类型解释。</p>
+<p><code>%util</code> 描述采样期间设备有 I&#x2F;O 请求在处理的时间占比。对串行处理请求的设备，接近 100% 可提示饱和；对多队列 NVMe、SSD、RAID 等可并行处理请求的设备，接近 100% 本身不代表到达性能上限。还要避免把同一 I&#x2F;O 在 LVM、device mapper、虚拟盘和物理盘的统计重复解读。</p>
+<h3 id="BCC-工具选型-3"><a href="#BCC-工具选型-3" class="headerlink" title="BCC 工具选型"></a>BCC 工具选型</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>测什么，何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>biolatency</td>
+<td>按块请求从发出到完成的时间作对数直方图，适合发现尾延迟；按设备筛选后与应用慢窗对齐。</td>
+</tr>
+<tr>
+<td>biosnoop</td>
+<td>逐条打印块请求大小、方向、延迟与进程上下文；适合短时还原时序，事件太多时注意开销。</td>
+</tr>
+<tr>
+<td>bitesize</td>
+<td>按提交请求时的进程名聚合块请求大小直方图；看 I&#x2F;O 尺寸分布，不是文件大小或吞吐排行。</td>
+</tr>
+</tbody></table>
+<p>找到 <code>iostat</code> 中的可疑设备后，才针对它看请求级延迟：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DEV=nvme0n1  <span class="comment"># 替换为 iostat 显示的设备名</span></span><br><span class="line">iostat -xz 1 6</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/biolatency -m -d <span class="variable">$DEV</span> 1 5</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/biosnoop -d <span class="variable">$DEV</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/bitesize</span><br></pre></td></tr></table></figure>
+
+<h3 id="解释观测与常见误区-3"><a href="#解释观测与常见误区-3" class="headerlink" title="解释观测与常见误区"></a>解释观测与常见误区</h3><p><code>biolatency</code> 把块 I&#x2F;O 延迟按直方区间聚合，便于观察长尾；<code>biosnoop</code> 输出单条请求的时间、进程线索、读写方向、大小和耗时。具体设备名如 <code>nvme0n1</code>，不带 <code>/dev/</code>。BCC 的延迟定义从块请求进入跟踪点到完成；<code>biolatency -Q</code> 可把操作系统队列时间也纳入统计。比较数据时要确认采样采用相同选项，并理解统计口径，不能把两个口径的直方图直接对照。</p>
+<p>解释时同步查看应用请求耗时、文件系统慢操作与块层延迟：块层尾延迟上升且同窗出现应用变慢，才能支持存储路径相关假设；设备忙但应用没有变慢，可能只是吞吐正常增加。高 <code>%iowait</code> 不是某进程在盘上睡眠的直接时长，<code>await</code> 是请求平均值，也会掩盖少数极慢请求；两者都不应代替延迟分位数或逐请求观察。</p>
+<p>云盘调查还应把平台卷级 IOPS、吞吐及突发额度与主机统计对齐。异步回写时，块请求可能由内核线程提交；biosnoop 中的 PID 不一定是最初写入的业务进程。应按同一时间窗口关联文件系统操作和设备请求，不要凭单条请求的进程名定责。</p>
+<p>参考：<a href="https://github.com/sysstat/sysstat/blob/master/man/iostat.in">sysstat 官方 iostat 手册</a>、<a href="https://docs.kernel.org/5.10/block/stat.html">Linux 块设备统计字段</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/bitesize.py">BCC bitesize 源码</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/biolatency_example.txt">BCC biolatency 用法与参数</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/biosnoop.py">BCC biosnoop 源码</a>。</p>
+<p><a id="chapter-10"></a><br><a id="第十章-网络"></a></p>
+<h2 id="第十章-网络：分清握手、连接寿命和-HTTP-请求"><a href="#第十章-网络：分清握手、连接寿命和-HTTP-请求" class="headerlink" title="第十章 网络：分清握手、连接寿命和 HTTP 请求"></a>第十章 网络：分清握手、连接寿命和 HTTP 请求</h2><p>TCP 连接、TCP 会话和 HTTP 请求是不同层次：一次建连要完成 TCP 握手，TLS 与应用处理发生在握手之后；启用 keepalive 时，一个 TCP 会话可以承载许多请求。连接数、RTT、重传和请求时延因此各自回答不同问题。</p>
+<h3 id="传统指标与基线-4"><a href="#传统指标与基线-4" class="headerlink" title="传统指标与基线"></a>传统指标与基线</h3><p>先看链路、内核 TCP 计数器和 socket 队列，确认丢弃、重传或积压是否与问题同步：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ip -s <span class="built_in">link</span></span><br><span class="line">ss -s</span><br><span class="line">ss -lnt</span><br><span class="line">nstat</span><br><span class="line">sar -n DEV,TCP,ETCP 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="BCC-工具选型-4"><a href="#BCC-工具选型-4" class="headerlink" title="BCC 工具选型"></a>BCC 工具选型</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>测什么，何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tcpconnect</td>
+<td>逐次记录主动连接尝试，失败连接也会出现；核对 Nginx 到上游的新建连接和目标端口。</td>
+</tr>
+<tr>
+<td>tcplife</td>
+<td>TCP 会话关闭时汇总寿命与字节数；按本地端口观察连接，不可当 HTTP 请求统计。</td>
+</tr>
+<tr>
+<td>tcpretrans</td>
+<td>记录内核的 TCP 重传事件；加 <code>-l</code> 才包含 TLP 探测，作为链路异常线索而非丢包定责。</td>
+</tr>
+<tr>
+<td>tcptop</td>
+<td>按短窗口汇总 TCP 连接收发字节和进程，定位流量大的端点；不是请求量或 RTT 工具。</td>
+</tr>
+</tbody></table>
+<h3 id="解释观测与常见误区-4"><a href="#解释观测与常见误区-4" class="headerlink" title="解释观测与常见误区"></a>解释观测与常见误区</h3><p>BCC 的 <code>tcpconnect</code> 追踪主动 TCP connect，<code>tcpaccept</code> 追踪被动 accept，适合确认 Nginx 是否持续新建上游连接、端口和进程；连接复用时，一个 TCP 连接可承载多个 HTTP 请求，所以它们不按请求计数。服务器本地只看到经过该主机内核的网络一侧；在 ELB 与 Nginx 之间诊断时，结合 ELB 指标、目标主机 socket 和 access log 时间戳，确认每个数据对应哪一跳。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PORT=443  <span class="comment"># 替换为 Nginx 实际监听端口</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcpconnect</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcpaccept</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcptop -C 1 5</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcpconnlat</span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcplife -L <span class="variable">$PORT</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcpretrans</span><br><span class="line"><span class="comment"># 可选：同时观察 TLP 探测</span></span><br><span class="line"><span class="built_in">sudo</span> /usr/share/bcc/tools/tcpretrans -l</span><br></pre></td></tr></table></figure>
+
+<p><code>tcpconnlat</code> 衡量本机主动连接从发起 TCP SYN 到收到响应的连接建立时间；响应也可能是 RST。它不是 HTTP 请求耗时：它不覆盖连接建立后的应用排队、TLS&#x2F;HTTP 处理、上游首字节、响应体传输等整条请求路径。若上游 keepalive 命中已有连接，这个请求甚至没有新的 connect 事件。<code>tcplife</code> 在 TCP 会话结束时报告会话寿命和传输统计，HTTP keepalive 会让它跨越多个请求，因此也不能当单请求时延。</p>
+<p><code>tcpretrans</code> 默认追踪内核 TCP 重传；上游版本用 <code>-l</code> 纳入 TLP，先用本机 <code>-h</code> 确认选项是否提供。观察到重传说明本端 TCP 栈走到了重传路径，是需要进一步调查的证据；它本身不证明具体链路设备丢了包、丢包方向在哪一侧，亦不排除拥塞、ACK 延迟、重排序或连接所在节点以外的路径因素。要结合 <code>nstat</code> 的 TCP 重传计数增量、两端网卡错误&#x2F;丢弃计数、ELB 后端健康与超时指标及抓包证据判断。只看累计计数无法判断问题发生窗口。</p>
+<p>对 Nginx，HTTP 请求时延应以 access log 中的请求级字段为准，建议加入：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">log_format</span> timed <span class="string">&#x27;<span class="variable">$remote_addr</span> <span class="variable">$request</span> <span class="variable">$status</span> &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;request=<span class="variable">$request_time</span> upstream=<span class="variable">$upstream_addr</span> &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;connect=<span class="variable">$upstream_connect_time</span> &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;header=<span class="variable">$upstream_header_time</span> &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;response=<span class="variable">$upstream_response_time</span>&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>$request_time</code> 覆盖 Nginx 从读取请求首字节到发送完响应的时间；<code>$upstream_connect_time</code> 是与上游建立连接的耗时（SSL 场景包含握手），<code>$upstream_header_time</code> 到收到上游响应头，<code>$upstream_response_time</code> 到上游响应完成。重试或多个上游时，这些变量可能包含多个值，需与 <code>$upstream_addr</code> 配对阅读。若 connect 高，检查上游建连、网络往返和连接复用；connect 正常而 header 高，进一步检查应用排队&#x2F;处理；上游已完成而 request 高，则检查客户端慢收、响应体大小及 Nginx 到客户端这一段。日志切分出耗时后，再用 BCC 观察对应 TCP 连接与重传；不要反过来以某一条重传事件推断整条 HTTP 链路的根因。</p>
+<p>TCP 状态可帮助理解连接压力：SYN-RECV 增长时要检查握手、接收队列及负载均衡健康；ESTABLISHED 数高也可能只是 keepalive 长连接。连接数不等于请求数。ss 的 Recv-Q、Send-Q 是特定 socket 的队列快照；tcpaccept 新连接变少也不必然表示 HTTP 流量下降，因为连接复用会减少 accept 频率。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/tools/tcpconnect.py">BCC tcpconnect 源码及失败连接说明</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/tcptop.py">BCC tcptop 源码</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/tcpretrans_example.txt">BCC TCP 重传示例</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/tcpconnlat_example.txt">BCC tcpconnlat 定义与参数</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/tcplife.py">BCC tcplife</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/tcpretrans.py">BCC tcpretrans 源码</a>、<a href="https://docs.kernel.org/networking/snmp_counter.html">Linux TCP SNMP 计数器说明</a>、<a href="https://nginx.org/en/docs/http/ngx_http_upstream_module.html">Nginx upstream 时间变量</a>、<a href="https://nginx.org/en/docs/http/ngx_http_core_module.html">Nginx 请求时间变量</a>。</p>
+<p><a id="chapter-11"></a><br><a id="第十一章-安全"></a></p>
+<h2 id="第十一章-安全：用-BPF-看见行为，不把观测当成防护"><a href="#第十一章-安全：用-BPF-看见行为，不把观测当成防护" class="headerlink" title="第十一章 安全：用 BPF 看见行为，不把观测当成防护"></a>第十一章 安全：用 BPF 看见行为，不把观测当成防护</h2><p>本章工具的价值是把安全相关行为变成可追溯事件。<code>execsnoop</code> 跟踪 <code>execve</code> 一类执行调用，可看到启动进程的 PID、命令及参数，适合查异常子进程或脚本启动链；只 <code>fork</code> 而未执行新程序的路径不一定出现在结果中。<code>opensnoop</code> 观察文件打开请求和返回状态，适合定位进程何时尝试访问配置、凭据或设备文件，但“打开过”不等于读写了内容。BCC 的 <code>capable</code> 追踪内核 <code>cap_capable()</code> 检查，帮助回答“哪个进程在检查哪项 capability”；它不是一份完整授权决策审计。bpftrace 的 <code>setuids</code> 跟踪 <code>setuid</code>、<code>setresuid</code>、<code>setfsuid</code> 系统调用及参数&#x2F;返回值，可还原身份切换尝试及结果。上述工具记录事件或检查路径，本身不拦截调用；要强制限制访问，应配置 seccomp、LSM 等策略，并通过策略审计确认实际拒绝原因。</p>
+<p>先确认当前发行版安装了哪套 BCC&#x2F;bpftrace 工具、工具脚本版本和内核是否支持所需 tracepoint，再核查运行所需权限。名称相同的脚本不保证在各发行版都安装，也不保证参数完全一致。安全事件排查可按“异常 exec → 文件访问 → capability 检查或 UID 切换”串联 PID 与时间戳，再与 audit&#x2F;应用日志核对；BPF 输出不能代替访问控制策略或审计日志。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/tree/master/tools">BCC 工具与示例</a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/capable.py">BCC <code>capable</code></a>、<a href="https://github.com/bpftrace/bpftrace/blob/master/tools/setuids.bt">bpftrace <code>setuids</code></a>、<a href="https://docs.kernel.org/userspace-api/seccomp_filter.html">Linux seccomp 文档</a>。</p>
+<p><a id="chapter-12"></a><br><a id="第十二章-编程语言"></a></p>
+<h2 id="第十二章-编程语言：按代码运行方式选择符号与栈工具"><a href="#第十二章-编程语言：按代码运行方式选择符号与栈工具" class="headerlink" title="第十二章 编程语言：按代码运行方式选择符号与栈工具"></a>第十二章 编程语言：按代码运行方式选择符号与栈工具</h2><p>对原生 C&#x2F;C++，Linux <code>perf</code> 的 CPU 采样先回答“样本落在哪些函数”；若要看特定函数的参数、返回值或耗时，再用 BCC <code>trace</code>&#x2F;<code>uprobe</code>、bpftrace <code>uprobe</code>&#x2F;<code>uretprobe</code> 在用户态函数入口或返回处挂探针。目标可以是主程序或共享库。按函数名挂载依赖 ELF 符号；符号被剥离时可用二进制偏移，但偏移只对匹配的构建产物有效。静态函数、内联函数或优化改写可能没有稳定的可探测入口；C++ 还会遇到 mangled symbol，应以当前二进制的符号表为准。高频函数逐次打印参数会造成大量事件和明显开销，先窄化 PID、函数和时长。BCC 文档中的 uprobe&#x2F;USDT 接口可作为具体语法参考。</p>
+<p>Java 的解释器与 JIT 代码要分开看。解释执行时，采样栈往往表现为 JVM 解释器及运行时分派函数，不能把这些通用帧直接当作某个 Java 方法热点；方法被 JIT 编译后，机器码位于动态代码缓存中，普通 ELF 符号表没有这些方法名。用 <code>perf</code> 采样 Java 时需要 JVM 的 JIT 符号映射（如生成 <code>/tmp/perf-PID.map</code> 的 perf-map-agent，或 perf 支持的 jitdump），再核对内联展开与采样误差；映射缺失时原始地址不等于“没有 Java 栈”。Java 自带 JFR 等运行时剖析也能提供 Java 方法栈，适合和系统级采样互证。Go、Python 等有各自的运行时 profile；它们回答语言层热点，系统 BPF&#x2F;perf 则补充线程在内核、调度和 I&#x2F;O 上的行为，不能仅凭一类 profile 推断全链路延迟。</p>
+<p>原生栈回溯也有前提：<code>perf --call-graph fp</code> 依赖目标代码保留有效 frame pointer；省略帧指针时可能得到错误或断裂的调用链。DWARF 回溯需对应调试信息和 perf 的 unwind 支持。内核栈符号、用户态 build-id、库版本均应匹配正在运行的二进制，否则函数名可能误导分析。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md">BCC 开发者文档（uprobes&#x2F;USDT）</a>、<a href="https://man7.org/linux/man-pages/man1/perf-record.1.html">perf 调用链选项</a>、<a href="https://github.com/jvm-profiling-tools/perf-map-agent">perf-map-agent 的 JVM JIT 符号映射</a>、<a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/jfr.html">Java JFR 命令文档</a>。</p>
+<p><a id="chapter-13"></a><br><a id="第十三章-应用程序"></a></p>
+<h2 id="第十三章-应用：用工具分辨-CPU、等待、系统调用和数据库慢查询"><a href="#第十三章-应用：用工具分辨-CPU、等待、系统调用和数据库慢查询" class="headerlink" title="第十三章 应用：用工具分辨 CPU、等待、系统调用和数据库慢查询"></a>第十三章 应用：用工具分辨 CPU、等待、系统调用和数据库慢查询</h2><p>BCC 的应用工具各自测量不同问题：<code>profile</code> 周期性对 CPU 上正在运行的任务采样并按栈聚合，适合找 CPU 热点；<code>offcputime</code> 汇总线程不在 CPU 上运行的时间及栈，适合查锁、I&#x2F;O 或调度等待，却不能单独区分等待对象，需结合线程状态、内核事件或应用 trace；<code>syscount</code> 默认聚合调用次数，也可用 <code>-L</code> 模式统计延迟，适合发现调用风暴或某类调用变慢，不会直接说明业务函数为何发起调用。若问题落到 MySQL 单条慢查询，<code>mysqld_qslower</code> 按查询开始&#x2F;结束探针筛选超过阈值的语句。它依赖 MySQL 构建时带有 DTrace&#x2F;USDT 探针（如 <code>query__start</code>、<code>query__done</code>），不是连接任意 MySQL 实例就能使用；先确认探针存在、PID&#x2F;权限正确，再选窄阈值采集。优先从单一问题、短窗口和目标 PID 开始，避免同时启用多个高事件量工具。</p>
+<p>以 Nginx 前置服务的高延迟为例，先按<a href="#chapter-10">第十章</a>的请求级时间字段定位慢在哪一段，再把请求 ID、错误日志及后端 trace 对齐。保留慢请求原始行，按路由、上游和状态码分组；多次 upstream 尝试要逐一配对，避免把重试结果混成一个耗时。</p>
+<p>队列变量尤其要核查配置：<code>$upstream_queue_time</code> 自 Nginx 1.13.9 提供；但要让请求进入 upstream 队列，需配置 <code>queue</code> 指令，而该指令属于 NGINX 商业订阅功能。因此“版本里有变量”不代表开源版可以启用排队。若 connect 慢，查 TCP 建连、网络路径与 TLS；DNS 解析需另外测量，不能仅凭 connect 时间推断；connect 快而 header 慢，查应用处理和依赖；header 快而 response 慢，查响应生成&#x2F;传输与客户端；queue 有数据时再查上游并发与容量。随后用 <code>profile</code> 判断后端是否在消耗 CPU；CPU 不高且请求仍慢时，改用 <code>offcputime</code> 或 <code>mysqld_qslower</code> 等验证阻塞假设。不要用 syscall 延迟直接等同 SQL 或请求延迟。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/tools/profile.py">BCC <code>profile</code></a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/offcputime.py"><code>offcputime</code></a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/syscount.py"><code>syscount</code></a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/mysqld_qslower.py"><code>mysqld_qslower</code></a>、<a href="https://nginx.org/en/docs/http/ngx_http_upstream_module.html">Nginx upstream 变量和 queue 指令</a>、<a href="https://nginx.org/en/docs/http/ngx_http_log_module.html">Nginx access log 的 <code>$request_time</code></a>。</p>
+<p><a id="chapter-14"></a><br><a id="第十四章-内核"></a></p>
+<h2 id="第十四章-内核：用事件工具定位中断、分配与唤醒路径"><a href="#第十四章-内核：用事件工具定位中断、分配与唤醒路径" class="headerlink" title="第十四章 内核：用事件工具定位中断、分配与唤醒路径"></a>第十四章 内核：用事件工具定位中断、分配与唤醒路径</h2><p>先用计数器、<code>perf stat</code> 和 PSI 判断问题方向，再选具体 BCC 工具。<code>hardirqs</code> 与 <code>softirqs</code> 按中断类型汇总事件次数&#x2F;处理时间或直方图，可用于判断某类 IRQ 是否占用过多 CPU；它们通常是系统&#x2F;CPU 视角，不能说明某一条业务请求由哪个中断造成。<code>slabratetop</code> 按 SLAB&#x2F;SLUB cache 显示近期分配速率，适合找分配 churn 或突然增加的对象类型；速率高不等于当前存活内存高，也不能单凭它诊断泄漏。<code>wakeuptime</code> 把睡眠到被唤醒的时间按唤醒者内核栈聚合，适合找“谁唤醒、阻塞到唤醒的时长如何分布”；它并非线程完整 off-CPU 时间的替代品。要查阻塞线程自身的等待栈，用 <code>offcputime</code>；要查唤醒路径，用 <code>wakeuptime</code>；从 runnable 到真正获得 CPU 的等待则用 <code>runqlat</code>。</p>
+<p>这些工具依赖内核事件、tracepoint、符号和 BCC 版本。运行前查 <code>perf list</code>、<code>/sys/kernel/tracing/available_events</code>，并确认本机 BCC 安装包中有目标脚本；若事件缺失，换成当前内核支持的 tracepoint 或用户态计数，不要照抄其他版本的探针名。采样到 <code>[unknown]</code> 时检查内核 <code>vmlinux</code>&#x2F;符号、用户二进制 build-id、DWARF 或 frame pointer 回溯条件。BPF JIT 代码地址也可能没有映射到函数符号；先确认程序加载、JIT 符号导出选项和 hardening 状态，不要为了符号化在生产环境关闭硬化。</p>
+<p>参考：<a href="https://github.com/iovisor/bcc/blob/master/tools/hardirqs.py">BCC <code>hardirqs</code></a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/softirqs.py"><code>softirqs</code></a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/slabratetop.py"><code>slabratetop</code></a>、<a href="https://github.com/iovisor/bcc/blob/master/tools/wakeuptime.py"><code>wakeuptime</code></a>、<a href="https://docs.kernel.org/trace/events.html">Linux tracefs 事件</a>、<a href="https://docs.kernel.org/admin-guide/sysctl/net.html">BPF JIT 符号配置</a>。</p>
+<p><a id="chapter-15"></a><br><a id="第十五章-容器"></a></p>
+<h2 id="第十五章-容器：把-PID-视角和-CPU-带宽-调度等待分开"><a href="#第十五章-容器：把-PID-视角和-CPU-带宽-调度等待分开" class="headerlink" title="第十五章 容器：把 PID 视角和 CPU 带宽&#x2F;调度等待分开"></a>第十五章 容器：把 PID 视角和 CPU 带宽&#x2F;调度等待分开</h2><p>容器内 PID 与宿主 PID 是不同 namespace 中的编号。宿主机 <code>/proc/HOST_PID/status</code> 的 <code>NSpid</code> 可显示同一进程在 PID namespace 层级中的编号；例如宿主侧看到 <code>NSpid: 42180 17</code>，容器内对应 PID 可能是 17。先从运行时&#x2F;编排平台取得宿主 PID，再核对 <code>NSpid</code>、<code>/proc/PID/ns/pid</code> 与 <code>/proc/PID/cgroup</code>；在容器里看到 PID 17，不能直接把它当宿主 PID 传给 perf 或宿主工具。</p>
+<p>CPU 配额和 runqueue 等待是两件事。cgroup v2 <code>cpu.max</code>（如 <code>50000 100000</code>）限制一个周期内组可用的总 CPU 时间；<code>cpu.weight</code> 只在竞争时影响公平调度份额，不是硬配额。取目标 cgroup 的 <code>cpu.max</code>，并在固定窗口前后读取 <code>cpu.stat</code> 增量；<code>nr_throttled</code>、<code>throttled_usec</code> 上升提示发生带宽限流。沿 cgroup 树同时检查父组的 <code>cpu.max</code> 和 <code>cpu.stat</code>：父组先耗尽预算时，子组即使自己的配额尚有余量也可能被限制。不要用单次累计值判因，要算同窗口增量。</p>
+<p>runqueue 等待表示任务已经可运行、但尚未得到 CPU；它可能由主机竞争、CPU affinity、优先级等造成，不等同 cgroup 配额耗尽。若内核启用 schedstats，可比较 <code>/proc/HOST_PID/schedstat</code> 的运行和等待时间增量；可用时再结合 cgroup <code>cpu.pressure</code>。<code>cpu.stat</code> throttling 增长且组预算耗尽，偏向配额问题；throttling 不明显但 runqueue 等待或 CPU PSI 上升，偏向主机竞争或亲和性；二者都低则继续查锁、I&#x2F;O、网络与上游。cgroup v1&#x2F;v2 文件及字段不同，先确认挂载版本与 controller。</p>
+<p>参考：<a href="https://docs.kernel.org/admin-guide/cgroup-v2.html">Linux cgroup v2 CPU 控制及 <code>cpu.stat</code></a>、<a href="https://docs.kernel.org/filesystems/proc.html">Linux <code>/proc</code> 的 <code>NSpid</code></a>、<a href="https://docs.kernel.org/scheduler/sched-stats.html">scheduler stats</a>、<a href="https://docs.kernel.org/accounting/psi.html">PSI</a>。</p>
+<p><a id="chapter-16"></a><br><a id="第十六章-虚拟机管理器"></a></p>
+<h2 id="第十六章-虚拟机：区别-guest-steal-time-与-KVM-VM-exit"><a href="#第十六章-虚拟机：区别-guest-steal-time-与-KVM-VM-exit" class="headerlink" title="第十六章 虚拟机：区别 guest steal time 与 KVM VM exit"></a>第十六章 虚拟机：区别 guest steal time 与 KVM VM exit</h2><p>guest 的 steal time 是 vCPU 本应运行、却被 hypervisor 暂停执行的时间；它持续增长可提示宿主竞争或 vCPU 排程延迟，但单独不能定位到物理核或邻居 VM。并非所有虚拟化平台都以相同方式提供此统计，零值也不能证明宿主没有竞争。将 guest 的 <code>/proc/stat</code> steal 增量、运行队列和应用延迟，与平台侧 vCPU wait&#x2F;steal 指标放在同一时间窗核对。</p>
+<p>KVM VM exit 是 vCPU 离开硬件 guest mode、转由 host KVM&#x2F;VMM 处理的事件。I&#x2F;O、MMIO、控制寄存器访问等都可触发 exit；发生 exit 本身不表示异常，也不等于 steal。宿主侧 <code>perf kvm stat</code> 或 KVM stats 接口（若当前架构、内核及 perf 构建支持）可按 exit reason 汇总次数&#x2F;时间；重点看特定类型的增量和处理耗时是否与慢请求同期。客户机不能直接看到宿主 KVM 的完整 exit 处理过程，应由宿主监控或虚拟化平台补足证据。</p>
+<p>参考：<a href="https://docs.kernel.org/virt/kvm/x86/msr.html">KVM steal-time 能力</a>、<a href="https://docs.kernel.org/virt/kvm/api.html#kvm-get-stats-fd">KVM stats API</a>、<a href="https://docs.kernel.org/virt/kvm/api.html">KVM API 与 exit 信息</a>。</p>
+<p><a id="chapter-17"></a><br><a id="第十七章-其他BPF性能工具"></a></p>
+<h2 id="第十七章-其他工具与实战排障：选对采集形态，再逐层证伪"><a href="#第十七章-其他工具与实战排障：选对采集形态，再逐层证伪" class="headerlink" title="第十七章 其他工具与实战排障：选对采集形态，再逐层证伪"></a>第十七章 其他工具与实战排障：选对采集形态，再逐层证伪</h2><p>本书中的工具可按使用场景分工。BCC&#x2F;bpftrace 脚本适合临时、聚焦的现场问题；先检查脚本是否随发行版安装、内核探针是否存在。PCP 面向持续的主机指标采集和历史回放：<code>pmcd</code>&#x2F;PMDA 提供指标，<code>pmlogger</code> 写成可回看的 archive；若要采集 BPF 指标，依 PCP 版本安装&#x2F;配置相应 PMDA。旧资料会提到 <code>pmdabcc</code>；选型时要查看所用 PCP 版本的迁移说明，较新的 BPF 集成可关注 <code>pmdabpf</code>；<code>pmdabpftrace</code> 则用于将配置好的 bpftrace 脚本作为 PCP 指标源。PCP 适合跨时间窗看趋势和事后比较，不是临时打印任意事件的通用替代品。</p>
+<p>Cloudflare <code>ebpf_exporter</code> 面向 Prometheus 长期采集自定义 eBPF 指标：配置将内核 map 转成 counter&#x2F;histogram 与 labels，需维护对应 BPF 程序和指标定义；适用于系统缺少所需指标且已有 Prometheus 运维链路的情况。它不是即装即有的万能指标包，需核实目标内核、BTF、libbpf、挂载点及权限，并控制 label 取值和 map 规模，避免每个 PID、文件名或请求 ID 生成常驻时序。<code>kubectl-trace</code> 则把 bpftrace 程序提交到 Kubernetes 节点或 Pod 对应的 trace job，适合短时定位容器所在节点上的内核&#x2F;用户探针。针对 Pod 执行时，工具主要帮助解析容器进程对应的宿主 PID；追踪程序仍在节点视角运行，并不因此被隔离在该 Pod 内。需有集群授权、节点侧 BPF 能力及相应特权配置；该项目 README 也明确其成熟度限制，部署前应核对版本维护状态与集群安全策略。</p>
+<p>持续观测优先选低频聚合计数器、固定桶直方图和清晰标签；异常时再短时升采样。为避免观测放大负载，限定 PID&#x2F;cgroup&#x2F;CPU、事件集合、持续时间、栈深和 map 容量；监控事件丢失、采集器开销及指标基数。工具名、路径、选项、PMDA 包名和权限要求会随内核、发行版及项目版本变化，现场以 <code>--help</code>、安装包清单、tracefs <code>available_events</code> 和对应版本文档核实。</p>
+<p><strong>Nginx 高延迟排障流程：</strong></p>
+<ol>
+<li>先按路由、状态码和时间窗找 p95&#x2F;p99 慢请求，保留请求 ID 与原始 Nginx 日志；配对各次 upstream 地址、状态和时间。</li>
+<li><code>request_time</code> 高但 upstream 时间低，查上传&#x2F;慢客户端和 Nginx 本机；connect 高，拆 TCP 建连与 TLS，DNS 解析耗时另行测量；header 高而 connect 快，沿请求 ID 查应用及其数据库&#x2F;RPC；response 高则查响应生成、大小和发送速度。只有配置了商业 <code>queue</code> 功能的环境才按 <code>$upstream_queue_time</code> 诊断排队。</li>
+<li>用应用 profile&#x2F;trace 确认请求在 CPU、锁、SQL、RPC 还是 I&#x2F;O；CPU 高选 <code>profile</code>，阻塞栈选 <code>offcputime</code>，系统调用频率&#x2F;延迟选 <code>syscount</code>，MySQL 已提供 USDT 查询探针时才选 <code>mysqld_qslower</code>。</li>
+<li>若应用忙等但 CPU 不足，检查目标 cgroup 及父组 <code>cpu.max</code>、窗口内 <code>cpu.stat</code> 增量和 runqueue&#x2F;CPU PSI；容器进程要由 <code>NSpid</code> 映射为宿主 PID。VM 中再核对 guest steal 与宿主 vCPU wait；只有怀疑 exit 模式异常才查看 KVM exit 分类。</li>
+<li>证据指向中断、分配或唤醒路径时，短时选择 <code>hardirqs</code>&#x2F;<code>softirqs</code>、<code>slabratetop</code> 或 <code>wakeuptime</code>。结束采集后重复同一业务指标，确认现象与探针结果一致，并记录采集时长、工具版本和限制条件。</li>
+</ol>
+<p>每一步都围绕一个可证伪假设推进。持续趋势交给 PCP archive 或 exporter，现场调用链交给窄范围 BCC&#x2F;bpftrace，Kubernetes 节点临时追踪才考虑 <code>kubectl-trace</code>。</p>
+<h3 id="现代补充：BTF-与-CO-RE"><a href="#现代补充：BTF-与-CO-RE" class="headerlink" title="现代补充：BTF 与 CO-RE"></a>现代补充：BTF 与 CO-RE</h3><p>BTF 为内核类型提供元数据；BPF CO-RE 借助目标内核 BTF 在加载时重定位字段访问，降低跨内核结构偏移变化带来的维护成本。它仍要求目标机有合适 BTF、loader 和 attach 点兼容；不保证任意内核内部函数都成为稳定接口。本节是现代工具链补充，不是书中原有内容。检查目标内核 BTF 文件、<code>bpftool feature probe</code>（若版本支持）及 loader 诊断，再决定能否使用。</p>
+<p>参考：<a href="https://pcp.io/docs/pcpintro.html">PCP 架构与 archive 回放</a>、<a href="https://github.com/performancecopilot/pcp/blob/main/CHANGELOG">PCP 变更记录（<code>pmdabcc</code> 迁移）</a>、<a href="https://github.com/cloudflare/ebpf_exporter">Cloudflare eBPF exporter</a>、<a href="https://github.com/iovisor/kubectl-trace/blob/master/README.md"><code>kubectl-trace</code> 用法与 Pod 语义</a>、<a href="https://docs.kernel.org/bpf/btf.html">Linux BTF 文档</a>、<a href="https://docs.kernel.org/bpf/llvm_reloc.html">BPF CO-RE 文档</a>。</p>
+<p><a id="appendix"></a></p>
+<h2 id="附录：开始实验前的核对与复盘模板"><a href="#附录：开始实验前的核对与复盘模板" class="headerlink" title="附录：开始实验前的核对与复盘模板"></a>附录：开始实验前的核对与复盘模板</h2><h3 id="A-先确认工具实际能看到什么"><a href="#A-先确认工具实际能看到什么" class="headerlink" title="A. 先确认工具实际能看到什么"></a>A. 先确认工具实际能看到什么</h3><p>以下命令用于 <strong>Linux 目标机器</strong>。本次笔记整理没有在目标 Linux 内核上实测 BPF 程序，因此示例不代表对任意内核、发行版或容器环境的可运行保证。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r</span><br><span class="line">bpftrace --version</span><br><span class="line"><span class="built_in">sudo</span> bpftrace --info</span><br><span class="line"><span class="built_in">sudo</span> bpftrace -l <span class="string">&#x27;tracepoint:syscalls:sys_enter_openat&#x27;</span></span><br><span class="line"><span class="built_in">sudo</span> bpftrace -lv <span class="string">&#x27;tracepoint:syscalls:sys_enter_openat&#x27;</span></span><br><span class="line"><span class="built_in">sudo</span> bpftool feature probe kernel</span><br></pre></td></tr></table></figure>
+
+<p>检查顺序应是：工具是否安装 → 当前身份有无权限 → 探针是否存在 → 字段和参数是否符合预期 → 小范围运行 → 检查结果及采集开销。<code>--info</code> 报告当前构建与内核能力；<code>-l</code> 列出探针，<code>-lv</code> 进一步展示可用参数。不要仅凭“内核版本看起来够新”就认定所有例子都可运行。<a href="https://bpftrace.org/docs/release_024/cli">bpftrace 命令行文档</a>；<a href="https://github.com/libbpf/bpftool/blob/main/docs/bpftool-feature.rst">bpftool feature 文档</a>。</p>
+<p>BCC 的命令在不同发行版中可能叫 <code>opensnoop</code>、<code>opensnoop-bpfcc</code>，也可能安装在 <code>/usr/share/bcc/tools/</code>。先找到对应程序并阅读 <code>--help</code>，再使用本笔记里的工具名；不要把同名的非 BCC 工具当成同一实现。</p>
+<h3 id="B-用测量定义防止误判"><a href="#B-用测量定义防止误判" class="headerlink" title="B. 用测量定义防止误判"></a>B. 用测量定义防止误判</h3><p>每次保存结果时附上这六项，之后才容易比较：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>应记录的内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>问题</td>
+<td>哪个请求、哪类错误或哪个延迟分位数异常</td>
+</tr>
+<tr>
+<td>范围</td>
+<td>主机、PID&#x2F;TID、cgroup、设备、端口及时间窗口</td>
+</tr>
+<tr>
+<td>负载</td>
+<td>请求速率、并发、输入大小、读写比例，以及是否正在发布</td>
+</tr>
+<tr>
+<td>测量</td>
+<td>探针位置、起止事件、时间单位、聚合方法</td>
+</tr>
+<tr>
+<td>完整性</td>
+<td>丢事件、未知栈、map 容量、探针匹配数量、版本信息</td>
+</tr>
+<tr>
+<td>结论</td>
+<td>已证实的现象、尚未证实的原因、下一步反证方法</td>
+</tr>
+</tbody></table>
+<p>对于时延直方图，先看单位、桶边界和样本数。对数桶只能把分位数约束在某个区间内，不能从一个很宽的桶里读出精确 P99。只抓取“超过阈值的慢事件”得到的是筛选后的分布，也不能冒充完整请求分布。</p>
+<p>对于采样结果，说明分母：是一个进程的 CPU 样本、某一段 off-CPU 时间，还是整机事件数。把来自不同时间窗口、不同请求量的两张火焰图直接比较，很容易把负载变化误判为代码回退。</p>
+<h3 id="C-一份可以复制的实验记录"><a href="#C-一份可以复制的实验记录" class="headerlink" title="C. 一份可以复制的实验记录"></a>C. 一份可以复制的实验记录</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">问题：</span><br><span class="line">时间窗口与业务负载：</span><br><span class="line">主机 / 内核 / BCC / bpftrace 版本：</span><br><span class="line">目标 PID、TID 或 cgroup：</span><br><span class="line">假设：</span><br><span class="line">命令与筛选条件：</span><br><span class="line">测量的起点、终点、单位：</span><br><span class="line">观测结果：</span><br><span class="line">丢事件、未知栈与额外开销：</span><br><span class="line">支持该假设的证据：</span><br><span class="line">不能排除的其他原因：</span><br><span class="line">下一步验证：</span><br><span class="line">调整后的同窗口复测结果：</span><br></pre></td></tr></table></figure>
+
+<p>把假设写在命令前，把测量边界写在结论前。这样工具越多，排查路径也不会越乱。</p>
 
       
     </div>
@@ -1204,13 +860,13 @@
   <div class="panel-body">
     <figure class="media">
       <div class="media-left">
-        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+        <a href="https://github.com/weeweetan" target="_blank" class="img-burn thumb-sm visible-lg">
           <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
-        <div>个人简介。</div>
+        <h3 class="media-heading"><a href="https://github.com/weeweetan" target="_blank"><span class="text-dark">weeweetan</span><small class="ml-1x"></small></a></h3>
+        <div>记录 Nginx、Linux 与性能分析的学习笔记。</div>
       </div>
     </figure>
   </div>
@@ -1221,86 +877,44 @@
   </article>
   
     
-  <section id="comments">
-  	
-      <div id="vcomments"></div>
-    
-  </section>
-
 
   
 </div>
 
-  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  
+<nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
-  
-  <ul class="pager pull-left">
     
+      <ul class="pager pull-left">
+        
+        
+          <li class="next">
+            <a href="/2023/12/14/Nginx%E7%9A%84mirror%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/" title="Nginx的mirror模块详解"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+          </li>
+        
+        
+          <li class="toggle-toc reading-toc-toggle">
+            <button class="toggle-btn" type="button" data-reading-toc-toggle
+              aria-controls="collapseToc" aria-expanded="false">
+              <i class="icon icon-anchor" aria-hidden="true"></i>
+              <span>文章目录</span>
+            </button>
+          </li>
+        
+      </ul>
     
-    <li class="next">
-      <a href="/2023/12/14/Nginx%E7%9A%84mirror%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/" title="Nginx的mirror模块详解"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
-    </li>
+
     
-    
-  </ul>
-  
-  
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
-  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
-    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
-  </div> -->
-  
-  
-  <div class="bar-right">
-    
-    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
-    
-  </div>
-  </div>
-</nav>
-  
-<!-- Modal -->
-<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content donate">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <div class="modal-body">
-        <div class="donate-box">
-          <div class="donate-head">
-            <p>感谢您的支持，我会继续努力的!</p>
-          </div>
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
-              <div class="donate-payimg">
-                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
-              </div>
-              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
-              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
-              <div class="donate-payimg">
-                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
-              </div>
-              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
-              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
-            </div>
-          </div>
-          <div class="donate-footer">
-            <ul class="nav nav-tabs nav-justified" role="tablist">
-              <li role="presentation" class="active">
-                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
-              </li>
-              <li role="presentation" class="">
-                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+
+    <div class="bar-right">
+      
+        <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+      
     </div>
   </div>
-</div>
+</nav>
+
+  
 
 
 
@@ -1310,16 +924,10 @@
 	
 	
     <ul class="social-links">
-    	
-        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+    
+        <li><a href="https://github.com/weeweetan" target="_blank" rel="noopener noreferrer" aria-label="Github" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
         
-        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
-        
-        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
-        
-        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
-        
-        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        <li><a href="/atom.xml" target="_blank" rel="noopener noreferrer" aria-label="Rss" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
         
     </ul>
 
@@ -1330,10 +938,9 @@
         </div>
     </div>
 </footer>
-  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-<script>
-window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
+  
+<script src="/js/jquery.min.js"></script>
+
 
 <script src="/js/plugin.min.js"></script>
 
@@ -1341,60 +948,22 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 <script src="/js/application.js"></script>
 
 
-    <script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(未命名)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-
-<script src="/js/insight.js"></script>
+<script defer src="/js/reading.js"></script>
 
 
-
-
-
-
-   
-
-
-
-
-   
     
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/valine"></script>
-  <script type="text/javascript">
-  var GUEST = ['nick', 'mail', 'link'];
-  var meta = 'nick,mail,link';
-  meta = meta.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#vcomments',
-    verify: false,
-    notify: false,
-    appId: '',
-    appKey: '',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: meta,
-    pageSize: '10' || 10,
-    visitor: false
-  });
-  </script>
+<script>window.INSIGHT_CONFIG = {"TRANSLATION":{"POSTS":"文章","PAGES":"页面","CATEGORIES":"分类","TAGS":"标签"},"DIALOG_LABEL":"站内搜索","MESSAGES":{"PROMPT":"输入关键词开始搜索","LOADING":"正在加载搜索内容…","LOAD_ERROR":"搜索内容加载失败，请检查网络后重试。","RETRY":"重试","NO_RESULTS":"没有找到相关内容，请换个关键词。","UNTITLED":"(未命名)"},"ROOT_URL":"/","CONTENT_URL":"/content.json"};</script>
+<script defer src="/js/search-core.js"></script>
+<script defer src="/js/insight.js"></script>
 
-     
+
+
+
+
+
+   
+
+
 
 
 
