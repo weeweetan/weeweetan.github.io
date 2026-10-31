@@ -1,0 +1,79 @@
+/* Opt-in article previews; ordinary posts and the full article keep Pure's layout. */
+.article-list article:has(.post-preview) {
+  margin: 10px 0 24px;
+  padding: 20px 24px 16px;
+  border: 1px solid #dce7ed;
+  border-top: 3px solid #187c91;
+  border-radius: 8px;
+  background: linear-gradient(120deg, #f5fafc, #fff 72%);
+}
+.article-list article:has(.post-preview) .article-header { margin-bottom: 8px; }
+.article-list article:has(.post-preview) h1 { margin: 0; line-height: 1.4; }
+.article-list article:has(.post-preview) .article-title {
+  color: #183c4a;
+  font-size: 24px;
+  font-weight: 700;
+}
+.article-list article:has(.post-preview) .article-title:hover { color: #086b83; }
+.article-list .post-preview p { margin: 0; }
+.article-list .post-preview .post-preview-label {
+  color: #50717e;
+  font-size: 12px;
+  letter-spacing: .3px;
+}
+.article-list .post-preview .post-preview-summary {
+  margin: 10px 0 12px;
+  color: #465b65;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.post-preview-chapters,
+.post-preview-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.article-list .post-preview-chapters a {
+  padding: 5px 9px;
+  border: 1px solid #d9e6eb;
+  border-radius: 4px;
+  color: #315e70;
+  background: #fff;
+  font-size: 12px;
+  line-height: 1.6;
+  text-decoration: none;
+}
+.article-list .post-preview-chapters a:hover {
+  border-color: #187c91;
+  background: #edf6f9;
+}
+.post-preview-actions { margin-top: 14px; gap: 16px; }
+.article-list .post-preview-read {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  padding: 7px 13px;
+  border-radius: 4px;
+  color: #fff;
+  background: #126c82;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-decoration: none;
+}
+.article-list .post-preview-read:hover { color: #fff; background: #0d5365; }
+.article-list .post-preview-contents { color: #3b6575; font-size: 13px; }
+.article-list article:has(.post-preview) .article-meta {
+  margin: 14px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid #e4edf1;
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .article-list article:has(.post-preview) { padding: 16px; margin-top: 0; }
+  .article-list article:has(.post-preview) .article-title { font-size: 22px; }
+  .post-preview-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .article-list .post-preview-chapters a { padding: 8px; }
+  .post-preview-actions { gap: 12px; }
+}

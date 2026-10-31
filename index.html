@@ -50,7 +50,7 @@
   
   
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/post-preview.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body class="main-center" itemscope itemtype="http://schema.org/WebPage">
@@ -342,9 +342,15 @@
   </div>
   
   <div class="article-entry text-muted" itemprop="description">
-    <p>这篇笔记沿用《BPF之巅》第 2–17 章的学习顺序，把原来的章节提纲整理成可以反复查阅的排障笔记。重点是把三个问题连起来：<strong>现在怀疑什么、在哪一层观测、拿到数据后能下什么结论</strong>。工具名字只是入口，测量范围和结果解释更值得记住。</p>
-<p>例如，看到请求变慢，先分清线程是在 CPU 上执行、已经就绪却排队，还是阻塞在某个资源上。三种情况都可能让用户等待，但需要采集的证据完全不同。</p>
-<p>本文是结合官方文档重新整理的学习总结，文中的诊断流程是分析示例，并非实际生产事故记录。原书工具、发行版打包的工具，以及当前上游工具可能存在名称和参数差异；新增的 BTF、CO-RE 等说明单独标为补充，不混作原书当时的结论。书籍目录、勘误和配套代码入口见<a href="https://www.brendangregg.com/bpf-performance-tools-book.html">作者的图书页面</a>。</p>
+    <div class="post-preview">
+    <p class="post-preview-label">第 2–17 章 · 性能分析与排障</p>
+    <p class="post-preview-summary">从 BPF 原理、BCC 与 bpftrace 出发，梳理 CPU、内存、I/O 和网络的观测方法，串起“问题假设 → 工具选择 → 结果解释”。</p>
+    <nav class="post-preview-chapters" aria-label="BPF之巅学习笔记章节快捷入口"><a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#chapter-4">BCC 与 bpftrace <span aria-hidden="true">↗</span></a><a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#chapter-6">CPU 与调度 <span aria-hidden="true">↗</span></a><a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#chapter-9">磁盘 I/O <span aria-hidden="true">↗</span></a><a href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#chapter-10">网络分析 <span aria-hidden="true">↗</span></a></nav>
+    <div class="post-preview-actions">
+      <a class="post-preview-read" href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">阅读全文 <span aria-hidden="true">→</span></a>
+      <a class="post-preview-contents" href="/2024/03/09/BPF%E4%B9%8B%E5%B7%85%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#%E9%98%85%E8%AF%BB%E5%AF%BC%E8%88%AA">查看章节目录</a>
+    </div>
+  </div>
   </div>
   
   <p class="article-meta">
