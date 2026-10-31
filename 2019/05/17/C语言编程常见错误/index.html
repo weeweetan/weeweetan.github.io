@@ -26,7 +26,7 @@
 <meta property="og:description" content="1. 使用close函数出现bad file descriptor错误 出现这种错误一般是两次close导致，仔细检查代码，调用close关闭文件描述符后，应该将文件描述符置为0，避免重复调用close，切记切记。  2. 守护程序闪退问题 出现这个问题一般是两次释放同一块内存，仔细检查释放内存与指针赋值相关代码，释放内存后，应将指针置为NULL，避免重复调用close，切记切记。  3. 四字节">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-05-17T15:21:03.000Z">
-<meta property="article:modified_time" content="2026-10-31T02:43:52.779Z">
+<meta property="article:modified_time" content="2026-10-30T14:46:03.078Z">
 <meta property="article:author" content="weeweetan">
 <meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
@@ -54,7 +54,7 @@
   
   
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/avatar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body class="main-center" itemscope itemtype="http://schema.org/WebPage">
@@ -66,7 +66,7 @@
       
       <div class="profile-block text-center">
         <a id="avatar" href="https://github.com/weeweetan" target="_blank" rel="noopener noreferrer">
-          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200" alt="weeweetan">
+          <img class="img-circle img-rotate" src="/images/avatar-robot.jpg" width="200" height="200" alt="weeweetan">
         </a>
         <h2 id="name" class="hidden-xs hidden-sm">weeweetan</h2>
         
@@ -518,7 +518,7 @@ char b = a + &#39;0&#39;;
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/weeweetan" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+          <img src="/images/avatar-robot.jpg" class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
